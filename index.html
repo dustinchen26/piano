@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>大師級數位合成鋼琴 | Pro Synth Piano</title>
+    <title>For Winny電子琴~by Dustin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -34,12 +34,11 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ---------- 高度修復與禁止縮放 ---------- */
         html {
             height: -webkit-fill-available;
             height: 100%;
             height: 100dvh;
-            touch-action: pan-x pan-y; /* 禁止雙指縮放，但允許單指滑動 */
+            touch-action: pan-x pan-y;
         }
 
         body {
@@ -59,30 +58,19 @@
             padding-bottom: max(8px, var(--safe-bottom));
             padding-left: max(8px, var(--safe-left));
             padding-right: max(8px, var(--safe-right));
-            /* 改為從上對齊，配合 flex-1 撐滿 */
-            justify-content: flex-start; 
+            justify-content: flex-start;
         }
 
-        .font-mono-tech {
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
 
         .wood-trim {
-            background: repeating-linear-gradient(
-                90deg,
-                #2a1409 0px,
-                #3a1c0d 4px,
-                #241006 8px,
-                #42200f 14px
-            );
+            background: repeating-linear-gradient(90deg, #2a1409 0px, #3a1c0d 4px, #241006 8px, #42200f 14px);
             box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
         }
 
         .synth-chassis {
             background: linear-gradient(180deg, #1f2937 0%, #111827 40%, #0b0f19 100%);
-            box-shadow:
-                0 25px 50px -12px rgba(0, 0, 0, 0.85),
-                inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
@@ -93,21 +81,18 @@
             flex-shrink: 0;
         }
 
-        /* ---------- 琴鍵容器：自動撐滿剩餘空間 ---------- */
         .piano-bed {
             position: relative;
             background: #05070a;
             padding: 0 4px 8px 4px;
             border-radius: 0 0 12px 12px;
             box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.9);
-            flex: 1 1 auto; /* 讓琴鍵區填滿 */
-            min-height: 200px; /* 確保直屏有足夠高度 */
+            flex: 1 1 auto;
+            min-height: 240px;
             touch-action: none;
         }
 
-        .piano-bed * {
-            touch-action: none;
-        }
+        .piano-bed * { touch-action: none; }
 
         .key-white {
             position: relative;
@@ -122,10 +107,7 @@
             cursor: pointer;
             transform-origin: top center;
             transition: transform 0.05s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.05s ease, background 0.06s ease;
-            box-shadow:
-                0 6px 0 #94a3b8,
-                0 8px 12px rgba(0, 0, 0, 0.5),
-                inset 0 -4px 6px rgba(255, 255, 255, 0.9);
+            box-shadow: 0 6px 0 #94a3b8, 0 8px 12px rgba(0, 0, 0, 0.5), inset 0 -4px 6px rgba(255, 255, 255, 0.9);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -141,30 +123,20 @@
         .key-white.guide-target {
             background: linear-gradient(180deg, #fef3c7 0%, #fde68a 35%, #fbbf24 90%, #f59e0b 100%) !important;
             border-color: #fbbf24 !important;
-            box-shadow:
-                0 6px 0 #d97706,
-                0 0 24px rgba(251, 191, 36, 0.85),
-                inset 0 -4px 8px rgba(255, 255, 255, 0.9) !important;
+            box-shadow: 0 6px 0 #d97706, 0 0 24px rgba(251, 191, 36, 0.85), inset 0 -4px 8px rgba(255, 255, 255, 0.9) !important;
         }
 
-        .key-white.active,
-        .key-white.active-right {
+        .key-white.active, .key-white.active-right {
             transform: perspective(600px) rotateX(-3.5deg) translateY(4px);
             background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 25%, #7dd3fc 90%, #38bdf8 100%) !important;
-            box-shadow:
-                0 2px 0 #0284c7,
-                0 0 22px rgba(56, 189, 248, 0.85),
-                inset 0 2px 8px rgba(2, 132, 199, 0.35) !important;
+            box-shadow: 0 2px 0 #0284c7, 0 0 22px rgba(56, 189, 248, 0.85), inset 0 2px 8px rgba(2, 132, 199, 0.35) !important;
             border-color: #38bdf8 !important;
         }
 
         .key-white.active-left {
             transform: perspective(600px) rotateX(-3.5deg) translateY(4px);
             background: linear-gradient(180deg, #fecdd3 0%, #ffe4e6 25%, #fda4af 90%, #fb7185 100%) !important;
-            box-shadow:
-                0 2px 0 #e11d48,
-                0 0 24px rgba(251, 113, 133, 0.9),
-                inset 0 2px 8px rgba(225, 29, 72, 0.35) !important;
+            box-shadow: 0 2px 0 #e11d48, 0 0 24px rgba(251, 113, 133, 0.9), inset 0 2px 8px rgba(225, 29, 72, 0.35) !important;
             border-color: #fb7185 !important;
         }
 
@@ -179,11 +151,7 @@
             cursor: pointer;
             transform-origin: top center;
             transition: transform 0.05s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.05s ease, background 0.06s ease;
-            box-shadow:
-                0 5px 0 #020617,
-                0 8px 12px rgba(0, 0, 0, 0.75),
-                inset 0 1px 2px rgba(255, 255, 255, 0.25),
-                inset 0 -3px 4px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 0 #020617, 0 8px 12px rgba(0, 0, 0, 0.75), inset 0 1px 2px rgba(255, 255, 255, 0.25), inset 0 -3px 4px rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -199,30 +167,20 @@
         .key-black.guide-target {
             background: linear-gradient(180deg, #fcd34d 0%, #f59e0b 35%, #d97706 85%, #92400e 100%) !important;
             border-color: #fde68a !important;
-            box-shadow:
-                0 5px 0 #78350f,
-                0 0 22px rgba(251, 191, 36, 0.95),
-                inset 0 1px 4px rgba(255, 255, 255, 0.7) !important;
+            box-shadow: 0 5px 0 #78350f, 0 0 22px rgba(251, 191, 36, 0.95), inset 0 1px 4px rgba(255, 255, 255, 0.7) !important;
         }
 
-        .key-black.active,
-        .key-black.active-right {
+        .key-black.active, .key-black.active-right {
             transform: perspective(500px) rotateX(-4.5deg) translateY(3px);
             background: linear-gradient(180deg, #38bdf8 0%, #0284c7 30%, #0369a1 85%, #0c4a6e 100%) !important;
-            box-shadow:
-                0 2px 0 #082f49,
-                0 0 20px rgba(56, 189, 248, 0.95),
-                inset 0 1px 4px rgba(255, 255, 255, 0.6) !important;
+            box-shadow: 0 2px 0 #082f49, 0 0 20px rgba(56, 189, 248, 0.95), inset 0 1px 4px rgba(255, 255, 255, 0.6) !important;
             border-color: #7dd3fc !important;
         }
 
         .key-black.active-left {
             transform: perspective(500px) rotateX(-4.5deg) translateY(3px);
             background: linear-gradient(180deg, #fb7185 0%, #e11d48 30%, #be123c 85%, #4c0519 100%) !important;
-            box-shadow:
-                0 2px 0 #4c0519,
-                0 0 22px rgba(251, 113, 133, 0.95),
-                inset 0 1px 4px rgba(255, 255, 255, 0.6) !important;
+            box-shadow: 0 2px 0 #4c0519, 0 0 22px rgba(251, 113, 133, 0.95), inset 0 1px 4px rgba(255, 255, 255, 0.6) !important;
             border-color: #fda4af !important;
         }
 
@@ -244,8 +202,7 @@
             box-shadow: 0 1px 4px rgba(225, 29, 72, 0.6);
         }
 
-        .active-right .hand-badge,
-        .active:not(.active-left) .hand-badge {
+        .active-right .hand-badge, .active:not(.active-left) .hand-badge {
             display: inline-block;
             background: #0284c7;
             color: #fff;
@@ -263,9 +220,7 @@
             animation: bounceDot 0.65s infinite alternate;
         }
 
-        .guide-target .guide-dot {
-            display: block;
-        }
+        .guide-target .guide-dot { display: block; }
 
         @keyframes bounceDot {
             from { transform: translateY(0) scale(0.95); }
@@ -286,172 +241,119 @@
             box-shadow: 0 0 15px rgba(245, 158, 11, 0.45);
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            height: 6px;
-        }
-        .no-scrollbar::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        .no-scrollbar::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 9999px;
-        }
+        .no-scrollbar::-webkit-scrollbar { height: 6px; }
+        .no-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
+        .no-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
 
-        /* ---------- 音量滑桿 ---------- */
         input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            background: transparent;
-            cursor: pointer;
-            height: 22px;
-            padding: 0;
+            -webkit-appearance: none; appearance: none; background: transparent; cursor: pointer; height: 22px; padding: 0;
         }
-        input[type="range"]::-webkit-slider-runnable-track {
-            height: 6px;
-            background: #334155;
-            border-radius: 3px;
-        }
+        input[type="range"]::-webkit-slider-runnable-track { height: 6px; background: #334155; border-radius: 3px; }
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #38bdf8;
-            margin-top: -5px;
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
-            border: 2px solid #0f172a;
+            -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%;
+            background: #38bdf8; margin-top: -5px; box-shadow: 0 0 8px rgba(56, 189, 248, 0.7); border: 2px solid #0f172a;
         }
-        input[type="range"]::-moz-range-track {
-            height: 6px;
-            background: #334155;
-            border-radius: 3px;
-        }
+        input[type="range"]::-moz-range-track { height: 6px; background: #334155; border-radius: 3px; }
         input[type="range"]::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #38bdf8;
-            border: 2px solid #0f172a;
+            width: 16px; height: 16px; border-radius: 50%; background: #38bdf8; border: 2px solid #0f172a;
             box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
         }
 
-        /* 防止 iOS 聚焦時放大 */
-        select, input[type="range"], button {
-            font-size: 16px !important;
+        select, input[type="range"], button { font-size: 16px !important; }
+
+        #portraitPromptModal.hidden-modal { display: none; }
+
+        /* ============ KTV 動態字幕樣式 ============ */
+        .ktv-note {
+            font-family: 'Noto Sans TC', sans-serif;
+            font-weight: 900;
+            font-size: 15px;
+            line-height: 1;
+            display: inline-block;
+            transition: color 0.18s ease, transform 0.18s ease, font-size 0.18s ease;
+            white-space: nowrap;
         }
 
-        #portraitPromptModal.hidden-modal {
-            display: none;
+        .ktv-done {
+            color: rgba(148, 163, 184, 0.32);
+            transform: scale(0.9);
         }
 
-        /* =====================================================================
-           手機橫屏滿版自適應
-           ===================================================================== */
+        .ktv-next {
+            color: rgba(226, 232, 240, 0.72);
+        }
+
+        .ktv-current {
+            font-size: 22px;
+            background-image: linear-gradient(
+                90deg,
+                rgba(148, 163, 184, 0.42) 0%,
+                rgba(148, 163, 184, 0.42) 50%,
+                #fbbf24 50%,
+                #fde68a 100%
+            );
+            background-size: 200% 100%;
+            background-position: 0% 0;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: ktvSweep var(--ktv-dur, 1.2s) linear infinite;
+            filter: drop-shadow(0 0 9px rgba(251, 191, 36, 0.6));
+            transform: scale(1.06);
+        }
+
+        @keyframes ktvSweep {
+            from { background-position: 0% 0; }
+            to   { background-position: 100% 0; }
+        }
+
+        @media (min-width: 640px) {
+            .ktv-note { font-size: 17px; }
+            .ktv-current { font-size: 26px; }
+        }
+
         @media (orientation: landscape) and (max-height: 600px) {
-            html, body {
-                touch-action: none; /* 橫屏完全鎖定滑動，交由琴鍵區自己處理 */
-                overflow: hidden;
-            }
+            html, body { touch-action: none; overflow: hidden; }
             body {
-                height: 100dvh;
-                min-height: 100dvh;
+                height: 100dvh; min-height: 100dvh;
                 padding-top: max(4px, var(--safe-top));
                 padding-bottom: max(4px, var(--safe-bottom));
                 padding-left: max(4px, var(--safe-left));
                 padding-right: max(4px, var(--safe-right));
             }
-            main {
-                flex: 1 1 auto;
-                min-height: 0;
-                width: 100%;
-                max-width: 80rem;
-                display: flex;
-                flex-direction: column;
-            }
-            .synth-chassis {
-                flex: 1 1 auto;
-                min-height: 0;
-                display: flex;
-                flex-direction: column;
-                border-radius: 12px;
-            }
-            /* 隱藏大標題，節省空間 */
-            header {
-                display: none !important;
-            }
-            /* 壓縮控制面板：將音色、頻譜、設定強制排成一列 */
+            main { flex: 1 1 auto; min-height: 0; width: 100%; max-width: 80rem; display: flex; flex-direction: column; }
+            .synth-chassis { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; border-radius: 12px; }
+            header { display: none !important; }
             .control-panel-grid {
                 display: grid !important;
                 grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-                gap: 4px !important;
-                padding: 4px 6px !important;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
-                flex-shrink: 0;
+                gap: 4px !important; padding: 4px 6px !important;
+                border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
             }
             .control-panel-grid > :nth-child(1) { grid-column: span 4; padding: 4px; }
             .control-panel-grid > :nth-child(2) { grid-column: span 5; min-height: 60px; }
-            .control-panel-grid > :nth-child(3) { 
-                grid-column: span 3; 
-                padding: 4px; 
-                display: flex; 
-                flex-direction: column; 
-                justify-content: space-around;
-                gap: 2px;
-            }
-            
-            /* 縮小控制面板內元件 */
+            .control-panel-grid > :nth-child(3) { grid-column: span 3; padding: 4px; display: flex; flex-direction: column; justify-content: space-around; gap: 2px; }
             .control-panel-grid .text-xs { font-size: 10px !important; }
             .control-panel-grid button { padding: 2px 4px !important; font-size: 11px !important; }
             .control-panel-grid #currentToneDesc { display: none; }
             .control-panel-grid .grid-cols-2 { gap: 2px; }
             .control-panel-grid .grid-cols-2 > button { padding: 4px !important; font-size: 10px !important; }
-            
-            /* 壓縮琴譜教學列 */
-            .tutor-bar {
-                padding: 4px 6px !important;
-                gap: 4px !important;
-                flex-shrink: 0;
-            }
-            .tutor-bar .sheet-scroll-box {
-                padding: 2px !important;
-            }
-            .tutor-bar button, .tutor-bar select {
-                padding: 2px 6px !important;
-                font-size: 11px !important;
-            }
-            .tutor-bar span {
-                font-size: 11px !important;
-            }
-
-            /* 琴鍵區自動撐滿 */
-            .keys-section {
-                flex: 1 1 auto;
-                min-height: 100px;
-            }
-            .piano-bed {
-                height: 100% !important;
-                min-height: 100px;
-                padding: 0 2px 4px 2px !important;
-                border-radius: 0 0 10px 10px;
-            }
-            .key-white .kbd-hint,
-            .key-black .kbd-hint {
-                display: none; /* 橫屏隱藏鍵盤提示字，讓琴鍵看起來更大 */
-            }
-            footer {
-                display: none !important;
-            }
+            .control-panel-grid .ktv-note { font-size: 11px !important; }
+            .control-panel-grid .ktv-current { font-size: 15px !important; }
+            .tutor-bar { padding: 4px 6px !important; gap: 4px !important; flex-shrink: 0; }
+            .tutor-bar .sheet-scroll-box { padding: 2px !important; }
+            .tutor-bar button, .tutor-bar select { padding: 2px 6px !important; font-size: 11px !important; }
+            .tutor-bar span { font-size: 11px !important; }
+            .keys-section { flex: 1 1 auto; min-height: 100px; }
+            .piano-bed { height: 100% !important; min-height: 100px; padding: 0 2px 4px 2px !important; border-radius: 0 0 10px 10px; }
+            .key-white .kbd-hint, .key-black .kbd-hint { display: none; }
+            footer { display: none !important; }
         }
 
-        /* 手機直向加大琴鍵高度，減少留白 */
         @media (orientation: portrait) {
-            .piano-bed {
-                min-height: 280px;
-            }
-            footer {
-                display: none !important;
-            }
+            .piano-bed { min-height: 280px; }
+            footer { display: none !important; }
         }
     </style>
 </head>
@@ -493,7 +395,7 @@
                 <h1 class="text-base sm:text-2xl font-black tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white via-sky-200 to-indigo-300">
                     For Winny電子琴
                 </h1>
-                <p class="text-xs text-slate-400">~by Dustin · 內建互動琴譜教學模式 · 雙手分色顯示</p>
+                <p class="text-xs text-slate-400">~by Dustin</p>
             </div>
         </div>
 
@@ -559,17 +461,23 @@
 
                     <div class="relative z-10 flex items-center justify-between px-3 py-2 pointer-events-none">
                         <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-mono-tech px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">LIVE SPECTRUM</span>
+                            <span class="text-[10px] font-mono-tech px-1.5 py-0.5 rounded bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30 animate-pulse">
+                                🎤 KTV 動態歌詞
+                            </span>
                             <span id="activeNotesDisplay" class="text-xs font-mono-tech font-bold text-emerald-400">待機中...</span>
                         </div>
                         <button id="toggleVisModeBtn" class="pointer-events-auto text-[11px] px-2 py-0.5 rounded bg-slate-800/90 hover:bg-slate-700 text-slate-300 border border-slate-600 transition">
-                            模式：頻譜＋音符
+                            歌詞
                         </button>
+                    </div>
+
+                    <div id="ktvLyrics" class="relative z-10 flex-1 flex items-center justify-center overflow-hidden px-2 py-0.5 min-h-[40px]">
+                        <div id="ktvLine" class="flex items-end justify-center gap-1.5 sm:gap-2 whitespace-nowrap"></div>
                     </div>
 
                     <div class="relative z-10 px-3 py-1.5 flex items-center justify-between text-[11px] text-slate-400 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
                         <span>支援滑鼠滑奏與多點觸控（雙手自動分色）</span>
-                        <span id="octaveRangeLabel" class="font-mono-tech text-sky-300 font-bold">音域: C4 - C6</span>
+                        <span id="octaveRangeLabel" class="font-mono-tech text-sky-300 font-bold">音域: C3 - C6</span>
                     </div>
                 </div>
 
@@ -577,11 +485,11 @@
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-slate-300">八度移調</span>
                         <div class="flex items-center gap-1.5">
-                            <button id="octDownBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="降低一個八度 (Z鍵)">
+                            <button id="octDownBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="降低一個八度 (,鍵)">
                                 -
                             </button>
                             <span id="octaveOffsetDisplay" class="w-10 text-center font-mono-tech text-sm font-bold text-sky-400">0</span>
-                            <button id="octUpBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="升高一個八度 (X鍵)">
+                            <button id="octUpBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="升高一個八度 (.鍵)">
                                 +
                             </button>
                         </div>
@@ -659,8 +567,8 @@
 
     <footer class="w-full max-w-7xl mt-2 px-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 shrink-0">
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <span>⌨️ <strong class="text-slate-200">電腦鍵盤</strong>：下排 <code class="text-sky-300">A S D F G H J K L ; '</code> 白鍵，上排 <code class="text-sky-300">W E T Y U O P</code> 黑鍵</span>
-            <span>🔄 <strong class="text-slate-200">快捷鍵</strong>：<code class="text-sky-300">Z / X</code> 切換八度、<code class="text-sky-300">空白鍵</code> 延音踏板</span>
+            <span>⌨️ <strong class="text-slate-200">鍵盤</strong>：低音 <code class="text-sky-300">Z X C V B N M</code>（黑鍵 5 6 7 8 9）、中音 <code class="text-sky-300">A S D F G H J</code>（黑鍵 W E T Y U）、高音 <code class="text-sky-300">K L ; ' Enter 1 2</code>（黑鍵 O P ] ⌫ 2）</span>
+            <span>🔄 <strong class="text-slate-200">快捷鍵</strong>：<code class="text-sky-300">, / .</code> 切換八度、<code class="text-sky-300">空白鍵</code> 延音踏板</span>
         </div>
         <div class="text-slate-500">
             <span class="text-rose-400 font-bold">● 左手</span> / <span class="text-sky-400 font-bold">● 右手</span> 雙手合奏自動變色
@@ -668,21 +576,13 @@
     </footer>
 
     <script>
-        // 強制阻擋 iOS 雙指縮放
-        document.addEventListener('gesturestart', function (e) {
-            e.preventDefault();
-        });
-        
-        // 避免 iOS 點擊輸入框時自動放大畫面
+        document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+
         document.addEventListener('focusin', (e) => {
-            if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') {
-                e.target.style.fontSize = '16px';
-            }
+            if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') e.target.style.fontSize = '16px';
         });
         document.addEventListener('focusout', (e) => {
-            if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') {
-                e.target.style.fontSize = '';
-            }
+            if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') e.target.style.fontSize = '';
         });
 
         if (window.CanvasRenderingContext2D && !CanvasRenderingContext2D.prototype.roundRect) {
@@ -703,6 +603,9 @@
             };
         }
 
+        // =====================================================================
+        // 琴譜資料（已校正音符與歌詞）
+        // =====================================================================
         const SONG_LIBRARY = [
             {
                 id: 'fur-elise',
@@ -761,27 +664,205 @@
                 ]
             },
             {
-                id: 'canon-d',
-                title: '🎻 卡農經典旋律 (Canon)',
-                tempo: 100,
+                id: 'little-happiness',
+                title: '🍀 小幸運 - 田馥甄 (簡譜校正完整版)',
+                tempo: 80,
                 notes: [
-                    { n: 'E5', s: '3', d: 1 }, { n: 'D5', s: '2', d: 1 },
-                    { n: 'C5', s: '1', d: 1 }, { n: 'B4', s: '7.', d: 1 },
-                    { n: 'A4', s: '6.', d: 1 }, { n: 'G4', s: '5.', d: 1 },
-                    { n: 'A4', s: '6.', d: 1 }, { n: 'B4', s: '7.', d: 1 },
-                    { n: 'C5', s: '1', d: 0.5 }, { n: 'B4', s: '7.', d: 0.5 },
-                    { n: 'C5', s: '1', d: 0.5 }, { n: 'E4', s: '3.', d: 0.5 },
-                    { n: 'G4', s: '5.', d: 0.5 }, { n: 'C5', s: '1', d: 0.5 },
-                    { n: 'B4', s: '7.', d: 0.5 }, { n: 'G4', s: '5.', d: 0.5 },
-                    { n: 'A4', s: '6.', d: 0.5 }, { n: 'E4', s: '3.', d: 0.5 },
-                    { n: 'F4', s: '4.', d: 0.5 }, { n: 'C5', s: '1', d: 0.5 },
-                    { n: 'B4', s: '7.', d: 0.5 }, { n: 'G4', s: '5.', d: 0.5 },
-                    { n: 'C5', s: '1', d: 1.5 }
+                    // === 主歌 A ===
+                    // 我聽見雨滴落在青青草地
+                    { n: 'E4', s: '3', d: 0.5, l: '我' }, { n: 'E4', s: '3', d: 0.5, l: '聽' },
+                    { n: 'G4', s: '5', d: 0.5, l: '見' }, { n: 'G4', s: '5', d: 0.5, l: '雨' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '滴' }, { n: 'C5', s: '1.', d: 0.5, l: '落' },
+                    { n: 'B4', s: '7', d: 0.5, l: '在' }, { n: 'B4', s: '7', d: 0.5, l: '青' },
+                    { n: 'A4', s: '6', d: 0.5, l: '青' }, { n: 'E4', s: '3', d: 0.5, l: '草' },
+                    { n: 'A4', s: '6', d: 1.5, l: '地' },
+
+                    // 我聽見遠方下課鐘聲響起
+                    { n: 'A4', s: '6', d: 0.5, l: '我' }, { n: 'A4', s: '6', d: 0.5, l: '聽' },
+                    { n: 'B4', s: '7', d: 0.5, l: '見' }, { n: 'B4', s: '7', d: 0.5, l: '遠' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '方' }, { n: 'E5', s: '3.', d: 0.5, l: '下' },
+                    { n: 'B4', s: '7', d: 0.5, l: '課' }, { n: 'B4', s: '7', d: 0.5, l: '鐘' },
+                    { n: 'G4', s: '5', d: 0.5, l: '聲' }, { n: 'E4', s: '3', d: 0.5, l: '響' },
+                    { n: 'G4', s: '5', d: 1.5, l: '起' },
+
+                    // 可是我沒有聽見你的聲音
+                    { n: 'E4', s: '3', d: 0.5, l: '可' }, { n: 'E4', s: '3', d: 0.5, l: '是' },
+                    { n: 'G4', s: '5', d: 0.5, l: '我' }, { n: 'G4', s: '5', d: 0.5, l: '沒' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '有' }, { n: 'C5', s: '1.', d: 0.5, l: '聽' },
+                    { n: 'B4', s: '7', d: 0.5, l: '見' }, { n: 'B4', s: '7', d: 0.5, l: '你' },
+                    { n: 'A4', s: '6', d: 0.5, l: '的' }, { n: 'E4', s: '3', d: 0.5, l: '聲' },
+                    { n: 'A4', s: '6', d: 1.5, l: '音' },
+
+                    // 認真 呼喚我姓名
+                    { n: 'A4', s: '6', d: 0.5, l: '認' }, { n: 'B4', s: '7', d: 0.5, l: '真' },
+                    { n: 'A4', s: '6', d: 0.5, l: '呼' }, { n: 'B4', s: '7', d: 0.5, l: '喚' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '我' }, { n: 'D5', s: '2.', d: 0.5, l: '姓' },
+                    { n: 'C5', s: '1.', d: 1.5, l: '名' },
+
+                    // === 主歌 B ===
+                    // 愛上你的時候還不懂感情
+                    { n: 'E4', s: '3', d: 0.5, l: '愛' }, { n: 'E4', s: '3', d: 0.5, l: '上' },
+                    { n: 'G4', s: '5', d: 0.5, l: '你' }, { n: 'G4', s: '5', d: 0.5, l: '的' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '時' }, { n: 'C5', s: '1.', d: 0.5, l: '候' },
+                    { n: 'B4', s: '7', d: 0.5, l: '還' }, { n: 'B4', s: '7', d: 0.5, l: '不' },
+                    { n: 'A4', s: '6', d: 0.5, l: '懂' }, { n: 'E4', s: '3', d: 0.5, l: '感' },
+                    { n: 'A4', s: '6', d: 1.5, l: '情' },
+
+                    // 離別了才覺得刻骨銘心
+                    { n: 'A4', s: '6', d: 0.5, l: '離' }, { n: 'A4', s: '6', d: 0.5, l: '別' },
+                    { n: 'B4', s: '7', d: 0.5, l: '了' }, { n: 'B4', s: '7', d: 0.5, l: '才' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '覺' }, { n: 'E5', s: '3.', d: 0.5, l: '得' },
+                    { n: 'B4', s: '7', d: 0.5, l: '刻' }, { n: 'B4', s: '7', d: 0.5, l: '骨' },
+                    { n: 'G4', s: '5', d: 0.5, l: '銘' }, { n: 'E4', s: '3', d: 0.5, l: '心' },
+                    { n: 'G4', s: '5', d: 1.5, l: '—' },
+
+                    // 為什麼沒有發現遇見了你
+                    { n: 'E4', s: '3', d: 0.5, l: '為' }, { n: 'E4', s: '3', d: 0.5, l: '什' },
+                    { n: 'G4', s: '5', d: 0.5, l: '麼' }, { n: 'G4', s: '5', d: 0.5, l: '沒' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '有' }, { n: 'C5', s: '1.', d: 0.5, l: '發' },
+                    { n: 'B4', s: '7', d: 0.5, l: '現' }, { n: 'B4', s: '7', d: 0.5, l: '遇' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '見' }, { n: 'E4', s: '3', d: 0.5, l: '了' },
+                    { n: 'A4', s: '6', d: 1.5, l: '你' },
+
+                    // 是生命最好的事情
+                    { n: 'A4', s: '6', d: 0.5, l: '是' }, { n: 'C5', s: '1.', d: 0.5, l: '生' },
+                    { n: 'B4', s: '7', d: 0.5, l: '命' }, { n: 'A4', s: '6', d: 0.5, l: '最' },
+                    { n: 'B4', s: '7', d: 0.5, l: '好' }, { n: 'E5', s: '3.', d: 0.5, l: '的' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '事' }, { n: 'C5', s: '1.', d: 1.5, l: '情' },
+
+                    // === 導歌（第一次） ===
+                    // 也許當時忙著微笑和哭泣
+                    { n: 'E5', s: '3.', d: 0.5, l: '也' }, { n: 'D5', s: '2.', d: 0.5, l: '許' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '當' }, { n: 'B4', s: '7', d: 0.5, l: '時' },
+                    { n: 'A4', s: '6', d: 0.5, l: '忙' }, { n: 'A4', s: '6', d: 0.5, l: '著' },
+                    { n: 'A4', s: '6', d: 0.5, l: '微' }, { n: 'A4', s: '6', d: 0.5, l: '笑' },
+                    { n: 'A4', s: '6', d: 0.5, l: '和' }, { n: 'E5', s: '3.', d: 0.5, l: '哭' },
+                    { n: 'D5', s: '2.', d: 1.5, l: '泣' },
+
+                    // 忙著追逐天空中的流星
+                    { n: 'D5', s: '2.', d: 0.5, l: '忙' }, { n: 'C5', s: '1.', d: 0.5, l: '著' },
+                    { n: 'B4', s: '7', d: 0.5, l: '追' }, { n: 'A4', s: '6', d: 0.5, l: '逐' },
+                    { n: 'G4', s: '5', d: 0.5, l: '天' }, { n: 'G4', s: '5', d: 0.5, l: '空' },
+                    { n: 'G4', s: '5', d: 0.5, l: '中' }, { n: 'E4', s: '3', d: 0.5, l: '的' },
+                    { n: 'G4', s: '5', d: 0.5, l: '流' }, { n: 'D5', s: '2.', d: 0.5, l: '星' },
+                    { n: 'C5', s: '1.', d: 1.5, l: '—' },
+
+                    // 人理所當然的忘記
+                    { n: 'C5', s: '1.', d: 0.5, l: '人' }, { n: 'C5', s: '1.', d: 0.5, l: '理' },
+                    { n: 'G4', s: '5', d: 0.5, l: '所' }, { n: 'G4', s: '5', d: 0.5, l: '當' },
+                    { n: 'C4', s: '1', d: 0.5, l: '然' }, { n: 'E4', s: '3', d: 0.5, l: '的' },
+                    { n: 'D4', s: '2', d: 0.5, l: '忘' }, { n: 'A4', s: '6', d: 1.5, l: '記' },
+
+                    // 是誰風裏雨裏一直默默守護在原地
+                    { n: 'A4', s: '6', d: 0.5, l: '是' }, { n: 'A4', s: '6', d: 0.5, l: '誰' },
+                    { n: 'A4', s: '6', d: 0.5, l: '風' }, { n: 'A4', s: '6', d: 0.5, l: '裏' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '雨' }, { n: 'A4', s: '6', d: 0.5, l: '裏' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '一' }, { n: 'A4', s: '6', d: 0.5, l: '直' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '默' }, { n: 'C5', s: '1.', d: 0.5, l: '默' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '守' }, { n: 'C5', s: '1.', d: 0.5, l: '護' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '在' }, { n: 'C5', s: '1.', d: 0.5, l: '原' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '地' }, { n: 'D5', s: '2.', d: 1.5, l: '—' },
+
+                    // === 副歌（第一次） ===
+                    // 原來你是我最想留住的幸運
+                    { n: 'G4', s: '5', d: 0.5, l: '原' }, { n: 'E5', s: '3.', d: 0.5, l: '來' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '你' }, { n: 'C5', s: '1.', d: 0.5, l: '是' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '我' }, { n: 'E5', s: '3.', d: 0.5, l: '最' },
+                    { n: 'G4', s: '5', d: 0.5, l: '想' }, { n: 'D5', s: '2.', d: 0.5, l: '留' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '住' }, { n: 'G4', s: '5', d: 0.5, l: '的' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '幸' }, { n: 'E5', s: '3.', d: 1.5, l: '運' },
+
+                    // 原來我們和愛情曾經靠得那麼近
+                    { n: 'D5', s: '2.', d: 0.5, l: '原' }, { n: 'D5', s: '2.', d: 0.5, l: '來' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '我' }, { n: 'F5', s: '4.', d: 0.5, l: '們' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '和' }, { n: 'D5', s: '2.', d: 0.5, l: '愛' },
+                    { n: 'B4', s: '7', d: 0.5, l: '情' }, { n: 'C5', s: '1.', d: 0.5, l: '曾' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '經' }, { n: 'A4', s: '6', d: 0.5, l: '靠' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '得' }, { n: 'E5', s: '3.', d: 0.5, l: '那' },
+                    { n: 'A4', s: '6', d: 0.5, l: '麼' }, { n: 'B4', s: '7', d: 1.5, l: '近' },
+
+                    // 那為我對抗世界的決定
+                    { n: 'B4', s: '7', d: 0.5, l: '那' }, { n: 'B4', s: '7', d: 0.5, l: '為' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '我' }, { n: 'G5', s: '5.', d: 0.5, l: '對' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '抗' }, { n: 'C5', s: '1.', d: 0.5, l: '世' },
+                    { n: 'B4', s: '7', d: 0.5, l: '界' }, { n: 'A4', s: '6', d: 0.5, l: '的' },
+                    { n: 'F5', s: '4.', d: 0.5, l: '決' }, { n: 'F5', s: '4.', d: 1.5, l: '定' },
+
+                    // 那陪我淋的雨
+                    { n: 'G5', s: '5.', d: 0.5, l: '那' }, { n: 'F5', s: '4.', d: 0.5, l: '陪' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '我' }, { n: 'G4', s: '5', d: 0.5, l: '淋' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '的' }, { n: 'E5', s: '3.', d: 1.5, l: '雨' },
+
+                    // 一幕幕都是你
+                    { n: 'F5', s: '4.', d: 0.5, l: '一' }, { n: 'E5', s: '3.', d: 0.5, l: '幕' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '幕' }, { n: 'F4', s: '4', d: 0.5, l: '都' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '是' }, { n: 'D5', s: '2.', d: 0.5, l: '你' },
+
+                    // 一塵不染的真心
+                    { n: 'D5', s: '2.', d: 0.5, l: '一' }, { n: 'C5', s: '1.', d: 0.5, l: '塵' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '不' }, { n: 'D5', s: '2.', d: 0.5, l: '染' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '的' }, { n: 'E5', s: '3.', d: 0.5, l: '真' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '心' }, { n: 'C5', s: '1.', d: 0.5, l: '—' },
+                    { n: 'C5', s: '1.', d: 1.5, l: '—' },
+
+                    // 與你相遇好幸運
+                    { n: 'E5', s: '3.', d: 0.5, l: '與' }, { n: 'G4', s: '5', d: 0.5, l: '你' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '相' }, { n: 'E5', s: '3.', d: 0.5, l: '遇' },
+                    { n: 'G4', s: '5', d: 0.5, l: '好' }, { n: 'D5', s: '2.', d: 0.5, l: '幸' },
+                    { n: 'E5', s: '3.', d: 1.5, l: '運' },
+
+                    // 可我已失去為你淚流滿面的權利
+                    { n: 'D5', s: '2.', d: 0.5, l: '可' }, { n: 'D5', s: '2.', d: 0.5, l: '我' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '已' }, { n: 'F5', s: '4.', d: 0.5, l: '失' },
+                    { n: 'G5', s: '5.', d: 0.5, l: '去' }, { n: 'D5', s: '2.', d: 0.5, l: '為' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '你' }, { n: 'C5', s: '1.', d: 0.5, l: '淚' },
+                    { n: 'E4', s: '3', d: 0.5, l: '流' }, { n: 'A4', s: '6', d: 0.5, l: '滿' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '面' }, { n: 'E4', s: '3', d: 0.5, l: '的' },
+                    { n: 'A4', s: '6', d: 0.5, l: '權' }, { n: 'B4', s: '7', d: 1.5, l: '利' },
+
+                    // 但願在我看不到的天際
+                    { n: 'B4', s: '7', d: 0.5, l: '但' }, { n: 'B4', s: '7', d: 0.5, l: '願' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '在' }, { n: 'G5', s: '5.', d: 0.5, l: '我' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '看' }, { n: 'C5', s: '1.', d: 0.5, l: '不' },
+                    { n: 'B4', s: '7', d: 0.5, l: '到' }, { n: 'A4', s: '6', d: 0.5, l: '的' },
+                    { n: 'F5', s: '4.', d: 0.5, l: '天' }, { n: 'F5', s: '4.', d: 1.5, l: '際' },
+
+                    // 你張開了雙翼
+                    { n: 'G5', s: '5.', d: 0.5, l: '你' }, { n: 'F5', s: '4.', d: 0.5, l: '張' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '開' }, { n: 'G4', s: '5', d: 0.5, l: '了' },
+                    { n: 'E5', s: '3.', d: 0.5, l: '雙' }, { n: 'E5', s: '3.', d: 1.5, l: '翼' },
+
+                    // 遇見你的註定
+                    { n: 'F5', s: '4.', d: 0.5, l: '遇' }, { n: 'E5', s: '3.', d: 0.5, l: '見' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '你' }, { n: 'F4', s: '4', d: 0.5, l: '的' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '註' }, { n: 'D5', s: '2.', d: 1.5, l: '定' },
+
+                    // 她會有多幸運
+                    { n: 'E5', s: '3.', d: 0.5, l: '她' }, { n: 'C5', s: '1.', d: 0.5, l: '會' },
+                    { n: 'C5', s: '1.', d: 0.5, l: '有' }, { n: 'E5', s: '3.', d: 0.5, l: '多' },
+                    { n: 'D5', s: '2.', d: 0.5, l: '幸' }, { n: 'C5', s: '1.', d: 0.5, l: '運' },
+                    { n: 'C5', s: '1.', d: 1.5, l: '—' }
                 ]
             }
         ];
 
+        // =====================================================================
+        // 琴鍵定義：C3 - C6（共 22 白鍵）
+        // =====================================================================
         const KEY_DEFINITIONS = [
+            { note: 'C',  octave: 3, midi: 48, type: 'white', keyChar: 'Z', keyCode: 'KeyZ' },
+            { note: 'C#', octave: 3, midi: 49, type: 'black', keyChar: '5', keyCode: 'Digit5' },
+            { note: 'D',  octave: 3, midi: 50, type: 'white', keyChar: 'X', keyCode: 'KeyX' },
+            { note: 'D#', octave: 3, midi: 51, type: 'black', keyChar: '6', keyCode: 'Digit6' },
+            { note: 'E',  octave: 3, midi: 52, type: 'white', keyChar: 'C', keyCode: 'KeyC' },
+            { note: 'F',  octave: 3, midi: 53, type: 'white', keyChar: 'V', keyCode: 'KeyV' },
+            { note: 'F#', octave: 3, midi: 54, type: 'black', keyChar: '7', keyCode: 'Digit7' },
+            { note: 'G',  octave: 3, midi: 55, type: 'white', keyChar: 'B', keyCode: 'KeyB' },
+            { note: 'G#', octave: 3, midi: 56, type: 'black', keyChar: '8', keyCode: 'Digit8' },
+            { note: 'A',  octave: 3, midi: 57, type: 'white', keyChar: 'N', keyCode: 'KeyN' },
+            { note: 'A#', octave: 3, midi: 58, type: 'black', keyChar: '9', keyCode: 'Digit9' },
+            { note: 'B',  octave: 3, midi: 59, type: 'white', keyChar: 'M', keyCode: 'KeyM' },
+
             { note: 'C',  octave: 4, midi: 60, type: 'white', keyChar: 'A', keyCode: 'KeyA' },
             { note: 'C#', octave: 4, midi: 61, type: 'black', keyChar: 'W', keyCode: 'KeyW' },
             { note: 'D',  octave: 4, midi: 62, type: 'white', keyChar: 'S', keyCode: 'KeyS' },
@@ -807,6 +888,7 @@
             { note: 'A',  octave: 5, midi: 81, type: 'white', keyChar: '1', keyCode: 'Digit1' },
             { note: 'A#', octave: 5, midi: 82, type: 'black', keyChar: '2', keyCode: 'Digit2' },
             { note: 'B',  octave: 5, midi: 83, type: 'white', keyChar: '3', keyCode: 'Digit3' },
+
             { note: 'C',  octave: 6, midi: 84, type: 'white', keyChar: '4', keyCode: 'Digit4' }
         ];
 
@@ -824,12 +906,18 @@
 
         const state = {
             audioCtx: null, masterGain: null, analyser: null, compressor: null,
-            currentPreset: 'grand', octaveShift: 0, sustainPedal: false, showLabels: true, visMode: 'both',
+            currentPreset: 'grand', octaveShift: 0, sustainPedal: false, showLabels: true,
+            lyricMode: 'lyric',
             activeVoices: new Map(), sustainedVoices: new Set(), pressedKeyboardCodes: new Set(),
             activePointers: new Map(), particles: [], dismissedPortraitModal: false,
             tutorEnabled: true, currentSongIndex: 0, currentNoteIndex: 0, isDemoPlaying: false, demoTimers: []
         };
 
+        const keyElementsMap = new Map();
+
+        // =====================================================================
+        // 音訊引擎
+        // =====================================================================
         function recalculateHandsAndColors() {
             const entries = Array.from(state.activeVoices.entries());
             if (entries.length === 0) {
@@ -839,13 +927,9 @@
                 updateActiveNotesDisplay();
                 return;
             }
-            entries.sort((a, b) => a[0] - b[0]);
-            if (entries.length === 1) {
-                state.activeVoices.get(entries[0][0]).hand = entries[0][0] <= 67 ? 'left' : 'right';
-            } else {
-                const splitIndex = entries.length === 2 ? 1 : Math.floor(entries.length / 2);
-                entries.forEach(([midi, voice], idx) => { voice.hand = idx < splitIndex ? 'left' : 'right'; });
-            }
+            entries.forEach(([midi, voice]) => {
+                voice.hand = voice.forcedHand || (midi < 60 ? 'left' : 'right');
+            });
             keyElementsMap.forEach((el, midi) => {
                 el.classList.remove('active', 'active-left', 'active-right');
                 if (state.activeVoices.has(midi)) {
@@ -885,7 +969,7 @@
 
         function midiToFreq(midi) { return 440 * Math.pow(2, (midi - 69) / 12); }
 
-        function noteOn(baseMidi, isDemoTrigger = false) {
+        function noteOn(baseMidi, isDemoTrigger = false, forcedHand = null) {
             try {
                 initAudioEngine();
                 const ctx = state.audioCtx;
@@ -944,7 +1028,21 @@
                 envGain.gain.linearRampToValueAtTime(peakGain, now + preset.attack);
                 envGain.gain.exponentialRampToValueAtTime(Math.max(peakGain * preset.sustain, 0.001), now + preset.attack + preset.decay);
                 oscillators.forEach(osc => osc.start(now));
-                state.activeVoices.set(baseMidi, { oscillators, envGain, actualMidi, hand: 'right' });
+
+                let resolvedHand = forcedHand;
+                if (!resolvedHand && state.tutorEnabled && !state.isDemoPlaying) {
+                    const song = SONG_LIBRARY[state.currentSongIndex];
+                    if (state.currentNoteIndex < song.notes.length) {
+                        const target = song.notes[state.currentNoteIndex];
+                        const def = NOTE_NAME_TO_DEF.get(target.n);
+                        if (def && def.midi === baseMidi) {
+                            resolvedHand = target.hand || 'right';
+                        }
+                    }
+                }
+                if (!resolvedHand) resolvedHand = baseMidi < 60 ? 'left' : 'right';
+
+                state.activeVoices.set(baseMidi, { oscillators, envGain, actualMidi, hand: resolvedHand, forcedHand: resolvedHand });
                 state.sustainedVoices.delete(baseMidi);
                 recalculateHandsAndColors();
                 const voice = state.activeVoices.get(baseMidi);
@@ -981,6 +1079,9 @@
             recalculateHandsAndColors();
         }
 
+        // =====================================================================
+        // 教學系統
+        // =====================================================================
         function initTutorSystem() {
             const selector = document.getElementById('songSelector');
             selector.innerHTML = '';
@@ -1020,16 +1121,19 @@
             song.notes.forEach((item, idx) => {
                 const keyDef = NOTE_NAME_TO_DEF.get(item.n);
                 const kbdHint = keyDef ? keyDef.keyChar : '?';
+                const isLeft = item.hand === 'left';
                 const card = document.createElement('div');
                 card.id = `sheet-note-${idx}`;
                 card.className = 'shrink-0 w-12 sm:w-14 py-1 px-1 rounded-lg border flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
                 card.addEventListener('click', () => {
                     stopDemoPlayback(); state.currentNoteIndex = idx; updateSheetTrackUI(); highlightCurrentGuideKey();
                 });
+                const handDot = isLeft ? '<span class="text-[8px] text-rose-400 font-bold leading-none mb-0.5">●左</span>' : '';
                 card.innerHTML = `
+                    ${handDot}
                     <span class="text-[10px] font-mono-tech text-slate-400 leading-none mb-0.5">${item.s}</span>
-                    <span class="text-xs sm:text-sm font-black tracking-tight leading-tight">${item.n}</span>
-                    <span class="text-[10px] font-mono-tech mt-0.5 px-1.5 rounded bg-slate-800/90 text-sky-300 border border-slate-700">${kbdHint}</span>
+                    <span class="text-xs sm:text-sm font-black tracking-tight leading-tight">${item.l || item.n}</span>
+                    <span class="text-[10px] font-mono-tech mt-0.5 px-1.5 rounded bg-slate-800/90 ${isLeft ? 'text-rose-300' : 'text-sky-300'} border border-slate-700">${kbdHint}</span>
                 `;
                 track.appendChild(card);
             });
@@ -1054,6 +1158,7 @@
                     card.className = 'shrink-0 w-12 sm:w-14 py-1 px-1 rounded-lg border border-slate-800 bg-slate-950/80 text-slate-300 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer hover:border-slate-600';
                 }
             }
+            renderKtvLyrics();
         }
 
         function highlightCurrentGuideKey() {
@@ -1075,7 +1180,8 @@
             if (keyDef) {
                 const keyEl = keyElementsMap.get(keyDef.midi);
                 if (keyEl) keyEl.classList.add('guide-target');
-                feedbackEl.textContent = `下一步：請按 ${targetNoteObj.n} (${targetNoteObj.s}) [鍵盤: ${keyDef.keyChar}]`;
+                const handLabel = targetNoteObj.hand === 'left' ? '【左手】' : '【右手】';
+                feedbackEl.textContent = `下一步：請按 ${targetNoteObj.l || targetNoteObj.n} (${targetNoteObj.s}) ${handLabel} [鍵盤: ${keyDef.keyChar}]`;
                 feedbackEl.className = 'text-amber-300 font-bold';
             }
         }
@@ -1089,7 +1195,7 @@
                 state.currentNoteIndex++; updateSheetTrackUI(); highlightCurrentGuideKey();
             } else {
                 const feedbackEl = document.getElementById('tutorFeedbackText');
-                feedbackEl.textContent = `差一點點！請找發黃光的 ${targetNoteObj.n} 鍵`;
+                feedbackEl.textContent = `差一點點！請找發黃光的 ${targetNoteObj.l || targetNoteObj.n} 鍵`;
                 feedbackEl.className = 'text-rose-400 font-bold';
             }
         }
@@ -1111,7 +1217,7 @@
                     if (!state.isDemoPlaying) return;
                     state.currentNoteIndex = i; updateSheetTrackUI(); highlightCurrentGuideKey();
                     if (keyDef) {
-                        noteOn(keyDef.midi, true);
+                        noteOn(keyDef.midi, true, noteItem.hand || null);
                         const stopTimer = setTimeout(() => { noteOff(keyDef.midi); }, durationMs * 0.85);
                         state.demoTimers.push(stopTimer);
                     }
@@ -1135,8 +1241,58 @@
             if (resetFeedback) highlightCurrentGuideKey();
         }
 
-        const keyElementsMap = new Map();
+        // =====================================================================
+        // 🎤 動態 KTV 歌詞
+        // =====================================================================
+        function renderKtvLyrics() {
+            const lineEl = document.getElementById('ktvLine');
+            if (!lineEl) return;
 
+            const song = SONG_LIBRARY[state.currentSongIndex];
+            if (!song || !song.notes || song.notes.length === 0) {
+                lineEl.innerHTML = '<span class="ktv-done">尚未選擇曲目</span>';
+                return;
+            }
+
+            const total = song.notes.length;
+            const cur = state.currentNoteIndex;
+
+            if (cur >= total) {
+                lineEl.innerHTML = '<span class="ktv-done" style="transform:none;font-size:15px;">🎉 全曲完成</span>';
+                return;
+            }
+
+            const beatMs = (60 / song.tempo) * 1000;
+            const start = Math.max(0, cur - 2);
+            const end = Math.min(total, cur + 4);
+
+            const frag = document.createDocumentFragment();
+            for (let i = start; i < end; i++) {
+                const item = song.notes[i];
+                const span = document.createElement('span');
+                span.className = 'ktv-note';
+                // 優先顯示歌詞，沒有歌詞則顯示簡譜或音名
+                const text = item.l || (state.lyricMode === 'number' ? (item.s || item.n) : item.n);
+                span.textContent = text;
+
+                if (i < cur) {
+                    span.classList.add('ktv-done');
+                } else if (i === cur) {
+                    span.classList.add('ktv-current');
+                    const dur = Math.max(0.45, (item.d * beatMs) / 1000);
+                    span.style.setProperty('--ktv-dur', `${dur.toFixed(2)}s`);
+                } else {
+                    span.classList.add('ktv-next');
+                }
+                frag.appendChild(span);
+            }
+            lineEl.innerHTML = '';
+            lineEl.appendChild(frag);
+        }
+
+        // =====================================================================
+        // 琴鍵建構
+        // =====================================================================
         function buildPianoKeyboard() {
             const container = document.getElementById('pianoKeysContainer');
             container.innerHTML = ''; keyElementsMap.clear();
@@ -1150,8 +1306,8 @@
                     <span class="guide-dot"></span>
                     <div class="key-label flex flex-col items-center pointer-events-none transition-opacity duration-200">
                         <span class="hand-badge">手</span>
-                        <span class="kbd-hint text-[10px] sm:text-xs font-mono-tech font-bold px-1 py-0.5 rounded bg-slate-200/90 text-slate-600 mb-0.5 border border-slate-300 shadow-sm">${keyDef.keyChar}</span>
-                        <span class="note-name text-[10px] sm:text-xs font-bold text-slate-800">${keyDef.note}${keyDef.octave + state.octaveShift}</span>
+                        <span class="kbd-hint text-[9px] sm:text-[10px] font-mono-tech font-bold px-0.5 py-0.5 rounded bg-slate-200/90 text-slate-600 mb-0.5 border border-slate-300 shadow-sm">${keyDef.keyChar}</span>
+                        <span class="note-name text-[9px] sm:text-[10px] font-bold text-slate-800">${keyDef.note}${keyDef.octave + state.octaveShift}</span>
                     </div>
                 `;
                 container.appendChild(keyEl); keyElementsMap.set(keyDef.midi, keyEl);
@@ -1170,8 +1326,8 @@
                         <span class="guide-dot"></span>
                         <div class="key-label flex flex-col items-center pointer-events-none transition-opacity duration-200">
                             <span class="hand-badge">手</span>
-                            <span class="kbd-hint text-[9px] font-mono-tech font-bold px-1 rounded bg-slate-800 text-sky-300 mb-0.5 border border-slate-600">${keyDef.keyChar}</span>
-                            <span class="note-name text-[9px] sm:text-[11px] font-bold text-slate-200">${keyDef.note}</span>
+                            <span class="kbd-hint text-[8px] font-mono-tech font-bold px-1 rounded bg-slate-800 text-sky-300 mb-0.5 border border-slate-600">${keyDef.keyChar}</span>
+                            <span class="note-name text-[8px] sm:text-[9px] font-bold text-slate-200">${keyDef.note}</span>
                         </div>
                     `;
                     container.appendChild(keyEl); keyElementsMap.set(keyDef.midi, keyEl);
@@ -1235,8 +1391,8 @@
             window.addEventListener('keydown', (e) => {
                 if (e.repeat || isTypingTarget(e.target)) return;
                 if (e.code === 'Space') { e.preventDefault(); toggleSustainPedal(true); return; }
-                if (e.code === 'KeyZ') { changeOctave(-1); return; }
-                if (e.code === 'KeyX') { changeOctave(1); return; }
+                if (e.code === 'Comma') { e.preventDefault(); changeOctave(-1); return; }
+                if (e.code === 'Period') { e.preventDefault(); changeOctave(1); return; }
                 if (keyCodeToMidi.has(e.code)) {
                     e.preventDefault();
                     if (state.isDemoPlaying) stopDemoPlayback();
@@ -1258,189 +1414,204 @@
                     document.getElementById('currentToneDesc').textContent = TONE_PRESETS[presetKey].desc;
                 });
             });
+            document.getElementById('octaveDownBtn')?.addEventListener('click', () => changeOctave(-1));
             document.getElementById('octDownBtn').addEventListener('click', () => changeOctave(-1));
             document.getElementById('octUpBtn').addEventListener('click', () => changeOctave(1));
-            document.getElementById('sustainBtn').addEventListener('click', () => toggleSustainPedal(!state.sustainPedal));
-            document.getElementById('labelsToggleBtn').addEventListener('click', () => { state.showLabels = !state.showLabels; updateLabelsVisibility(); });
-            document.getElementById('toggleVisModeBtn').addEventListener('click', (e) => {
-                state.visMode = state.visMode === 'both' ? 'wave' : 'both';
-                e.target.textContent = state.visMode === 'both' ? '模式：頻譜＋音符' : '模式：純淨示波器';
+            document.getElementById('sustainBtn').addEventListener('click', () => toggleSustainPedal());
+            document.getElementById('labelsToggleBtn').addEventListener('click', () => {
+                state.showLabels = !state.showLabels;
+                updateLabelsVisibility();
+                document.getElementById('labelsToggleBtn').textContent = state.showLabels ? '🏷️ 鍵位提示：開' : '🏷️ 鍵位提示：關';
+            });
+            document.getElementById('toggleVisModeBtn').addEventListener('click', () => {
+                state.lyricMode = state.lyricMode === 'lyric' ? 'number' : 'lyric';
+                document.getElementById('toggleVisModeBtn').textContent = state.lyricMode === 'lyric' ? '歌詞' : '簡譜';
+                renderKtvLyrics();
             });
             document.getElementById('masterVolume').addEventListener('input', (e) => {
-                if (state.masterGain && state.audioCtx) state.masterGain.gain.setTargetAtTime(parseFloat(e.target.value), state.audioCtx.currentTime, 0.02);
+                if (state.masterGain) state.masterGain.gain.setValueAtTime(parseFloat(e.target.value), state.audioCtx.currentTime);
             });
         }
 
         function changeOctave(delta) {
-            const next = Math.max(-2, Math.min(2, state.octaveShift + delta));
-            if (next === state.octaveShift) return;
-            state.octaveShift = next;
-            document.getElementById('octaveOffsetDisplay').textContent = next > 0 ? `+${next}` : `${next}`;
+            state.octaveShift = Math.max(-2, Math.min(2, state.octaveShift + delta));
+            document.getElementById('octaveOffsetDisplay').textContent = (state.octaveShift > 0 ? '+' : '') + state.octaveShift;
             updateOctaveLabels();
         }
 
         function updateOctaveLabels() {
-            document.getElementById('octaveRangeLabel').textContent = `音域: C${4 + state.octaveShift} - C${6 + state.octaveShift}`;
-            keyElementsMap.forEach((el) => {
-                const baseOct = parseInt(el.dataset.octave, 10), note = el.dataset.note;
-                const nameEl = el.querySelector('.note-name');
-                if (nameEl) nameEl.textContent = note.includes('#') ? note : `${note}${baseOct + state.octaveShift}`;
+            const label = document.getElementById('octaveRangeLabel');
+            if (label) {
+                const low = 3 + state.octaveShift, high = 6 + state.octaveShift;
+                label.textContent = `音域: C${low} - C${high}`;
+            }
+            document.querySelectorAll('[data-note]').forEach(el => {
+                const noteName = el.querySelector('.note-name');
+                if (noteName) {
+                    const baseOct = parseInt(el.dataset.octave, 10);
+                    noteName.textContent = el.dataset.note + (baseOct + state.octaveShift);
+                }
             });
         }
 
-        function toggleSustainPedal(isOn) {
-            state.sustainPedal = isOn;
-            const btn = document.getElementById('sustainBtn'), indicator = document.getElementById('sustainIndicator');
-            if (isOn) {
-                btn.classList.add('btn-glow-active'); btn.classList.remove('bg-slate-800/80');
-                indicator.className = 'w-2 h-2 rounded-full bg-emerald-300 shadow-[0_0_8px_#6ee7b7]';
+        function updateLabelsVisibility() {
+            document.querySelectorAll('.kbd-hint, .note-name').forEach(el => {
+                el.style.display = state.showLabels ? '' : 'none';
+            });
+        }
+
+        function toggleSustainPedal(forceState) {
+            if (typeof forceState === 'boolean') state.sustainPedal = forceState;
+            else state.sustainPedal = !state.sustainPedal;
+            const btn = document.getElementById('sustainBtn');
+            const indicator = document.getElementById('sustainIndicator');
+            if (state.sustainPedal) {
+                btn.classList.add('btn-glow-active');
+                indicator.className = 'w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]';
             } else {
-                btn.classList.remove('btn-glow-active'); btn.classList.add('bg-slate-800/80');
+                btn.classList.remove('btn-glow-active');
                 indicator.className = 'w-2 h-2 rounded-full bg-slate-500';
                 releaseAllSustained();
             }
         }
 
-        function updateLabelsVisibility() {
-            document.querySelectorAll('.key-label').forEach(el => { el.style.opacity = state.showLabels ? '1' : '0'; });
-            document.getElementById('labelsToggleBtn').textContent = state.showLabels ? '🏷️ 鍵位提示：開' : '🏷️ 鍵位提示：關';
-        }
-
         function updateActiveNotesDisplay() {
-            const display = document.getElementById('activeNotesDisplay');
+            const el = document.getElementById('activeNotesDisplay');
+            if (!el) return;
             if (state.activeVoices.size === 0) {
-                display.textContent = '待機中...'; display.className = 'text-xs font-mono-tech font-bold text-emerald-400'; return;
+                el.textContent = '待機中...';
+                el.className = 'text-xs font-mono-tech font-bold text-slate-500';
+                return;
             }
-            const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-            const playing = []; let hasLeft = false, hasRight = false;
-            Array.from(state.activeVoices.entries()).sort((a, b) => a[0] - b[0]).forEach(([, voice]) => {
-                const n = noteNames[voice.actualMidi % 12], oct = Math.floor(voice.actualMidi / 12) - 1;
-                if (voice.hand === 'left') { hasLeft = true; playing.push(`🫲${n}${oct}`); }
-                else { hasRight = true; playing.push(`🫱${n}${oct}`); }
+            const notes = Array.from(state.activeVoices.values()).map(v => {
+                const midi = v.actualMidi;
+                const noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+                return noteNames[midi % 12] + (Math.floor(midi / 12) - 1);
             });
-            if (hasLeft && hasRight) display.className = 'text-xs font-mono-tech font-bold text-fuchsia-300';
-            else if (hasLeft) display.className = 'text-xs font-mono-tech font-bold text-rose-400';
-            else display.className = 'text-xs font-mono-tech font-bold text-sky-400';
-            display.textContent = `發聲中: ${playing.join(' · ')}`;
+            el.textContent = notes.join(' ') || '待機中...';
+            el.className = 'text-xs font-mono-tech font-bold text-emerald-400';
         }
 
-        function initMobileLandscapeSupport() {
-            const modal = document.getElementById('portraitPromptModal');
-            const fsBtn = document.getElementById('fullscreenLandscapeBtn');
-            const modalFsBtn = document.getElementById('modalFullscreenLandscapeBtn');
-            const dismissBtn = document.getElementById('dismissPortraitModalBtn');
-            const lineBanner = document.getElementById('lineBrowserBanner');
-            const closeLineBtn = document.getElementById('closeLineBannerBtn');
-
-            if (/Line\//i.test(navigator.userAgent) && lineBanner) lineBanner.classList.remove('hidden');
-            if (closeLineBtn && lineBanner) closeLineBtn.addEventListener('click', () => lineBanner.classList.add('hidden'));
-
-            function isMobileDevice() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 900); }
-            function checkOrientationPrompt() {
-                if (!modal) return;
-                if (isMobileDevice() && window.innerHeight > window.innerWidth && !state.dismissedPortraitModal) {
-                    modal.classList.remove('hidden-modal');
-                } else modal.classList.add('hidden-modal');
-            }
-
-            async function enterFullscreenAndLandscape() {
-                initAudioEngine();
-                if (state.audioCtx && state.audioCtx.state === 'suspended') await state.audioCtx.resume().catch(() => {});
-                const docEl = document.documentElement, fsTarget = document.getElementById('pianoWrapper')?.parentElement || docEl;
-                try {
-                    if (!document.fullscreenElement && fsTarget.requestFullscreen) await fsTarget.requestFullscreen({ navigationUI: 'hide' });
-                    else if (!document.webkitFullscreenElement && docEl.webkitRequestFullscreen) await docEl.webkitRequestFullscreen();
-                } catch (e) {}
-                try { if (screen.orientation && screen.orientation.lock) await screen.orientation.lock('landscape'); } catch (e) {}
-                modal.classList.add('hidden-modal');
-            }
-
-            fsBtn.addEventListener('click', enterFullscreenAndLandscape);
-            modalFsBtn.addEventListener('click', enterFullscreenAndLandscape);
-            dismissBtn.addEventListener('click', () => { state.dismissedPortraitModal = true; modal.classList.add('hidden-modal'); });
-            window.addEventListener('resize', checkOrientationPrompt);
-            window.addEventListener('orientationchange', checkOrientationPrompt);
-            checkOrientationPrompt();
-        }
-
-        const NOTE_SYMBOLS = ['♪', '♫', '♬', '♩', '✦'];
-        const RIGHT_HAND_COLORS = ['#38bdf8', '#60a5fa', '#818cf8', '#a78bfa', '#22d3ee'];
-        const LEFT_HAND_COLORS = ['#fb7185', '#f43f5e', '#fb923c', '#f472b6', '#e879f9'];
-
-        function spawnNoteParticles(baseMidi, actualMidi, hand = 'right') {
+        // =====================================================================
+        // 視覺化粒子
+        // =====================================================================
+        function spawnNoteParticles(baseMidi, actualMidi, hand) {
             const canvas = document.getElementById('visualizerCanvas');
             if (!canvas) return;
-            const ratio = Math.max(0.05, Math.min(0.95, (baseMidi - 60) / 24));
-            const rect = canvas.getBoundingClientRect(), originX = rect.width * ratio, originY = rect.height - 12;
-            const palette = hand === 'left' ? LEFT_HAND_COLORS : RIGHT_HAND_COLORS;
-            const mainColor = palette[actualMidi % palette.length];
-            const noteLabel = `${['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'][actualMidi % 12]}${Math.floor(actualMidi / 12) - 1}`;
-            state.particles.push({ x: originX, y: originY, vx: (Math.random() - 0.5) * 1.2, vy: -1.6 - Math.random() * 0.8, alpha: 1, text: noteLabel, size: 14, color: mainColor, isLabel: true });
-            for (let i = 0; i < 3; i++) {
-                state.particles.push({ x: originX + (Math.random() - 0.5) * 24, y: originY, vx: (Math.random() - 0.5) * 2.4, vy: -1.2 - Math.random() * 1.8, alpha: 0.95, text: NOTE_SYMBOLS[Math.floor(Math.random() * NOTE_SYMBOLS.length)], size: 13 + Math.random() * 6, color: palette[Math.floor(Math.random() * palette.length)], isLabel: false });
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width === 0) return;
+            const x = rect.width * 0.15 + Math.random() * rect.width * 0.7;
+            const color = hand === 'left' ? 'rgba(251,113,133,' : 'rgba(56,189,248,';
+            for (let i = 0; i < 6; i++) {
+                state.particles.push({
+                    x, y: rect.height * 0.7 + Math.random() * 20,
+                    vx: (Math.random() - 0.5) * 2.5,
+                    vy: -Math.random() * 2.5 - 1,
+                    life: 1, decay: 0.008 + Math.random() * 0.012,
+                    color, size: 2 + Math.random() * 4
+                });
             }
         }
 
         function initVisualizer() {
-            const canvas = document.getElementById('visualizerCanvas'), ctx = canvas.getContext('2d');
-            function resizeCanvas() {
-                const dpr = window.devicePixelRatio || 1, rect = canvas.parentElement.getBoundingClientRect();
-                if (rect.width === 0 || rect.height === 0) return;
-                canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            const canvas = document.getElementById('visualizerCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            function resize() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width * (window.devicePixelRatio || 1);
+                canvas.height = rect.height * (window.devicePixelRatio || 1);
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+                ctx.setTransform(window.devicePixelRatio || 1, 0, 0, window.devicePixelRatio || 1, 0, 0);
             }
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-            window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 120));
+            resize();
+            window.addEventListener('resize', resize);
 
-            function renderLoop() {
-                if (canvas.offsetParent === null) { requestAnimationFrame(renderLoop); return; }
-                const rect = canvas.parentElement.getBoundingClientRect(), width = rect.width, height = rect.height;
-                if (width > 0 && height > 0) {
-                    ctx.fillStyle = '#04070d'; ctx.fillRect(0, 0, width, height);
-                    ctx.strokeStyle = 'rgba(56, 189, 248, 0.06)'; ctx.lineWidth = 1;
-                    for (let x = 0; x < width; x += 32) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); }
-                    for (let y = 0; y < height; y += 24) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
-                    if (state.analyser) {
-                        const bufferLength = state.analyser.frequencyBinCount;
-                        if (state.visMode === 'both') {
-                            const freqData = new Uint8Array(bufferLength); state.analyser.getByteFrequencyData(freqData);
-                            const barCount = 48, barWidth = (width / barCount) - 2;
-                            for (let i = 0; i < barCount; i++) {
-                                const val = freqData[i] / 255, barHeight = val * (height * 0.78), x = i * (barWidth + 2), y = height - barHeight;
-                                const grad = ctx.createLinearGradient(0, height, 0, y);
-                                grad.addColorStop(0, 'rgba(14, 165, 233, 0.25)'); grad.addColorStop(0.6, 'rgba(56, 189, 248, 0.65)'); grad.addColorStop(1, 'rgba(167, 139, 250, 0.95)');
-                                ctx.fillStyle = grad; ctx.beginPath(); ctx.roundRect(x, y, barWidth, barHeight, [3, 3, 0, 0]); ctx.fill();
-                            }
-                        }
-                        const waveData = new Uint8Array(bufferLength); state.analyser.getByteTimeDomainData(waveData);
-                        ctx.lineWidth = 2; ctx.strokeStyle = '#38bdf8'; ctx.shadowColor = '#38bdf8'; ctx.shadowBlur = 8; ctx.beginPath();
-                        const sliceWidth = width / bufferLength; let wx = 0;
-                        for (let i = 0; i < bufferLength; i++) {
-                            const v = waveData[i] / 128.0, wy = (v * height) / 2;
-                            if (i === 0) ctx.moveTo(wx, wy); else ctx.lineTo(wx, wy);
-                            wx += sliceWidth;
-                        }
-                        ctx.stroke(); ctx.shadowBlur = 0;
-                    }
-                    for (let i = state.particles.length - 1; i >= 0; i--) {
-                        const p = state.particles[i];
-                        p.x += p.vx; p.y += p.vy; p.alpha -= 0.015;
-                        if (p.alpha <= 0) { state.particles.splice(i, 1); continue; }
-                        ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color; ctx.shadowColor = p.color; ctx.shadowBlur = 10;
-                        ctx.font = p.isLabel ? `bold ${p.size}px "JetBrains Mono", sans-serif` : `${p.size}px sans-serif`;
-                        ctx.textAlign = 'center'; ctx.fillText(p.text, p.x, p.y); ctx.restore();
+            function draw() {
+                requestAnimationFrame(draw);
+                const w = canvas.width / (window.devicePixelRatio || 1);
+                const h = canvas.height / (window.devicePixelRatio || 1);
+                ctx.clearRect(0, 0, w, h);
+
+                if (state.analyser) {
+                    const dataArray = new Uint8Array(state.analyser.frequencyBinCount);
+                    state.analyser.getByteFrequencyData(dataArray);
+                    const barWidth = w / dataArray.length * 1.5;
+                    for (let i = 0; i < dataArray.length; i++) {
+                        const barHeight = (dataArray[i] / 255) * h * 0.6;
+                        const hue = 200 + (i / dataArray.length) * 60;
+                        ctx.fillStyle = `hsla(${hue}, 90%, 60%, 0.35)`;
+                        ctx.fillRect(i * barWidth, h - barHeight, barWidth * 0.85, barHeight);
                     }
                 }
-                requestAnimationFrame(renderLoop);
+
+                state.particles = state.particles.filter(p => p.life > 0);
+                state.particles.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    p.vy += 0.03; p.life -= p.decay;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + Math.max(0, p.life).toFixed(2) + ')';
+                    ctx.fill();
+                });
             }
-            renderLoop();
+            draw();
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            buildPianoKeyboard(); setupPointerInteractions(); setupKeyboardAndControls();
-            initTutorSystem(); initMobileLandscapeSupport(); initVisualizer();
-        });
+        // =====================================================================
+        // 初始化
+        // =====================================================================
+        function init() {
+            buildPianoKeyboard();
+            setupPointerInteractions();
+            setupKeyboardAndControls();
+            initTutorSystem();
+            initVisualizer();
+
+            // 橫屏全螢幕按鈕
+            function enterFullscreenLandscape() {
+                const el = document.documentElement;
+                if (el.requestFullscreen) {
+                    el.requestFullscreen().then(() => {
+                        if (screen.orientation && screen.orientation.lock) {
+                            screen.orientation.lock('landscape').catch(() => {});
+                        }
+                    }).catch(() => {});
+                } else if (el.webkitRequestFullscreen) {
+                    el.webkitRequestFullscreen();
+                }
+                const modal = document.getElementById('portraitPromptModal');
+                if (modal) modal.classList.add('hidden-modal');
+            }
+            document.getElementById('fullscreenLandscapeBtn')?.addEventListener('click', enterFullscreenLandscape);
+            document.getElementById('modalFullscreenLandscapeBtn')?.addEventListener('click', enterFullscreenLandscape);
+            document.getElementById('dismissPortraitModalBtn')?.addEventListener('click', () => {
+                document.getElementById('portraitPromptModal').classList.add('hidden-modal');
+                state.dismissedPortraitModal = true;
+            });
+
+            // 直向提示
+            function checkOrientation() {
+                if (window.innerHeight > window.innerWidth && !state.dismissedPortraitModal) {
+                    document.getElementById('portraitPromptModal').classList.remove('hidden-modal');
+                } else {
+                    document.getElementById('portraitPromptModal').classList.add('hidden-modal');
+                }
+            }
+            window.addEventListener('resize', checkOrientation);
+            setTimeout(checkOrientation, 500);
+
+            // LINE 瀏覽器提示
+            if (/Line/i.test(navigator.userAgent)) {
+                document.getElementById('lineBrowserBanner')?.classList.remove('hidden');
+            }
+            document.getElementById('closeLineBannerBtn')?.addEventListener('click', () => {
+                document.getElementById('lineBrowserBanner').classList.add('hidden');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
