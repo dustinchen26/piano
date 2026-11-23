@@ -34,7 +34,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ---------- 高度修復：iOS / Android / 桌機通用 ---------- */
         html {
             height: -webkit-fill-available;
             height: 100%;
@@ -51,7 +50,6 @@
             font-family: 'Noto Sans TC', sans-serif;
             background: radial-gradient(circle at top, #1e293b 0%, #090d16 100%);
             color: #f8fafc;
-            /* 直向允許垂直捲動；橫向由媒體查詢鎖定 */
             touch-action: manipulation;
             overflow-x: hidden;
             overflow-y: auto;
@@ -59,6 +57,7 @@
             padding-bottom: max(8px, var(--safe-bottom));
             padding-left: max(8px, var(--safe-left));
             padding-right: max(8px, var(--safe-right));
+            transition: padding 0.3s ease;
         }
 
         .font-mono-tech {
@@ -98,8 +97,7 @@
             padding: 0 4px 8px 4px;
             border-radius: 0 0 12px 12px;
             box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.9);
-            /* 用 clamp 取代固定高度，小螢幕不至於占滿 */
-            height: clamp(180px, 32vh, 300px);
+            height: clamp(220px, 40vh, 350px); /* 增加最低高度 */
             touch-action: none;
         }
 
@@ -295,7 +293,7 @@
             border-radius: 9999px;
         }
 
-        /* ---------- 音量滑桿：iOS / Android / 桌機一致 ---------- */
+        /* ---------- 音量滑桿 ---------- */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
@@ -338,13 +336,49 @@
             display: none;
         }
 
-        /* ---------- 手機直向：隱藏桌機鍵盤說明列 ---------- */
+        /* ---------- 折疊控制面板的動畫與樣式 ---------- */
+        .panel-collapse {
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+            max-height: 800px;
+            overflow: hidden;
+            opacity: 1;
+        }
+        .panel-collapsed {
+            max-height: 0 !important;
+            opacity: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            border-width: 0 !important;
+        }
+
+        /* ---------- 手機直向：極簡排版 ---------- */
         @media (orientation: portrait) and (max-width: 640px) {
-            footer {
-                display: none !important;
+            header {
+                margin-bottom: 0 !important;
             }
             header p {
                 display: none;
+            }
+            .header-badge-group {
+                display: none !important; /* 隱藏左右手提示與音效狀態 */
+            }
+            
+            /* 縮小教學列 */
+            .tutor-bar {
+                padding: 6px 8px !important;
+            }
+            .tutor-bar > div:first-child {
+                gap: 4px !important;
+            }
+            #songSelector {
+                max-width: 120px;
+                text-overflow: ellipsis;
+            }
+            
+            footer {
+                display: none !important;
             }
         }
 
@@ -358,84 +392,68 @@
                 height: 100dvh;
                 min-height: 100dvh;
                 justify-content: flex-start;
-                padding-top: max(4px, var(--safe-top));
-                padding-bottom: max(4px, var(--safe-bottom));
-                padding-left: max(4px, var(--safe-left));
-                padding-right: max(4px, var(--safe-right));
-            }
-            main {
-                flex: 1 1 auto;
-                min-height: 0;
-                width: 100%;
-                max-width: 80rem;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-            }
-            .synth-chassis {
-                flex: 1 1 auto;
-                min-height: 0;
-                border-radius: 12px;
+                padding-top: max(2px, var(--safe-top));
+                padding-bottom: max(2px, var(--safe-bottom));
+                padding-left: max(2px, var(--safe-left));
+                padding-right: max(2px, var(--safe-right));
             }
             header {
-                margin-bottom: 4px !important;
-                flex-shrink: 0;
+                margin-bottom: 2px !important;
+                display: none !important; /* 橫屏隱藏 header 以最大化空間 */
             }
-            header h1 {
-                font-size: 0.85rem !important;
-                line-height: 1.1;
-            }
-            header p {
-                display: none;
-            }
-            /* 橫屏只保留「八度 + 延音 / 鍵位提示」區塊 */
-            .control-panel-grid {
-                display: grid !important;
-                grid-template-columns: 1fr !important;
-                gap: 0 !important;
-                padding: 4px 8px !important;
-                flex-shrink: 0;
-            }
+            
+            /* 隱藏非必要區塊 */
             .control-panel-grid > :nth-child(1),
             .control-panel-grid > :nth-child(2) {
                 display: none !important;
+            }
+            .control-panel-grid {
+                padding: 2px 8px !important;
+                flex-shrink: 0;
             }
             .control-panel-grid > :nth-child(3) {
                 display: flex !important;
                 flex-direction: row !important;
                 align-items: center;
                 justify-content: space-between;
-                padding: 6px 8px !important;
+                padding: 2px 8px !important;
                 gap: 12px !important;
+                border: none !important;
+                background: transparent !important;
             }
             .control-panel-grid > :nth-child(3) > div {
                 flex: 1;
                 min-width: 0;
             }
+            
             .tutor-bar {
-                padding: 4px 8px !important;
-                gap: 4px !important;
+                padding: 2px 8px !important;
+                gap: 2px !important;
                 flex-shrink: 0;
             }
             .tutor-bar .sheet-scroll-box {
-                padding: 2px !important;
+                display: none !important; /* 橫屏隱藏五線譜，節省空間 */
             }
+            
             .keys-section {
                 flex: 1 1 auto;
-                min-height: 120px;
+                min-height: 100px;
             }
             .piano-bed {
-                height: auto !important;
+                height: 100% !important;
                 flex: 1 1 auto;
                 min-height: 0;
                 max-height: none !important;
                 padding: 0 2px 4px 2px !important;
                 border-radius: 0 0 10px 10px;
             }
-            .key-white .kbd-hint,
-            .key-black .kbd-hint {
-                display: none;
+            
+            /* 橫屏時隱藏琴鍵上的文字提示，保持乾淨 */
+            .key-white .kbd-hint, .key-black .kbd-hint,
+            .key-white .note-name, .key-black .note-name {
+                display: none !important;
             }
+            
             footer {
                 display: none !important;
             }
@@ -457,7 +475,8 @@
         </div>
         <h2 class="text-xl font-black text-white mb-2">請將手機轉為「橫向」彈奏</h2>
         <p class="text-sm text-slate-300 max-w-xs leading-relaxed mb-5">
-            橫屏滿版可讓所有琴鍵完整展開，方便雙手和弦與左右手分色辨識！
+            橫屏滿版可讓所有琴鍵完整展開，方便雙手和弦與左右手分色辨識！<br>
+            或點擊「精簡模式」在直向獲得更好的體驗。
         </p>
         <div class="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
             <button id="modalFullscreenLandscapeBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-sky-500/30">
@@ -480,12 +499,16 @@
                 <h1 class="text-base sm:text-2xl font-black tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white via-sky-200 to-indigo-300">
                     For Winny電子琴
                 </h1>
-                <p class="text-xs text-slate-400">~by Dustin · 內建互動琴譜教學模式 · 雙手分色顯示</p>
+                <p class="text-xs text-slate-400 hidden sm:block">~by Dustin · 內建互動琴譜教學模式 · 雙手分色顯示</p>
             </div>
         </div>
 
         <div class="flex items-center flex-wrap gap-2 bg-slate-900/80 border border-slate-700/70 px-2.5 py-1.5 rounded-xl">
-            <div class="flex items-center gap-2 text-[11px] font-bold pr-1 border-r border-slate-700/80" title="同時彈奏多個音時自動區分左右手">
+            <button id="toggleSimplifyBtn" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-400/40 transition flex items-center gap-1 shadow-[0_0_10px_rgba(56,189,248,0.2)]">
+                <span class="hidden sm:inline">🙈 隱藏設定</span>
+                <span class="sm:hidden">🙈 精簡</span>
+            </button>
+            <div class="flex items-center gap-2 text-[11px] font-bold pr-1 border-r border-slate-700/80 header-badge-group" title="同時彈奏多個音時自動區分左右手">
                 <span class="inline-flex items-center gap-1 text-rose-300">
                     <span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_6px_#fb7185]"></span>
                     左手
@@ -496,7 +519,7 @@
                 </span>
             </div>
 
-            <button id="fullscreenLandscapeBtn" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 border border-indigo-400/40 transition flex items-center gap-1">
+            <button id="fullscreenLandscapeBtn" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 border border-indigo-400/40 transition flex items-center gap-1 header-badge-group">
                 ⛶ 橫屏滿版
             </button>
 
@@ -505,7 +528,7 @@
                 <input type="range" id="masterVolume" min="0" max="1" step="0.01" value="0.75" class="w-16 sm:w-24">
             </div>
 
-            <span id="audioStatusBadge" class="hidden md:inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30">
+            <span id="audioStatusBadge" class="hidden md:inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 header-badge-group">
                 <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                 點擊任意鍵啟動音效
             </span>
@@ -515,114 +538,116 @@
     <main class="w-full max-w-7xl flex-1 flex flex-col justify-center">
         <div class="synth-chassis rounded-2xl overflow-hidden flex flex-col">
 
-            <div class="control-panel-grid grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 border-b border-slate-800/90 bg-slate-900/60">
-
-                <div class="lg:col-span-4 flex flex-col justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-sky-400"></span>
-                            音色引擎 (TONE PRESETS)
-                        </span>
-                        <span id="currentToneDesc" class="text-[11px] text-slate-400">溫暖泛音疊加</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2" id="presetButtons">
-                        <button data-preset="grand" class="preset-btn btn-glow-active py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
-                            🎹 演奏級鋼琴
-                        </button>
-                        <button data-preset="epiano" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
-                            ✨ 夢幻電鋼琴
-                        </button>
-                        <button data-preset="organ" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
-                            ⛪ 教堂管風琴
-                        </button>
-                        <button data-preset="retro8bit" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
-                            👾 8-Bit 合成器
-                        </button>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-5 relative rounded-xl overflow-hidden bg-[#04070d] border border-slate-700/80 shadow-inner min-h-[110px] sm:min-h-[120px] flex flex-col justify-between">
-                    <canvas id="visualizerCanvas" class="absolute inset-0 w-full h-full block"></canvas>
-
-                    <div class="relative z-10 flex items-center justify-between px-3 py-2 pointer-events-none">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-mono-tech px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">LIVE SPECTRUM</span>
-                            <span id="activeNotesDisplay" class="text-xs font-mono-tech font-bold text-emerald-400">待機中...</span>
+            <!-- 控制面板（可折疊） -->
+            <div id="controlPanelWrapper" class="panel-collapse">
+                <div class="control-panel-grid grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 border-b border-slate-800/90 bg-slate-900/60">
+                    <div class="lg:col-span-4 flex flex-col justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                                音色引擎 (TONE PRESETS)
+                            </span>
+                            <span id="currentToneDesc" class="text-[11px] text-slate-400">溫暖泛音疊加</span>
                         </div>
-                        <button id="toggleVisModeBtn" class="pointer-events-auto text-[11px] px-2 py-0.5 rounded bg-slate-800/90 hover:bg-slate-700 text-slate-300 border border-slate-600 transition">
-                            模式：頻譜＋音符
-                        </button>
-                    </div>
-
-                    <div class="relative z-10 px-3 py-1.5 flex items-center justify-between text-[11px] text-slate-400 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
-                        <span>支援滑鼠滑奏與多點觸控（雙手自動分色）</span>
-                        <span id="octaveRangeLabel" class="font-mono-tech text-sky-300 font-bold">音域: C4 - C6</span>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-3 flex flex-col justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800 gap-2">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-300">八度移調</span>
-                        <div class="flex items-center gap-1.5">
-                            <button id="octDownBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="降低一個八度 (Z鍵)">
-                                -
+                        <div class="grid grid-cols-2 gap-2" id="presetButtons">
+                            <button data-preset="grand" class="preset-btn btn-glow-active py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
+                                🎹 演奏級鋼琴
                             </button>
-                            <span id="octaveOffsetDisplay" class="w-10 text-center font-mono-tech text-sm font-bold text-sky-400">0</span>
-                            <button id="octUpBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="升高一個八度 (X鍵)">
-                                +
+                            <button data-preset="epiano" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
+                                ✨ 夢幻電鋼琴
+                            </button>
+                            <button data-preset="organ" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
+                                ⛪ 教堂管風琴
+                            </button>
+                            <button data-preset="retro8bit" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
+                                👾 8-Bit 合成器
                             </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 pt-1">
-                        <button id="sustainBtn" class="py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5" title="空白鍵也可切換延音踏板">
-                            <span id="sustainIndicator" class="w-2 h-2 rounded-full bg-slate-500"></span>
-                            延音踏板
-                        </button>
-                        <button id="labelsToggleBtn" class="py-2 px-2.5 rounded-lg border border-sky-500/50 bg-sky-500/15 text-sky-200 hover:bg-sky-500/25 text-xs font-bold transition-all flex items-center justify-center gap-1.5">
-                            🏷️ 鍵位提示：開
-                        </button>
+                    <div class="lg:col-span-5 relative rounded-xl overflow-hidden bg-[#04070d] border border-slate-700/80 shadow-inner min-h-[110px] sm:min-h-[120px] flex flex-col justify-between">
+                        <canvas id="visualizerCanvas" class="absolute inset-0 w-full h-full block"></canvas>
+
+                        <div class="relative z-10 flex items-center justify-between px-3 py-2 pointer-events-none">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-mono-tech px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">LIVE SPECTRUM</span>
+                                <span id="activeNotesDisplay" class="text-xs font-mono-tech font-bold text-emerald-400">待機中...</span>
+                            </div>
+                            <button id="toggleVisModeBtn" class="pointer-events-auto text-[11px] px-2 py-0.5 rounded bg-slate-800/90 hover:bg-slate-700 text-slate-300 border border-slate-600 transition">
+                                模式：頻譜＋音符
+                            </button>
+                        </div>
+
+                        <div class="relative z-10 px-3 py-1.5 flex items-center justify-between text-[11px] text-slate-400 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+                            <span>支援滑鼠滑奏與多點觸控（雙手自動分色）</span>
+                            <span id="octaveRangeLabel" class="font-mono-tech text-sky-300 font-bold">音域: C4 - C6</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-3 flex flex-col justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800 gap-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-300">八度移調</span>
+                            <div class="flex items-center gap-1.5">
+                                <button id="octDownBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="降低一個八度 (Z鍵)">
+                                    -
+                                </button>
+                                <span id="octaveOffsetDisplay" class="w-10 text-center font-mono-tech text-sm font-bold text-sky-400">0</span>
+                                <button id="octUpBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="升高一個八度 (X鍵)">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <button id="sustainBtn" class="py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5" title="空白鍵也可切換延音踏板">
+                                <span id="sustainIndicator" class="w-2 h-2 rounded-full bg-slate-500"></span>
+                                延音踏板
+                            </button>
+                            <button id="labelsToggleBtn" class="py-2 px-2.5 rounded-lg border border-sky-500/50 bg-sky-500/15 text-sky-200 hover:bg-sky-500/25 text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+                                🏷️ 鍵位提示：開
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-3 sm:px-5 py-2.5 sm:py-3 flex flex-col gap-2 shrink-0">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                        <span class="text-xs font-bold text-amber-400 flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 px-2 py-1 rounded-lg">
-                            🎼 琴譜教學
-                        </span>
+                <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-3 sm:px-5 py-2.5 sm:py-3 flex flex-col gap-2 shrink-0">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                            <span class="text-xs font-bold text-amber-400 flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 px-2 py-1 rounded-lg">
+                                🎼 琴譜
+                            </span>
 
-                        <select id="songSelector" class="bg-slate-900 border border-slate-700 text-slate-100 text-xs sm:text-sm font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
-                        </select>
+                            <select id="songSelector" class="bg-slate-900 border border-slate-700 text-slate-100 text-xs sm:text-sm font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
+                            </select>
 
-                        <button id="toggleGuideBtn" class="btn-amber-active text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg border transition-all flex items-center gap-1">
-                            💡 亮燈跟彈：開啟
-                        </button>
+                            <button id="toggleGuideBtn" class="btn-amber-active text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg border transition-all flex items-center gap-1">
+                                💡 亮燈跟彈：開啟
+                            </button>
 
-                        <button id="demoPlayBtn" class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-600 text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1">
-                            ▶ 示範自動演奏
-                        </button>
+                            <button id="demoPlayBtn" class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-600 text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1">
+                                ▶ 示範演奏
+                            </button>
 
-                        <button id="resetSongBtn" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-bold px-2 py-1.5 rounded-lg transition-all" title="從第一個音重新開始">
-                            ↺ 重頭開始
-                        </button>
+                            <button id="resetSongBtn" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-bold px-2 py-1.5 rounded-lg transition-all" title="從第一個音重新開始">
+                                ↺ 重來
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-2 sm:gap-3 text-xs">
+                            <span id="tutorFeedbackText" class="text-amber-300 font-medium">請按下發黃光的琴鍵！</span>
+                            <span id="songProgressBadge" class="font-mono-tech bg-slate-900 border border-slate-700 px-2 py-1 rounded-lg text-slate-300">
+                                0 / 0
+                            </span>
+                        </div>
                     </div>
 
-                    <div class="flex items-center gap-2 sm:gap-3 text-xs">
-                        <span id="tutorFeedbackText" class="text-amber-300 font-medium">請按下發黃光的琴鍵！</span>
-                        <span id="songProgressBadge" class="font-mono-tech bg-slate-900 border border-slate-700 px-2 py-1 rounded-lg text-slate-300">
-                            0 / 0
-                        </span>
-                    </div>
-                </div>
+                    <div class="sheet-scroll-box relative bg-slate-900/90 border border-slate-800 rounded-xl p-1.5 sm:p-2 overflow-hidden">
+                        <div class="absolute top-0 left-0 h-0.5 bg-slate-800 w-full">
+                            <div id="songProgressBar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-200" style="width: 0%;"></div>
+                        </div>
 
-                <div class="sheet-scroll-box relative bg-slate-900/90 border border-slate-800 rounded-xl p-1.5 sm:p-2 overflow-hidden">
-                    <div class="absolute top-0 left-0 h-0.5 bg-slate-800 w-full">
-                        <div id="songProgressBar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-200" style="width: 0%;"></div>
-                    </div>
-
-                    <div id="sheetNotesTrack" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 px-1 scroll-smooth">
+                        <div id="sheetNotesTrack" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 px-1 scroll-smooth">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -655,7 +680,7 @@
     </footer>
 
     <script>
-        /* ---------- Canvas roundRect polyfill（舊版 Safari / Firefox 相容） ---------- */
+        /* ---------- Canvas roundRect polyfill ---------- */
         if (window.CanvasRenderingContext2D && !CanvasRenderingContext2D.prototype.roundRect) {
             CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, radii) {
                 if (typeof radii === 'number') radii = [radii, radii, radii, radii];
@@ -677,7 +702,7 @@
         const SONG_LIBRARY = [
             {
                 id: 'fur-elise',
-                title: '🎵 給愛麗絲 (Für Elise) - 貝多芬',
+                title: '🎵 給愛麗絲 (Für Elise)',
                 tempo: 135,
                 notes: [
                     { n: 'E5',  s: '3',   d: 0.5 }, { n: 'D#5', s: '#2', d: 0.5 },
@@ -702,7 +727,7 @@
             },
             {
                 id: 'twinkle-star',
-                title: '⭐ 小星星 (入門練習曲)',
+                title: '⭐ 小星星',
                 tempo: 110,
                 notes: [
                     { n: 'C4', s: 'Do', d: 1 }, { n: 'C4', s: 'Do', d: 1 },
@@ -733,7 +758,7 @@
             },
             {
                 id: 'canon-d',
-                title: '🎻 卡農經典旋律 (Canon)',
+                title: '🎻 卡農經典旋律',
                 tempo: 100,
                 notes: [
                     { n: 'E5', s: '3', d: 1 }, { n: 'D5', s: '2', d: 1 },
@@ -845,7 +870,8 @@
             currentSongIndex: 0,
             currentNoteIndex: 0,
             isDemoPlaying: false,
-            demoTimers: []
+            demoTimers: [],
+            isUIMinimized: false // 新增控制面板折疊狀態
         };
 
         function recalculateHandsAndColors() {
@@ -920,7 +946,7 @@
             const badge = document.getElementById('audioStatusBadge');
             if (badge) {
                 badge.className = 'hidden md:inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/40';
-                badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span>音效引擎已就緒';
+                badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span>音效已就緒';
             }
         }
 
@@ -1236,7 +1262,7 @@
 
             const song = SONG_LIBRARY[state.currentSongIndex];
             if (state.currentNoteIndex >= song.notes.length) {
-                feedbackEl.textContent = '🎉 恭喜完成整首曲子！點擊「重頭開始」再練一次';
+                feedbackEl.textContent = '🎉 完成整首曲子！點擊「重來」';
                 feedbackEl.className = 'text-emerald-400 font-bold';
                 return;
             }
@@ -1248,7 +1274,7 @@
                 if (keyEl) {
                     keyEl.classList.add('guide-target');
                 }
-                feedbackEl.textContent = `下一步：請按 ${targetNoteObj.n} (${targetNoteObj.s}) [鍵盤: ${keyDef.keyChar}]`;
+                feedbackEl.textContent = `下一步：${targetNoteObj.n} (${targetNoteObj.s}) [${keyDef.keyChar}]`;
                 feedbackEl.className = 'text-amber-300 font-bold';
             }
         }
@@ -1266,7 +1292,7 @@
                 highlightCurrentGuideKey();
             } else {
                 const feedbackEl = document.getElementById('tutorFeedbackText');
-                feedbackEl.textContent = `差一點點！請找發黃光的 ${targetNoteObj.n} 鍵`;
+                feedbackEl.textContent = `差一點！請找 ${targetNoteObj.n} 鍵`;
                 feedbackEl.className = 'text-rose-400 font-bold';
             }
         }
@@ -1283,7 +1309,7 @@
             state.isDemoPlaying = true;
             const demoBtn = document.getElementById('demoPlayBtn');
             demoBtn.className = 'bg-rose-600 hover:bg-rose-500 text-white border border-rose-400 text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 shadow-[0_0_15px_rgba(225,29,72,0.45)]';
-            demoBtn.textContent = '⏹ 停止示範';
+            demoBtn.textContent = '⏹ 停止';
 
             const beatMs = (60 / song.tempo) * 1000;
             let accumulatedDelay = 0;
@@ -1330,7 +1356,7 @@
 
             const demoBtn = document.getElementById('demoPlayBtn');
             demoBtn.className = 'bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-600 text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1';
-            demoBtn.textContent = '▶ 示範自動演奏';
+            demoBtn.textContent = '▶ 示範演奏';
 
             if (resetFeedback) {
                 highlightCurrentGuideKey();
@@ -1561,6 +1587,27 @@
                     state.masterGain.gain.setTargetAtTime(parseFloat(e.target.value), state.audioCtx.currentTime, 0.02);
                 }
             });
+
+            // 新增：折疊/展開控制面板功能
+            document.getElementById('toggleSimplifyBtn').addEventListener('click', () => {
+                state.isUIMinimized = !state.isUIMinimized;
+                const panel = document.getElementById('controlPanelWrapper');
+                const btn = document.getElementById('toggleSimplifyBtn');
+                
+                if (state.isUIMinimized) {
+                    panel.classList.add('panel-collapsed');
+                    btn.innerHTML = '<span class="hidden sm:inline">⚙️ 顯示設定</span><span class="sm:hidden">⚙️ 設定</span>';
+                    btn.classList.replace('bg-sky-500/20', 'bg-amber-500/20');
+                    btn.classList.replace('text-sky-200', 'text-amber-200');
+                    btn.classList.replace('border-sky-400/40', 'border-amber-400/40');
+                } else {
+                    panel.classList.remove('panel-collapsed');
+                    btn.innerHTML = '<span class="hidden sm:inline">🙈 隱藏設定</span><span class="sm:hidden">🙈 精簡</span>';
+                    btn.classList.replace('bg-amber-500/20', 'bg-sky-500/20');
+                    btn.classList.replace('text-amber-200', 'text-sky-200');
+                    btn.classList.replace('border-amber-400/40', 'border-sky-400/40');
+                }
+            });
         }
 
         function changeOctave(delta) {
@@ -1719,6 +1766,11 @@
             dismissBtn.addEventListener('click', () => {
                 state.dismissedPortraitModal = true;
                 modal.classList.add('hidden-modal');
+                
+                // 直向點擊繼續時，自動折疊 UI 給更好的體驗
+                if (!state.isUIMinimized) {
+                    document.getElementById('toggleSimplifyBtn').click();
+                }
             });
 
             window.addEventListener('resize', checkOrientationPrompt);
@@ -1792,7 +1844,6 @@
             window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 120));
 
             function renderLoop() {
-                // 隱藏時跳過繪製，節省效能
                 if (canvas.offsetParent === null) {
                     requestAnimationFrame(renderLoop);
                     return;
