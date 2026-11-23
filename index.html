@@ -194,7 +194,7 @@
             box-shadow: 0 0 15px rgba(245, 158, 11, 0.45);
         }
 
-        .no-scrollbar::-webkit-scrollbar { height: 5px; }
+        .no-scrollbar::-webkit-scrollbar { height: 6px; }
         .no-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
         .no-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
 
@@ -216,33 +216,33 @@
 
         #portraitPromptModal.hidden-modal { display: none; }
 
-        /* ============ 整句 KTV 字幕樣式 ============ */
+        /* ============ 整句歌詞點亮樣式 ============ */
         .ktv-char {
             font-family: 'Noto Sans TC', sans-serif;
             font-weight: 800;
-            font-size: 17px;
-            line-height: 1.25;
+            font-size: 18px;
+            line-height: 1.3;
             display: inline-block;
             transition: color 0.14s ease, transform 0.14s ease, text-shadow 0.14s ease;
             white-space: nowrap;
         }
 
         .ktv-past {
-            color: rgba(148, 163, 184, 0.55);
+            color: rgba(148, 163, 184, 0.45);
         }
 
         .ktv-upcoming {
-            color: #f1f5f9;
+            color: #f8fafc;
         }
 
         .ktv-active-char {
-            color: #fde047;
-            transform: translateY(-2px) scale(1.18);
-            text-shadow: 0 0 12px rgba(250, 204, 21, 0.85), 0 0 24px rgba(56, 189, 248, 0.45);
+            color: #facc15;
+            transform: translateY(-2px) scale(1.22);
+            text-shadow: 0 0 12px rgba(250, 204, 21, 0.9), 0 0 22px rgba(251, 146, 60, 0.55);
         }
 
         @media (min-width: 640px) {
-            .ktv-char { font-size: 20px; }
+            .ktv-char { font-size: 22px; }
         }
 
         @media (orientation: landscape) and (max-height: 620px) {
@@ -268,7 +268,7 @@
             .control-panel-grid .text-xs { font-size: 10px !important; }
             .control-panel-grid button { padding: 3px 6px !important; font-size: 11px !important; }
             .control-panel-grid #currentToneDesc { display: none; }
-            .control-panel-grid .ktv-char { font-size: 15px !important; }
+            .control-panel-grid .ktv-char { font-size: 17px !important; }
             .tutor-bar { padding: 3px 8px !important; gap: 3px !important; flex-shrink: 0; }
             .tutor-bar .sheet-scroll-box { padding: 2px !important; }
             .tutor-bar button, .tutor-bar select { padding: 2px 6px !important; font-size: 11px !important; }
@@ -369,14 +369,14 @@
                     <div class="relative z-10 flex items-center justify-between px-3 py-1 pointer-events-none">
                         <div class="flex items-center gap-2">
                             <span class="text-[10px] font-mono-tech px-1.5 py-0.5 rounded bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30">
-                                🎤 KTV 字幕
+                                🎤 歌詞字幕
                             </span>
                             <span id="activeNotesDisplay" class="text-xs font-mono-tech font-bold text-emerald-400">待機中...</span>
                         </div>
                     </div>
 
-                    <div id="ktvLyrics" class="relative z-10 flex-1 flex items-center justify-center overflow-hidden px-3 py-1 min-h-[36px]">
-                        <div id="ktvLine" class="flex items-center justify-center gap-1 flex-wrap"></div>
+                    <div id="ktvLyrics" class="relative z-10 flex-1 flex items-center justify-center overflow-x-auto no-scrollbar px-3 py-1 min-h-[38px]">
+                        <div id="ktvLine" class="flex items-center justify-center gap-0.5 whitespace-nowrap"></div>
                     </div>
                 </div>
             </div>
@@ -507,30 +507,30 @@
                 title: '⭐ 小星星',
                 tempo: 110,
                 notes: [
-                    { n: 'C4', s: 'Do', d: 1 }, { n: 'C4', s: 'Do', d: 1 },
-                    { n: 'G4', s: 'Sol', d: 1 }, { n: 'G4', s: 'Sol', d: 1 },
-                    { n: 'A4', s: 'La', d: 1 }, { n: 'A4', s: 'La', d: 1 },
-                    { n: 'G4', s: 'Sol', d: 2 },
-                    { n: 'F4', s: 'Fa', d: 1 }, { n: 'F4', s: 'Fa', d: 1 },
-                    { n: 'E4', s: 'Mi', d: 1 }, { n: 'E4', s: 'Mi', d: 1 },
-                    { n: 'D4', s: 'Re', d: 1 }, { n: 'D4', s: 'Re', d: 1 },
-                    { n: 'C4', s: 'Do', d: 2 },
-                    { n: 'G4', s: 'Sol', d: 1 }, { n: 'G4', s: 'Sol', d: 1 },
-                    { n: 'F4', s: 'Fa', d: 1 }, { n: 'F4', s: 'Fa', d: 1 },
-                    { n: 'E4', s: 'Mi', d: 1 }, { n: 'E4', s: 'Mi', d: 1 },
-                    { n: 'D4', s: 'Re', d: 2 },
-                    { n: 'G4', s: 'Sol', d: 1 }, { n: 'G4', s: 'Sol', d: 1 },
-                    { n: 'F4', s: 'Fa', d: 1 }, { n: 'F4', s: 'Fa', d: 1 },
-                    { n: 'E4', s: 'Mi', d: 1 }, { n: 'E4', s: 'Mi', d: 1 },
-                    { n: 'D4', s: 'Re', d: 2 },
-                    { n: 'C4', s: 'Do', d: 1 }, { n: 'C4', s: 'Do', d: 1 },
-                    { n: 'G4', s: 'Sol', d: 1 }, { n: 'G4', s: 'Sol', d: 1 },
-                    { n: 'A4', s: 'La', d: 1 }, { n: 'A4', s: 'La', d: 1 },
-                    { n: 'G4', s: 'Sol', d: 2 },
-                    { n: 'F4', s: 'Fa', d: 1 }, { n: 'F4', s: 'Fa', d: 1 },
-                    { n: 'E4', s: 'Mi', d: 1 }, { n: 'E4', s: 'Mi', d: 1 },
-                    { n: 'D4', s: 'Re', d: 1 }, { n: 'D4', s: 'Re', d: 1 },
-                    { n: 'C4', s: 'Do', d: 2 }
+                    { n: 'C4', s: '1', d: 1 }, { n: 'C4', s: '1', d: 1 },
+                    { n: 'G4', s: '5', d: 1 }, { n: 'G4', s: '5', d: 1 },
+                    { n: 'A4', s: '6', d: 1 }, { n: 'A4', s: '6', d: 1 },
+                    { n: 'G4', s: '5', d: 2 },
+                    { n: 'F4', s: '4', d: 1 }, { n: 'F4', s: '4', d: 1 },
+                    { n: 'E4', s: '3', d: 1 }, { n: 'E4', s: '3', d: 1 },
+                    { n: 'D4', s: '2', d: 1 }, { n: 'D4', s: '2', d: 1 },
+                    { n: 'C4', s: '1', d: 2 },
+                    { n: 'G4', s: '5', d: 1 }, { n: 'G4', s: '5', d: 1 },
+                    { n: 'F4', s: '4', d: 1 }, { n: 'F4', s: '4', d: 1 },
+                    { n: 'E4', s: '3', d: 1 }, { n: 'E4', s: '3', d: 1 },
+                    { n: 'D4', s: '2', d: 2 },
+                    { n: 'G4', s: '5', d: 1 }, { n: 'G4', s: '5', d: 1 },
+                    { n: 'F4', s: '4', d: 1 }, { n: 'F4', s: '4', d: 1 },
+                    { n: 'E4', s: '3', d: 1 }, { n: 'E4', s: '3', d: 1 },
+                    { n: 'D4', s: '2', d: 2 },
+                    { n: 'C4', s: '1', d: 1 }, { n: 'C4', s: '1', d: 1 },
+                    { n: 'G4', s: '5', d: 1 }, { n: 'G4', s: '5', d: 1 },
+                    { n: 'A4', s: '6', d: 1 }, { n: 'A4', s: '6', d: 1 },
+                    { n: 'G4', s: '5', d: 2 },
+                    { n: 'F4', s: '4', d: 1 }, { n: 'F4', s: '4', d: 1 },
+                    { n: 'E4', s: '3', d: 1 }, { n: 'E4', s: '3', d: 1 },
+                    { n: 'D4', s: '2', d: 1 }, { n: 'D4', s: '2', d: 1 },
+                    { n: 'C4', s: '1', d: 2 }
                 ]
             },
             {
@@ -712,16 +712,14 @@
             }
         ];
 
-        // 將含歌詞的音符切分為完整樂句段落
+        // 將含實際歌詞字的音符切分為完整樂句（忽略純延長線「—」）
         function buildPhrases(notes) {
             const phrases = [];
             let current = [];
             notes.forEach((item, idx) => {
-                if (!item.l) return;
+                if (!item.l || item.l === '—') return;
                 current.push({ index: idx, char: item.l });
-                const isEndDash = item.l === '—' && current.length >= 4;
-                const isLongPhrase = current.length >= 16;
-                if (isEndDash || isLongPhrase) {
+                if (current.length >= 16) {
                     phrases.push(current);
                     current = [];
                 }
@@ -956,7 +954,7 @@
             renderSheetTrack(); highlightCurrentGuideKey();
         }
 
-        // 下方音符條：不重複顯示歌詞，也不顯示鍵盤鍵位提示
+        // 下方音符條：只秀簡譜一種表示法，字體放大
         function renderSheetTrack() {
             const track = document.getElementById('sheetNotesTrack');
             const song = SONG_LIBRARY[state.currentSongIndex];
@@ -964,14 +962,11 @@
             song.notes.forEach((item, idx) => {
                 const card = document.createElement('div');
                 card.id = `sheet-note-${idx}`;
-                card.className = 'shrink-0 w-11 sm:w-12 py-1 px-1 rounded-lg border flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
+                card.className = 'shrink-0 w-12 sm:w-14 h-10 sm:h-11 rounded-lg border flex items-center justify-center transition-all duration-150 cursor-pointer';
                 card.addEventListener('click', () => {
                     stopDemoPlayback(); state.currentNoteIndex = idx; updateSheetTrackUI(); highlightCurrentGuideKey();
                 });
-                card.innerHTML = `
-                    <span class="text-xs sm:text-sm font-mono-tech font-bold leading-tight">${item.s}</span>
-                    <span class="text-[10px] text-slate-400 leading-tight mt-0.5">${item.n}</span>
-                `;
+                card.innerHTML = `<span class="text-base sm:text-lg font-mono-tech font-black leading-none">${item.s}</span>`;
                 track.appendChild(card);
             });
             updateSheetTrackUI();
@@ -987,12 +982,12 @@
                 const card = document.getElementById(`sheet-note-${i}`);
                 if (!card) continue;
                 if (i < current) {
-                    card.className = 'shrink-0 w-11 sm:w-12 py-1 px-1 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400/70 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
+                    card.className = 'shrink-0 w-12 sm:w-14 h-10 sm:h-11 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400/70 flex items-center justify-center transition-all duration-150 cursor-pointer';
                 } else if (i === current) {
-                    card.className = 'shrink-0 w-12 sm:w-14 py-1 px-1 rounded-lg border-2 border-amber-400 bg-amber-500/20 text-amber-200 shadow-[0_0_15px_rgba(251,191,36,0.35)] scale-105 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
+                    card.className = 'shrink-0 w-13 sm:w-15 h-11 sm:h-12 rounded-lg border-2 border-amber-400 bg-amber-500/20 text-amber-200 shadow-[0_0_15px_rgba(251,191,36,0.35)] scale-105 flex items-center justify-center transition-all duration-150 cursor-pointer';
                     card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 } else {
-                    card.className = 'shrink-0 w-11 sm:w-12 py-1 px-1 rounded-lg border border-slate-800 bg-slate-950/80 text-slate-300 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer hover:border-slate-600';
+                    card.className = 'shrink-0 w-12 sm:w-14 h-10 sm:h-11 rounded-lg border border-slate-800 bg-slate-950/80 text-slate-200 flex items-center justify-center transition-all duration-150 cursor-pointer hover:border-slate-600';
                 }
             }
             renderKtvLyrics();
@@ -1017,8 +1012,10 @@
             if (keyDef) {
                 const keyEl = keyElementsMap.get(keyDef.midi);
                 if (keyEl) keyEl.classList.add('guide-target');
-                const displayName = targetNoteObj.l ? `${targetNoteObj.l} (${targetNoteObj.s})` : `${targetNoteObj.n} (${targetNoteObj.s})`;
-                feedbackEl.textContent = `下一步：請按發黃光琴鍵 ${displayName}`;
+                const labelText = targetNoteObj.l && targetNoteObj.l !== '—'
+                    ? `${targetNoteObj.l}（簡譜 ${targetNoteObj.s}）`
+                    : `簡譜 ${targetNoteObj.s}`;
+                feedbackEl.textContent = `下一步：請按發黃光琴鍵 ${labelText}`;
                 feedbackEl.className = 'text-amber-300 font-bold';
             }
         }
@@ -1032,7 +1029,7 @@
                 state.currentNoteIndex++; updateSheetTrackUI(); highlightCurrentGuideKey();
             } else {
                 const feedbackEl = document.getElementById('tutorFeedbackText');
-                feedbackEl.textContent = `差一點點！請找發黃光的 ${targetNoteObj.l || targetNoteObj.n} 鍵`;
+                feedbackEl.textContent = `差一點點！請找發黃光的琴鍵（簡譜 ${targetNoteObj.s}）`;
                 feedbackEl.className = 'text-rose-400 font-bold';
             }
         }
@@ -1079,7 +1076,7 @@
         }
 
         // =====================================================================
-        // 🎤 整段 KTV 字幕（整句出現，彈到的字用別的顏色標示）
+        // 🎤 整段歌詞顯示，點亮目前彈到的字
         // =====================================================================
         function renderKtvLyrics() {
             const lineEl = document.getElementById('ktvLine');
@@ -1088,7 +1085,7 @@
             const song = SONG_LIBRARY[state.currentSongIndex];
             const phrases = buildPhrases(song.notes);
             if (phrases.length === 0) {
-                lineEl.innerHTML = '<span class="ktv-char ktv-upcoming">♪ 自由跟彈練習 ♪</span>';
+                lineEl.innerHTML = '<span class="ktv-char ktv-upcoming">♪ 依簡譜跟彈練習 ♪</span>';
                 return;
             }
 
@@ -1098,10 +1095,25 @@
                 return;
             }
 
-            // 找到目前所在的樂句；若目前音符沒有字，則往後找最近的字所屬的樂句
+            // 找出目前所在的樂句（若目前落在「—」延長音上，沿用上一個有歌詞字的樂句）
             let activePhrase = phrases.find(p => curNoteIdx >= p[0].index && curNoteIdx <= p[p.length - 1].index);
             if (!activePhrase) {
-                activePhrase = phrases.find(p => p[0].index > curNoteIdx) || phrases[phrases.length - 1];
+                const prevPhrase = [...phrases].reverse().find(p => p[p.length - 1].index < curNoteIdx);
+                activePhrase = prevPhrase || phrases[0];
+            }
+
+            // 找到該句中目前應點亮的字（若剛按完該字、正處於延長音「—」，則維持該字或下一個字）
+            let highlightIdx = -1;
+            const exactMatch = activePhrase.find(item => item.index === curNoteIdx);
+            if (exactMatch) {
+                highlightIdx = exactMatch.index;
+            } else {
+                const nextInPhrase = activePhrase.find(item => item.index > curNoteIdx);
+                if (nextInPhrase) {
+                    highlightIdx = nextInPhrase.index;
+                } else {
+                    highlightIdx = activePhrase[activePhrase.length - 1].index;
+                }
             }
 
             const frag = document.createDocumentFragment();
@@ -1109,9 +1121,9 @@
                 const span = document.createElement('span');
                 span.className = 'ktv-char';
                 span.textContent = item.char;
-                if (item.index < curNoteIdx) {
+                if (item.index < highlightIdx) {
                     span.classList.add('ktv-past');
-                } else if (item.index === curNoteIdx) {
+                } else if (item.index === highlightIdx) {
                     span.classList.add('ktv-active-char');
                 } else {
                     span.classList.add('ktv-upcoming');
