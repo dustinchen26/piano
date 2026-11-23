@@ -42,6 +42,7 @@
             min-height: 100dvh;
             margin: 0;
             padding: 0;
+            background-color: #090d16;
         }
 
         body {
@@ -50,10 +51,10 @@
             color: #f8fafc;
             overflow-x: hidden;
             touch-action: none;
-            padding-top: var(--safe-top);
-            padding-bottom: var(--safe-bottom);
-            padding-left: var(--safe-left);
-            padding-right: var(--safe-right);
+            padding-top: max(6px, var(--safe-top));
+            padding-bottom: max(6px, var(--safe-bottom));
+            padding-left: max(6px, var(--safe-left));
+            padding-right: max(6px, var(--safe-right));
         }
 
         .font-mono-tech {
@@ -86,6 +87,7 @@
             height: 6px;
             background: linear-gradient(180deg, #7f1d1d 0%, #dc2626 50%, #450a0a 100%);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+            flex-shrink: 0;
         }
 
         /* 琴鍵容器 */
@@ -96,6 +98,7 @@
             border-radius: 0 0 12px 12px;
             box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.9);
             touch-action: none;
+            height: 240px;
         }
 
         /* 白鍵樣式 */
@@ -299,18 +302,31 @@
         }
 
         /* =====================================================================
-           手機橫屏滿版最佳化 (Mobile Landscape Fullscreen Mode)
+           手機橫屏自適應最佳化 (不裁切琴鍵、不留大塊白邊)
            ===================================================================== */
-        @media (orientation: landscape) and (max-height: 540px) {
+        @media (orientation: landscape) and (max-height: 600px) {
             body {
-                padding: 4px 8px;
-                justify-content: space-between;
+                padding: 4px 6px;
+                justify-content: flex-start;
+                min-height: 100dvh;
+            }
+            main {
+                flex: 1 1 auto;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+            }
+            .synth-chassis {
+                flex: 1 1 auto;
+                min-height: 0;
+                border-radius: 14px;
             }
             header {
                 margin-bottom: 4px !important;
             }
             header h1 {
-                font-size: 0.95rem !important;
+                font-size: 0.9rem !important;
+                line-height: 1.1;
             }
             header p {
                 display: none;
@@ -319,17 +335,22 @@
                 display: none !important;
             }
             .tutor-bar {
-                padding: 4px 10px !important;
+                padding: 4px 8px !important;
                 gap: 4px !important;
             }
             .tutor-bar .sheet-scroll-box {
                 padding: 2px !important;
             }
+            .keys-section {
+                flex: 1 1 auto;
+                min-height: 130px;
+            }
             .piano-bed {
-                height: calc(100dvh - 104px) !important;
-                min-height: 150px;
-                max-height: 360px;
+                height: 100% !important;
+                min-height: 130px;
+                max-height: none !important;
                 padding: 0 2px 4px 2px !important;
+                border-radius: 0 0 10px 10px;
             }
             .key-white .kbd-hint,
             .key-black .kbd-hint {
@@ -340,13 +361,18 @@
             }
         }
 
-        /* 直向手機提示遮罩（僅在行動裝置直向且未手動關閉時顯示） */
         #portraitPromptModal.hidden-modal {
             display: none;
         }
     </style>
 </head>
 <body class="min-h-[100dvh] flex flex-col items-center justify-between p-2 sm:p-4 md:p-5">
+
+    <!-- LINE 內建瀏覽器提示橫幅 -->
+    <div id="lineBrowserBanner" class="hidden w-full max-w-7xl mb-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs flex items-center justify-between gap-2">
+        <span>⚠️ 偵測到目前在 LINE 內建瀏覽器開啟，點右下角「⋮」選「在預設瀏覽器中開啟」可減少框架與提升全螢幕支援。</span>
+        <button id="closeLineBannerBtn" class="text-amber-300 hover:text-white font-bold shrink-0">✕</button>
+    </div>
 
     <!-- 手機直向建議轉橫屏遮罩 -->
     <div id="portraitPromptModal" class="hidden-modal fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
@@ -370,9 +396,9 @@
     </div>
 
     <!-- 頂部品牌標題與狀態列 -->
-    <header class="w-full max-w-7xl flex flex-wrap items-center justify-between gap-2 mb-2 px-1 sm:px-2">
+    <header class="w-full max-w-7xl flex flex-wrap items-center justify-between gap-2 mb-2 px-1 sm:px-2 shrink-0">
         <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/30 shrink-0">
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/30 shrink-0">
                 <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
                 </svg>
@@ -387,7 +413,6 @@
 
         <!-- 左右手圖例 + 橫屏滿版按鈕 + 音量 -->
         <div class="flex items-center flex-wrap gap-2 bg-slate-900/80 border border-slate-700/70 px-2.5 py-1.5 rounded-xl">
-            <!-- 左右手顏色圖例 -->
             <div class="flex items-center gap-2 text-[11px] font-bold pr-1 border-r border-slate-700/80" title="同時彈奏多個音時自動區分左右手">
                 <span class="inline-flex items-center gap-1 text-rose-300">
                     <span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_6px_#fb7185]"></span>
@@ -399,7 +424,6 @@
                 </span>
             </div>
 
-            <!-- 橫屏滿版按鈕 -->
             <button id="fullscreenLandscapeBtn" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 border border-indigo-400/40 transition flex items-center gap-1">
                 ⛶ 橫屏滿版
             </button>
@@ -499,35 +523,29 @@
             <!-- ======================================================================
                  互動樂譜教學導覽區 (SAMPLE SHEET MUSIC & FOLLOW-ME TUTOR)
                  ====================================================================== -->
-            <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-3 sm:px-5 py-2.5 sm:py-3 flex flex-col gap-2">
-                <!-- 第一列：選曲、教學模式開關、示範自動播放與進度統計 -->
+            <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-3 sm:px-5 py-2.5 sm:py-3 flex flex-col gap-2 shrink-0">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
                         <span class="text-xs font-bold text-amber-400 flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 px-2 py-1 rounded-lg">
                             🎼 琴譜教學
                         </span>
 
-                        <!-- 曲目下拉選單 -->
                         <select id="songSelector" class="bg-slate-900 border border-slate-700 text-slate-100 text-xs sm:text-sm font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
                         </select>
 
-                        <!-- 跟彈引導模式切換 -->
                         <button id="toggleGuideBtn" class="btn-amber-active text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg border transition-all flex items-center gap-1">
                             💡 亮燈跟彈：開啟
                         </button>
 
-                        <!-- 自動示範演奏按鈕 -->
                         <button id="demoPlayBtn" class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-600 text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1">
                             ▶ 示範自動演奏
                         </button>
 
-                        <!-- 重新開始按鈕 -->
                         <button id="resetSongBtn" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-bold px-2 py-1.5 rounded-lg transition-all" title="從第一個音重新開始">
                             ↺ 重頭開始
                         </button>
                     </div>
 
-                    <!-- 右側進度與提示訊息 -->
                     <div class="flex items-center gap-2 sm:gap-3 text-xs">
                         <span id="tutorFeedbackText" class="text-amber-300 font-medium">請按下發黃光的琴鍵！</span>
                         <span id="songProgressBadge" class="font-mono-tech bg-slate-900 border border-slate-700 px-2 py-1 rounded-lg text-slate-300">
@@ -536,7 +554,6 @@
                     </div>
                 </div>
 
-                <!-- 第二列：捲動式音符序列捲軸 -->
                 <div class="sheet-scroll-box relative bg-slate-900/90 border border-slate-800 rounded-xl p-1.5 sm:p-2 overflow-hidden">
                     <div class="absolute top-0 left-0 h-0.5 bg-slate-800 w-full">
                         <div id="songProgressBar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-200" style="width: 0%;"></div>
@@ -551,11 +568,11 @@
             <div class="felt-strip w-full"></div>
 
             <!-- 下半部：琴鍵區域 -->
-            <div class="flex w-full items-stretch bg-[#070a10]">
+            <div class="keys-section flex w-full items-stretch bg-[#070a10]">
                 <div class="hidden md:block w-5 wood-trim border-r border-black/80 shrink-0"></div>
 
-                <div class="flex-1 w-full">
-                    <div id="pianoWrapper" class="piano-bed w-full h-[220px] sm:h-[265px] md:h-[300px] select-none">
+                <div class="flex-1 w-full flex flex-col">
+                    <div id="pianoWrapper" class="piano-bed w-full sm:h-[265px] md:h-[300px] select-none">
                         <div id="pianoKeysContainer" class="relative w-full h-full flex">
                             <!-- 由 JavaScript 動態生成白鍵與黑鍵 -->
                         </div>
@@ -568,7 +585,7 @@
     </main>
 
     <!-- 底部操作說明列 -->
-    <footer class="w-full max-w-7xl mt-2 px-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+    <footer class="w-full max-w-7xl mt-2 px-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 shrink-0">
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
             <span>⌨️ <strong class="text-slate-200">電腦鍵盤</strong>：下排 <code class="text-sky-300">A S D F G H J K L ; '</code> 白鍵，上排 <code class="text-sky-300">W E T Y U O P</code> 黑鍵</span>
             <span>🔄 <strong class="text-slate-200">快捷鍵</strong>：<code class="text-sky-300">Z / X</code> 切換八度、<code class="text-sky-300">空白鍵</code> 延音踏板</span>
@@ -579,11 +596,6 @@
     </footer>
 
     <script>
-        /**
-         * ============================================================================
-         * 0. 內建示範琴譜資料庫 (SONG_LIBRARY)
-         * ============================================================================
-         */
         const SONG_LIBRARY = [
             {
                 id: 'fur-elise',
@@ -662,11 +674,6 @@
             }
         ];
 
-        /**
-         * ============================================================================
-         * 1. 音符資料與鍵盤映射定義 (C4 到 C6)
-         * ============================================================================
-         */
         const KEY_DEFINITIONS = [
             { note: 'C',  octave: 4, midi: 60, type: 'white', keyChar: 'A', keyCode: 'KeyA' },
             { note: 'C#', octave: 4, midi: 61, type: 'black', keyChar: 'W', keyCode: 'KeyW' },
@@ -740,11 +747,6 @@
             }
         };
 
-        /**
-         * ============================================================================
-         * 2. 全域狀態管理
-         * ============================================================================
-         */
         const state = {
             audioCtx: null,
             masterGain: null,
@@ -761,8 +763,6 @@
             activePointers: new Map(),
             particles: [],
             dismissedPortraitModal: false,
-
-            // 教學系統狀態
             tutorEnabled: true,
             currentSongIndex: 0,
             currentNoteIndex: 0,
@@ -770,11 +770,6 @@
             demoTimers: []
         };
 
-        /**
-         * ============================================================================
-         * 2.5 左右手同時彈奏顏色辨識 (Dual-Hand Color System)
-         * ============================================================================
-         */
         function recalculateHandsAndColors() {
             const entries = Array.from(state.activeVoices.entries());
             if (entries.length === 0) {
@@ -815,11 +810,6 @@
             updateActiveNotesDisplay();
         }
 
-        /**
-         * ============================================================================
-         * 3. Web Audio API 物理/合成音效引擎
-         * ============================================================================
-         */
         function initAudioEngine() {
             if (!state.audioCtx) {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -1050,11 +1040,6 @@
             recalculateHandsAndColors();
         }
 
-        /**
-         * ============================================================================
-         * 4. 互動琴譜教學與自動示範引擎 (Tutor & Demo Engine)
-         * ============================================================================
-         */
         function initTutorSystem() {
             const selector = document.getElementById('songSelector');
             selector.innerHTML = '';
@@ -1274,11 +1259,6 @@
             }
         }
 
-        /**
-         * ============================================================================
-         * 5. 動態建立大型琴鍵 UI 與多點觸控 / 滑音事件綁定
-         * ============================================================================
-         */
         const keyElementsMap = new Map();
 
         function buildPianoKeyboard() {
@@ -1583,16 +1563,23 @@
             display.textContent = `發聲中: ${playing.join(' · ')}`;
         }
 
-        /**
-         * ============================================================================
-         * 5.5 手機自動橫屏滿版與直向提示控制 (Mobile Auto Landscape & Fullscreen)
-         * ============================================================================
-         */
         function initMobileLandscapeSupport() {
             const modal = document.getElementById('portraitPromptModal');
             const fsBtn = document.getElementById('fullscreenLandscapeBtn');
             const modalFsBtn = document.getElementById('modalFullscreenLandscapeBtn');
             const dismissBtn = document.getElementById('dismissPortraitModalBtn');
+            const lineBanner = document.getElementById('lineBrowserBanner');
+            const closeLineBtn = document.getElementById('closeLineBannerBtn');
+
+            const isLineInApp = /Line\//i.test(navigator.userAgent);
+            if (isLineInApp && lineBanner) {
+                lineBanner.classList.remove('hidden');
+            }
+            if (closeLineBtn && lineBanner) {
+                closeLineBtn.addEventListener('click', () => {
+                    lineBanner.classList.add('hidden');
+                });
+            }
 
             function isMobileDevice() {
                 return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
@@ -1629,17 +1616,13 @@
                     } else if (!document.webkitFullscreenElement && docEl.webkitRequestFullscreen) {
                         await docEl.webkitRequestFullscreen();
                     }
-                } catch (e) {
-                    // iOS Safari 等不支援全螢幕或被拒絕時忽略
-                }
+                } catch (e) {}
 
                 try {
                     if (screen.orientation && screen.orientation.lock) {
                         await screen.orientation.lock('landscape');
                     }
-                } catch (e) {
-                    // iOS Safari 不支援 screen.orientation.lock，由使用者轉動手機即可
-                }
+                } catch (e) {}
 
                 modal.classList.add('hidden-modal');
             }
@@ -1656,11 +1639,6 @@
             checkOrientationPrompt();
         }
 
-        /**
-         * ============================================================================
-         * 6. OLED 即時音頻頻譜、波形與飄散音符粒子視覺化引擎
-         * ============================================================================
-         */
         const NOTE_SYMBOLS = ['♪', '♫', '♬', '♩', '✦'];
         const RIGHT_HAND_COLORS = ['#38bdf8', '#60a5fa', '#818cf8', '#a78bfa', '#22d3ee'];
         const LEFT_HAND_COLORS = ['#fb7185', '#f43f5e', '#fb923c', '#f472b6', '#e879f9'];
@@ -1823,11 +1801,6 @@
             renderLoop();
         }
 
-        /**
-         * ============================================================================
-         * 7. 應用程式啟動入口
-         * ============================================================================
-         */
         window.addEventListener('DOMContentLoaded', () => {
             buildPianoKeyboard();
             setupPointerInteractions();
