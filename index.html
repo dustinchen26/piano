@@ -8,7 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <title>For Winny電子琴~by Dustin</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --safe-top: env(safe-area-inset-top, 0px);
@@ -166,27 +166,56 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             line-height: 1;
             pointer-events: none;
         }
         .solfege-dot-top {
-            height: 6px;
-            font-size: 10px;
-            line-height: 6px;
+            height: 8px;
+            font-size: 11px;
+            line-height: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .solfege-dot-bottom {
-            height: 6px;
-            font-size: 10px;
-            line-height: 6px;
+            height: 8px;
+            font-size: 11px;
+            line-height: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .solfege-num {
             line-height: 1.05;
+        }
+
+        @media (min-width: 1024px) {
+            .solfege-dot-top, .solfege-dot-bottom {
+                height: 10px;
+                font-size: 13px;
+                line-height: 10px;
+            }
+        }
+
+        /* 固定尺寸簡譜方框，轉換時不忽大忽小 */
+        .sheet-note-box {
+            flex: 0 0 auto;
+            width: 56px;
+            height: 52px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease, color 0.14s ease;
+            cursor: pointer;
+        }
+
+        @media (min-width: 1024px) {
+            .sheet-note-box {
+                width: 68px;
+                height: 60px;
+            }
         }
 
         .guide-dot {
@@ -243,15 +272,19 @@
 
         #portraitPromptModal.hidden-modal { display: none; }
 
-        /* ============ 放大整句歌詞點亮樣式 ============ */
+        /* 放大整句歌詞點亮樣式 */
         .ktv-char {
             font-family: 'Noto Sans TC', sans-serif;
             font-weight: 900;
-            font-size: 22px;
+            font-size: 23px;
             line-height: 1.35;
             display: inline-block;
             transition: color 0.14s ease, transform 0.14s ease, text-shadow 0.14s ease;
             white-space: nowrap;
+        }
+
+        @media (min-width: 1024px) {
+            .ktv-char { font-size: 30px; }
         }
 
         .ktv-past {
@@ -264,12 +297,8 @@
 
         .ktv-active-char {
             color: #facc15;
-            transform: translateY(-2px) scale(1.24);
+            transform: translateY(-2px) scale(1.2);
             text-shadow: 0 0 14px rgba(250, 204, 21, 0.95), 0 0 24px rgba(251, 146, 60, 0.6);
-        }
-
-        @media (min-width: 640px) {
-            .ktv-char { font-size: 26px; }
         }
 
         @media (orientation: landscape) and (max-height: 620px) {
@@ -296,6 +325,7 @@
             .control-panel-grid .ktv-char { font-size: 21px !important; }
             .tutor-bar { padding: 3px 8px !important; gap: 3px !important; flex-shrink: 0; }
             .tutor-bar .sheet-scroll-box { padding: 2px !important; }
+            .tutor-bar .sheet-note-box { width: 46px; height: 42px; }
             .tutor-bar button, .tutor-bar select { padding: 2px 6px !important; font-size: 11px !important; white-space: nowrap; }
             .tutor-bar span { font-size: 11px !important; white-space: nowrap; }
             .keys-section { flex: 1 1 auto; min-height: 165px; }
@@ -381,14 +411,14 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-7 relative rounded-xl overflow-hidden bg-[#04070d] border border-slate-700/80 shadow-inner min-h-[76px] sm:min-h-[86px] flex flex-col justify-between">
+                <div class="lg:col-span-7 relative rounded-xl overflow-hidden bg-[#04070d] border border-slate-700/80 shadow-inner min-h-[76px] sm:min-h-[88px] flex flex-col justify-between">
                     <canvas id="visualizerCanvas" class="absolute inset-0 w-full h-full block"></canvas>
 
                     <div class="relative z-10 flex items-center justify-between px-3 py-1 pointer-events-none">
-                        <span id="activeNotesDisplay" class="text-xs font-mono-tech font-bold text-emerald-400">待機中</span>
+                        <span id="activeNotesDisplay" class="text-xs lg:text-sm font-mono-tech font-bold text-emerald-400">待機中</span>
                     </div>
 
-                    <div id="ktvLyrics" class="relative z-10 flex-1 flex items-center justify-center overflow-x-auto no-scrollbar px-3 py-1 min-h-[42px]">
+                    <div id="ktvLyrics" class="relative z-10 flex-1 flex items-center justify-center overflow-x-auto no-scrollbar px-3 py-1 min-h-[44px]">
                         <div id="ktvLine" class="flex items-center justify-center gap-0.5 whitespace-nowrap"></div>
                     </div>
                 </div>
@@ -397,6 +427,7 @@
             <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-3 sm:px-4 py-2 flex flex-col gap-1.5 shrink-0">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <label for="songSelector" class="text-xs sm:text-sm font-bold text-sky-300 whitespace-nowrap">琴譜：</label>
                         <select id="songSelector" class="bg-slate-900 border border-slate-700 text-slate-100 text-xs sm:text-sm font-bold rounded-lg px-2.5 py-1 focus:outline-none focus:border-amber-400 cursor-pointer">
                         </select>
 
@@ -413,7 +444,7 @@
                         </button>
                     </div>
 
-                    <div class="flex items-center gap-2 sm:gap-3 text-xs">
+                    <div class="flex items-center gap-2 sm:gap-3 text-xs lg:text-sm">
                         <span id="tutorFeedbackText" class="text-amber-300 font-bold whitespace-nowrap">請按發黃光琴鍵</span>
                         <span id="songProgressBadge" class="font-mono-tech bg-slate-900 border border-slate-700 px-2 py-0.5 rounded-lg text-slate-300 whitespace-nowrap">
                             0 / 0
@@ -480,8 +511,8 @@
             };
         }
 
-        // 簡譜格式化：高八度加頂點、低八度加底點
-        function formatSolfegeHtml(s, sizeClass = 'text-sm sm:text-base font-mono-tech font-black') {
+        // 簡譜格式化：高八度加頂點、低八度加底點，未點亮時以透明圓點佔位維持固定高度
+        function formatSolfegeHtml(s, sizeClass = 'text-sm sm:text-base lg:text-xl font-mono-tech font-black') {
             if (!s) return '';
             let clean = String(s).trim();
             let topDot = '';
@@ -497,7 +528,13 @@
                 bottomDot = '•';
                 clean = clean.slice(1);
             }
-            return `<span class="solfege-wrap ${sizeClass}"><span class="solfege-dot-top">${topDot}</span><span class="solfege-num">${clean}</span><span class="solfege-dot-bottom">${bottomDot}</span></span>`;
+            const topHtml = topDot
+                ? `<span>${topDot}</span>`
+                : `<span class="opacity-0">•</span>`;
+            const bottomHtml = bottomDot
+                ? `<span>${bottomDot}</span>`
+                : `<span class="opacity-0">•</span>`;
+            return `<span class="solfege-wrap ${sizeClass}"><span class="solfege-dot-top">${topHtml}</span><span class="solfege-num">${clean}</span><span class="solfege-dot-bottom">${bottomHtml}</span></span>`;
         }
 
         // =====================================================================
@@ -590,7 +627,6 @@
                     '她會有多幸運'
                 ],
                 notes: [
-                    // 我聽見雨滴落在青青草地
                     { n: 'E4', s: '3',  d: 0.5, l: '我' }, { n: 'E4', s: '3',  d: 0.5, l: '聽' },
                     { n: 'G4', s: '5',  d: 0.5, l: '見' }, { n: 'G4', s: '5',  d: 0.5, l: '雨' },
                     { n: 'C5', s: '1•', d: 0.5, l: '滴' }, { n: 'C5', s: '1•', d: 0.5, l: '落' },
@@ -598,7 +634,6 @@
                     { n: 'A4', s: '6',  d: 0.5, l: '青' }, { n: 'E4', s: '3',  d: 0.5, l: '草' },
                     { n: 'A4', s: '6',  d: 1.5, l: '地' },
 
-                    // 我聽見遠方下課鐘聲響起
                     { n: 'A4', s: '6',  d: 0.5, l: '我' }, { n: 'A4', s: '6',  d: 0.5, l: '聽' },
                     { n: 'B4', s: '7',  d: 0.5, l: '見' }, { n: 'B4', s: '7',  d: 0.5, l: '遠' },
                     { n: 'E5', s: '3•', d: 0.5, l: '方' }, { n: 'E5', s: '3•', d: 0.5, l: '下' },
@@ -606,7 +641,6 @@
                     { n: 'G4', s: '5',  d: 0.5, l: '聲' }, { n: 'E4', s: '3',  d: 0.5, l: '響' },
                     { n: 'G4', s: '5',  d: 1.5, l: '起' },
 
-                    // 可是我沒有聽見你的聲音
                     { n: 'E4', s: '3',  d: 0.5, l: '可' }, { n: 'E4', s: '3',  d: 0.5, l: '是' },
                     { n: 'G4', s: '5',  d: 0.5, l: '我' }, { n: 'G4', s: '5',  d: 0.5, l: '沒' },
                     { n: 'C5', s: '1•', d: 0.5, l: '有' }, { n: 'C5', s: '1•', d: 0.5, l: '聽' },
@@ -614,13 +648,11 @@
                     { n: 'A4', s: '6',  d: 0.5, l: '的' }, { n: 'E4', s: '3',  d: 0.5, l: '聲' },
                     { n: 'A4', s: '6',  d: 1.5, l: '音' },
 
-                    // 認真 呼喚我姓名
                     { n: 'A4', s: '6',  d: 0.5, l: '認' }, { n: 'B4', s: '7',  d: 0.5, l: '真' },
                     { n: 'A4', s: '6',  d: 0.5, l: '呼' }, { n: 'B4', s: '7',  d: 0.5, l: '喚' },
                     { n: 'E5', s: '3•', d: 0.5, l: '我' }, { n: 'D5', s: '2•', d: 0.5, l: '姓' },
                     { n: 'C5', s: '1•', d: 1.5, l: '名' },
 
-                    // 愛上你的時候還不懂感情
                     { n: 'E4', s: '3',  d: 0.5, l: '愛' }, { n: 'E4', s: '3',  d: 0.5, l: '上' },
                     { n: 'G4', s: '5',  d: 0.5, l: '你' }, { n: 'G4', s: '5',  d: 0.5, l: '的' },
                     { n: 'C5', s: '1•', d: 0.5, l: '時' }, { n: 'C5', s: '1•', d: 0.5, l: '候' },
@@ -628,7 +660,6 @@
                     { n: 'A4', s: '6',  d: 0.5, l: '懂' }, { n: 'E4', s: '3',  d: 0.5, l: '感' },
                     { n: 'A4', s: '6',  d: 1.5, l: '情' },
 
-                    // 離別了才覺得刻骨 銘心
                     { n: 'A4', s: '6',  d: 0.5, l: '離' }, { n: 'A4', s: '6',  d: 0.5, l: '別' },
                     { n: 'B4', s: '7',  d: 0.5, l: '了' }, { n: 'B4', s: '7',  d: 0.5, l: '才' },
                     { n: 'E5', s: '3•', d: 0.5, l: '覺' }, { n: 'E5', s: '3•', d: 0.5, l: '得' },
@@ -636,7 +667,6 @@
                     { n: 'G4', s: '5',  d: 0.5, l: '銘' }, { n: 'E4', s: '3',  d: 0.5, l: '心' },
                     { n: 'G4', s: '5',  d: 1.5, l: '—' },
 
-                    // 為什麼沒有發現遇見了你
                     { n: 'E4', s: '3',  d: 0.5, l: '為' }, { n: 'E4', s: '3',  d: 0.5, l: '什' },
                     { n: 'G4', s: '5',  d: 0.5, l: '麼' }, { n: 'G4', s: '5',  d: 0.5, l: '沒' },
                     { n: 'C5', s: '1•', d: 0.5, l: '有' }, { n: 'C5', s: '1•', d: 0.5, l: '發' },
@@ -644,13 +674,11 @@
                     { n: 'C5', s: '1•', d: 0.5, l: '見' }, { n: 'E4', s: '3',  d: 0.5, l: '了' },
                     { n: 'A4', s: '6',  d: 1.5, l: '你' },
 
-                    // 是生命最好的事情
                     { n: 'A4', s: '6',  d: 0.5, l: '是' }, { n: 'C5', s: '1•', d: 0.5, l: '生' },
                     { n: 'B4', s: '7',  d: 0.5, l: '命' }, { n: 'A4', s: '6',  d: 0.5, l: '最' },
                     { n: 'B4', s: '7',  d: 0.5, l: '好' }, { n: 'E5', s: '3•', d: 0.5, l: '的' },
                     { n: 'D5', s: '2•', d: 0.5, l: '事' }, { n: 'C5', s: '1•', d: 1.5, l: '情' },
 
-                    // 也許當時忙著微笑和哭泣
                     { n: 'E5', s: '3•', d: 0.5, l: '也' }, { n: 'D5', s: '2•', d: 0.5, l: '許' },
                     { n: 'C5', s: '1•', d: 0.5, l: '當' }, { n: 'B4', s: '7',  d: 0.5, l: '時' },
                     { n: 'A4', s: '6',  d: 0.5, l: '忙' }, { n: 'A4', s: '6',  d: 0.5, l: '著' },
@@ -658,7 +686,6 @@
                     { n: 'A4', s: '6',  d: 0.5, l: '和' }, { n: 'E5', s: '3•', d: 0.5, l: '哭' },
                     { n: 'D5', s: '2•', d: 1.5, l: '泣' },
 
-                    // 忙著追逐天空中的流星
                     { n: 'D5', s: '2•', d: 0.5, l: '忙' }, { n: 'C5', s: '1•', d: 0.5, l: '著' },
                     { n: 'B4', s: '7',  d: 0.5, l: '追' }, { n: 'A4', s: '6',  d: 0.5, l: '逐' },
                     { n: 'G4', s: '5',  d: 0.5, l: '天' }, { n: 'G4', s: '5',  d: 0.5, l: '空' },
@@ -666,13 +693,11 @@
                     { n: 'G4', s: '5',  d: 0.5, l: '流' }, { n: 'D5', s: '2•', d: 0.5, l: '星' },
                     { n: 'C5', s: '1•', d: 1.5, l: '—' },
 
-                    // 人理所當然的忘記
                     { n: 'C5', s: '1•', d: 0.5, l: '人' }, { n: 'C5', s: '1•', d: 0.5, l: '理' },
                     { n: 'G4', s: '5',  d: 0.5, l: '所' }, { n: 'G4', s: '5',  d: 0.5, l: '當' },
                     { n: 'C4', s: '1',  d: 0.5, l: '然' }, { n: 'E4', s: '3',  d: 0.5, l: '的' },
                     { n: 'D4', s: '2',  d: 0.5, l: '忘' }, { n: 'A4', s: '6',  d: 1.5, l: '記' },
 
-                    // 是誰風裏雨裏一直默默守護在原地
                     { n: 'A4', s: '6',  d: 0.5, l: '是' }, { n: 'A4', s: '6',  d: 0.5, l: '誰' },
                     { n: 'A4', s: '6',  d: 0.5, l: '風' }, { n: 'A4', s: '6',  d: 0.5, l: '裏' },
                     { n: 'C5', s: '1•', d: 0.5, l: '雨' }, { n: 'A4', s: '6',  d: 0.5, l: '裏' },
@@ -682,7 +707,6 @@
                     { n: 'E5', s: '3•', d: 0.5, l: '在' }, { n: 'C5', s: '1•', d: 0.5, l: '原' },
                     { n: 'D5', s: '2•', d: 0.5, l: '地' }, { n: 'D5', s: '2•', d: 1.5, l: '—' },
 
-                    // 原來你是我最想留住的幸運
                     { n: 'G4', s: '5',  d: 0.5, l: '原' }, { n: 'E5', s: '3•', d: 0.5, l: '來' },
                     { n: 'D5', s: '2•', d: 0.5, l: '你' }, { n: 'C5', s: '1•', d: 0.5, l: '是' },
                     { n: 'D5', s: '2•', d: 0.5, l: '我' }, { n: 'E5', s: '3•', d: 0.5, l: '最' },
@@ -690,7 +714,6 @@
                     { n: 'E5', s: '3•', d: 0.5, l: '住' }, { n: 'G4', s: '5',  d: 0.5, l: '的' },
                     { n: 'D5', s: '2•', d: 0.5, l: '幸' }, { n: 'E5', s: '3•', d: 1.5, l: '運' },
 
-                    // 原來我們和愛情曾經靠得那麼近
                     { n: 'D5', s: '2•', d: 0.5, l: '原' }, { n: 'D5', s: '2•', d: 0.5, l: '來' },
                     { n: 'E5', s: '3•', d: 0.5, l: '我' }, { n: 'F5', s: '4•', d: 0.5, l: '們' },
                     { n: 'E5', s: '3•', d: 0.5, l: '和' }, { n: 'D5', s: '2•', d: 0.5, l: '愛' },
@@ -699,19 +722,16 @@
                     { n: 'C5', s: '1•', d: 0.5, l: '得' }, { n: 'E5', s: '3•', d: 0.5, l: '那' },
                     { n: 'A4', s: '6',  d: 0.5, l: '麼' }, { n: 'B4', s: '7',  d: 1.5, l: '近' },
 
-                    // 那為我對抗世界的決定
                     { n: 'B4', s: '7',  d: 0.5, l: '那' }, { n: 'B4', s: '7',  d: 0.5, l: '為' },
                     { n: 'E5', s: '3•', d: 0.5, l: '我' }, { n: 'G5', s: '5•', d: 0.5, l: '對' },
                     { n: 'E5', s: '3•', d: 0.5, l: '抗' }, { n: 'C5', s: '1•', d: 0.5, l: '世' },
                     { n: 'B4', s: '7',  d: 0.5, l: '界' }, { n: 'A4', s: '6',  d: 0.5, l: '的' },
                     { n: 'F5', s: '4•', d: 0.5, l: '決' }, { n: 'F5', s: '4•', d: 1.5, l: '定' },
 
-                    // 那陪我淋的雨
                     { n: 'G5', s: '5•', d: 0.5, l: '那' }, { n: 'F5', s: '4•', d: 0.5, l: '陪' },
                     { n: 'E5', s: '3•', d: 0.5, l: '我' }, { n: 'G4', s: '5',  d: 0.5, l: '淋' },
                     { n: 'E5', s: '3•', d: 0.5, l: '的' }, { n: 'E5', s: '3•', d: 1.5, l: '雨' },
 
-                    // 一幕幕都是你 一塵不染的真心
                     { n: 'F5', s: '4•', d: 0.5, l: '一' }, { n: 'E5', s: '3•', d: 0.5, l: '幕' },
                     { n: 'C5', s: '1•', d: 0.5, l: '幕' }, { n: 'F4', s: '4',  d: 0.5, l: '都' },
                     { n: 'D5', s: '2•', d: 0.5, l: '是' }, { n: 'D5', s: '2•', d: 0.5, l: '你' },
@@ -721,13 +741,11 @@
                     { n: 'D5', s: '2•', d: 0.5, l: '心' }, { n: 'C5', s: '1•', d: 0.5, l: '—' },
                     { n: 'C5', s: '1•', d: 1.5, l: '—' },
 
-                    // 與你相遇 好幸運
                     { n: 'E5', s: '3•', d: 0.5, l: '與' }, { n: 'G4', s: '5',  d: 0.5, l: '你' },
                     { n: 'D5', s: '2•', d: 0.5, l: '相' }, { n: 'E5', s: '3•', d: 0.5, l: '遇' },
                     { n: 'G4', s: '5',  d: 0.5, l: '好' }, { n: 'D5', s: '2•', d: 0.5, l: '幸' },
                     { n: 'E5', s: '3•', d: 1.5, l: '運' },
 
-                    // 可我已失去為你淚流滿面的權利
                     { n: 'D5', s: '2•', d: 0.5, l: '可' }, { n: 'D5', s: '2•', d: 0.5, l: '我' },
                     { n: 'E5', s: '3•', d: 0.5, l: '已' }, { n: 'F5', s: '4•', d: 0.5, l: '失' },
                     { n: 'G5', s: '5•', d: 0.5, l: '去' }, { n: 'D5', s: '2•', d: 0.5, l: '為' },
@@ -736,24 +754,20 @@
                     { n: 'C5', s: '1•', d: 0.5, l: '面' }, { n: 'E4', s: '3',  d: 0.5, l: '的' },
                     { n: 'A4', s: '6',  d: 0.5, l: '權' }, { n: 'B4', s: '7',  d: 1.5, l: '利' },
 
-                    // 但願在我看不到的天際
                     { n: 'B4', s: '7',  d: 0.5, l: '但' }, { n: 'B4', s: '7',  d: 0.5, l: '願' },
                     { n: 'E5', s: '3•', d: 0.5, l: '在' }, { n: 'G5', s: '5•', d: 0.5, l: '我' },
                     { n: 'E5', s: '3•', d: 0.5, l: '看' }, { n: 'C5', s: '1•', d: 0.5, l: '不' },
                     { n: 'B4', s: '7',  d: 0.5, l: '到' }, { n: 'A4', s: '6',  d: 0.5, l: '的' },
                     { n: 'F5', s: '4•', d: 0.5, l: '天' }, { n: 'F5', s: '4•', d: 1.5, l: '際' },
 
-                    // 你張開了雙翼
                     { n: 'G5', s: '5•', d: 0.5, l: '你' }, { n: 'F5', s: '4•', d: 0.5, l: '張' },
                     { n: 'E5', s: '3•', d: 0.5, l: '開' }, { n: 'G4', s: '5',  d: 0.5, l: '了' },
                     { n: 'E5', s: '3•', d: 0.5, l: '雙' }, { n: 'E5', s: '3•', d: 1.5, l: '翼' },
 
-                    // 遇見你的註定
                     { n: 'F5', s: '4•', d: 0.5, l: '遇' }, { n: 'E5', s: '3•', d: 0.5, l: '見' },
                     { n: 'C5', s: '1•', d: 0.5, l: '你' }, { n: 'F4', s: '4',  d: 0.5, l: '的' },
                     { n: 'D5', s: '2•', d: 0.5, l: '註' }, { n: 'D5', s: '2•', d: 1.5, l: '定' },
 
-                    // 她會有多幸運
                     { n: 'E5', s: '3•', d: 0.5, l: '她' }, { n: 'C5', s: '1•', d: 0.5, l: '會' },
                     { n: 'C5', s: '1•', d: 0.5, l: '有' }, { n: 'E5', s: '3•', d: 0.5, l: '多' },
                     { n: 'D5', s: '2•', d: 0.5, l: '幸' }, { n: 'C5', s: '1•', d: 0.5, l: '運' },
@@ -762,7 +776,6 @@
             }
         ];
 
-        // 將歌詞字串依序對應到音符索引，形成自然句意段落
         function buildSemanticPhrases(song) {
             if (!song || !Array.isArray(song.notes)) return [];
             const noteCharEntries = [];
@@ -1041,11 +1054,11 @@
             song.notes.forEach((item, idx) => {
                 const card = document.createElement('div');
                 card.id = `sheet-note-${idx}`;
-                card.className = 'shrink-0 w-12 sm:w-14 h-11 sm:h-12 rounded-lg border flex items-center justify-center transition-all duration-150 cursor-pointer';
+                card.className = 'sheet-note-box border';
                 card.addEventListener('click', () => {
                     stopDemoPlayback(); state.currentNoteIndex = idx; updateSheetTrackUI(); highlightCurrentGuideKey();
                 });
-                card.innerHTML = formatSolfegeHtml(item.s, 'text-base sm:text-lg font-mono-tech font-black');
+                card.innerHTML = formatSolfegeHtml(item.s, 'text-lg sm:text-xl lg:text-2xl font-mono-tech font-black');
                 track.appendChild(card);
             });
             updateSheetTrackUI();
@@ -1061,12 +1074,12 @@
                 const card = document.getElementById(`sheet-note-${i}`);
                 if (!card) continue;
                 if (i < current) {
-                    card.className = 'shrink-0 w-12 sm:w-14 h-11 sm:h-12 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400/70 flex items-center justify-center transition-all duration-150 cursor-pointer';
+                    card.className = 'sheet-note-box border border-emerald-500/30 bg-emerald-950/30 text-emerald-400/70';
                 } else if (i === current) {
-                    card.className = 'shrink-0 w-13 sm:w-15 h-12 sm:h-13 rounded-lg border-2 border-amber-400 bg-amber-500/20 text-amber-200 shadow-[0_0_15px_rgba(251,191,36,0.35)] scale-105 flex items-center justify-center transition-all duration-150 cursor-pointer';
+                    card.className = 'sheet-note-box border-2 border-amber-400 bg-amber-500/20 text-amber-200 shadow-[0_0_15px_rgba(251,191,36,0.35)]';
                     card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 } else {
-                    card.className = 'shrink-0 w-12 sm:w-14 h-11 sm:h-12 rounded-lg border border-slate-800 bg-slate-950/80 text-slate-200 flex items-center justify-center transition-all duration-150 cursor-pointer hover:border-slate-600';
+                    card.className = 'sheet-note-box border border-slate-800 bg-slate-950/80 text-slate-200 hover:border-slate-600';
                 }
             }
             renderKtvLyrics();
@@ -1206,7 +1219,7 @@
         }
 
         // =====================================================================
-        // 琴鍵建構（統一簡譜與高低音點）
+        // 琴鍵建構（統一簡譜與高低音點，電腦版加大）
         // =====================================================================
         function buildPianoKeyboard() {
             const container = document.getElementById('pianoKeysContainer');
@@ -1219,7 +1232,7 @@
                 keyEl.dataset.midi = keyDef.midi;
                 keyEl.innerHTML = `
                     <span class="guide-dot"></span>
-                    ${formatSolfegeHtml(keyDef.solfege, 'text-xs sm:text-sm font-mono-tech font-black text-slate-800')}
+                    ${formatSolfegeHtml(keyDef.solfege, 'text-xs sm:text-sm lg:text-lg font-mono-tech font-black text-slate-800')}
                 `;
                 container.appendChild(keyEl); keyElementsMap.set(keyDef.midi, keyEl);
             });
@@ -1235,7 +1248,7 @@
                     keyEl.style.width = `${blackWidthPercent}%`; keyEl.style.left = `${leftPercent}%`;
                     keyEl.innerHTML = `
                         <span class="guide-dot"></span>
-                        ${formatSolfegeHtml(keyDef.solfege, 'text-[9px] sm:text-[11px] font-mono-tech font-bold text-slate-100')}
+                        ${formatSolfegeHtml(keyDef.solfege, 'text-[9px] sm:text-[11px] lg:text-sm font-mono-tech font-bold text-slate-100')}
                     `;
                     container.appendChild(keyEl); keyElementsMap.set(keyDef.midi, keyEl);
                 }
@@ -1327,7 +1340,7 @@
             if (!el) return;
             if (state.activeVoices.size === 0) {
                 el.textContent = '待機中';
-                el.className = 'text-xs font-mono-tech font-bold text-slate-500';
+                el.className = 'text-xs lg:text-sm font-mono-tech font-bold text-slate-500';
                 return;
             }
             const sols = Array.from(state.activeVoices.keys()).map(midi => {
@@ -1335,7 +1348,7 @@
                 return found ? found.solfege : '';
             }).filter(Boolean);
             el.textContent = sols.join(' ') || '待機中';
-            el.className = 'text-xs font-mono-tech font-bold text-emerald-400';
+            el.className = 'text-xs lg:text-sm font-mono-tech font-bold text-emerald-400';
         }
 
         // =====================================================================
@@ -1444,7 +1457,6 @@
                 }
             }
 
-            // 手機開啟時預設先顯示轉橫提示並嘗試鎖定橫屏
             if (isMobilePhone() && window.innerHeight > window.innerWidth) {
                 document.getElementById('portraitPromptModal').classList.remove('hidden-modal');
             }
