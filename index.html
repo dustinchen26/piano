@@ -7,9 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     <title>大師級數位合成鋼琴 | Pro Synth Piano</title>
-    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Google Fonts 思源黑體與等寬字體 -->
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -36,32 +34,37 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            min-height: 100dvh;
-            margin: 0;
-            padding: 0;
-            background-color: #090d16;
+        /* ---------- 高度修復：iOS / Android / 桌機通用 ---------- */
+        html {
+            height: -webkit-fill-available;
+            height: 100%;
+            height: 100dvh;
         }
 
         body {
+            width: 100%;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            min-height: 100dvh;
+            margin: 0;
+            background-color: #090d16;
             font-family: 'Noto Sans TC', sans-serif;
             background: radial-gradient(circle at top, #1e293b 0%, #090d16 100%);
             color: #f8fafc;
+            /* 直向允許垂直捲動；橫向由媒體查詢鎖定 */
+            touch-action: manipulation;
             overflow-x: hidden;
-            touch-action: none;
-            padding-top: max(6px, var(--safe-top));
-            padding-bottom: max(6px, var(--safe-bottom));
-            padding-left: max(6px, var(--safe-left));
-            padding-right: max(6px, var(--safe-right));
+            overflow-y: auto;
+            padding-top: max(8px, var(--safe-top));
+            padding-bottom: max(8px, var(--safe-bottom));
+            padding-left: max(8px, var(--safe-left));
+            padding-right: max(8px, var(--safe-right));
         }
 
         .font-mono-tech {
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* 頂級深色胡桃木側邊飾板質感 */
         .wood-trim {
             background: repeating-linear-gradient(
                 90deg,
@@ -73,16 +76,14 @@
             box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
         }
 
-        /* 合成器拉絲金屬面板 */
         .synth-chassis {
             background: linear-gradient(180deg, #1f2937 0%, #111827 40%, #0b0f19 100%);
-            box-shadow: 
+            box-shadow:
                 0 25px 50px -12px rgba(0, 0, 0, 0.85),
                 inset 0 1px 1px rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* 紅色毛氈條 */
         .felt-strip {
             height: 6px;
             background: linear-gradient(180deg, #7f1d1d 0%, #dc2626 50%, #450a0a 100%);
@@ -90,18 +91,22 @@
             flex-shrink: 0;
         }
 
-        /* 琴鍵容器 */
+        /* ---------- 琴鍵容器：高度自適應 ---------- */
         .piano-bed {
             position: relative;
             background: #05070a;
             padding: 0 4px 8px 4px;
             border-radius: 0 0 12px 12px;
             box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.9);
+            /* 用 clamp 取代固定高度，小螢幕不至於占滿 */
+            height: clamp(180px, 32vh, 300px);
             touch-action: none;
-            height: 240px;
         }
 
-        /* 白鍵樣式 */
+        .piano-bed * {
+            touch-action: none;
+        }
+
         .key-white {
             position: relative;
             flex: 1;
@@ -115,7 +120,7 @@
             cursor: pointer;
             transform-origin: top center;
             transition: transform 0.05s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.05s ease, background 0.06s ease;
-            box-shadow: 
+            box-shadow:
                 0 6px 0 #94a3b8,
                 0 8px 12px rgba(0, 0, 0, 0.5),
                 inset 0 -4px 6px rgba(255, 255, 255, 0.9);
@@ -131,40 +136,36 @@
             background: linear-gradient(180deg, #f1f5f9 0%, #ffffff 15%, #f0f9ff 90%, #bae6fd 100%);
         }
 
-        /* 教學引導目標白鍵發光樣式 */
         .key-white.guide-target {
             background: linear-gradient(180deg, #fef3c7 0%, #fde68a 35%, #fbbf24 90%, #f59e0b 100%) !important;
             border-color: #fbbf24 !important;
-            box-shadow: 
+            box-shadow:
                 0 6px 0 #d97706,
                 0 0 24px rgba(251, 191, 36, 0.85),
                 inset 0 -4px 8px rgba(255, 255, 255, 0.9) !important;
         }
 
-        /* 預設／右手白鍵按下樣式（青藍／天藍） */
         .key-white.active,
         .key-white.active-right {
             transform: perspective(600px) rotateX(-3.5deg) translateY(4px);
             background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 25%, #7dd3fc 90%, #38bdf8 100%) !important;
-            box-shadow: 
+            box-shadow:
                 0 2px 0 #0284c7,
                 0 0 22px rgba(56, 189, 248, 0.85),
                 inset 0 2px 8px rgba(2, 132, 199, 0.35) !important;
             border-color: #38bdf8 !important;
         }
 
-        /* 左手白鍵按下樣式（珊瑚粉／玫瑰紅） */
         .key-white.active-left {
             transform: perspective(600px) rotateX(-3.5deg) translateY(4px);
             background: linear-gradient(180deg, #fecdd3 0%, #ffe4e6 25%, #fda4af 90%, #fb7185 100%) !important;
-            box-shadow: 
+            box-shadow:
                 0 2px 0 #e11d48,
                 0 0 24px rgba(251, 113, 133, 0.9),
                 inset 0 2px 8px rgba(225, 29, 72, 0.35) !important;
             border-color: #fb7185 !important;
         }
 
-        /* 黑鍵樣式 */
         .key-black {
             position: absolute;
             top: 0;
@@ -176,7 +177,7 @@
             cursor: pointer;
             transform-origin: top center;
             transition: transform 0.05s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.05s ease, background 0.06s ease;
-            box-shadow: 
+            box-shadow:
                 0 5px 0 #020617,
                 0 8px 12px rgba(0, 0, 0, 0.75),
                 inset 0 1px 2px rgba(255, 255, 255, 0.25),
@@ -193,40 +194,36 @@
             background: linear-gradient(180deg, #475569 0%, #1e293b 20%, #0f172a 90%, #020617 100%);
         }
 
-        /* 教學引導目標黑鍵發光樣式 */
         .key-black.guide-target {
             background: linear-gradient(180deg, #fcd34d 0%, #f59e0b 35%, #d97706 85%, #92400e 100%) !important;
             border-color: #fde68a !important;
-            box-shadow: 
+            box-shadow:
                 0 5px 0 #78350f,
                 0 0 22px rgba(251, 191, 36, 0.95),
                 inset 0 1px 4px rgba(255, 255, 255, 0.7) !important;
         }
 
-        /* 預設／右手黑鍵按下樣式 */
         .key-black.active,
         .key-black.active-right {
             transform: perspective(500px) rotateX(-4.5deg) translateY(3px);
             background: linear-gradient(180deg, #38bdf8 0%, #0284c7 30%, #0369a1 85%, #0c4a6e 100%) !important;
-            box-shadow: 
+            box-shadow:
                 0 2px 0 #082f49,
                 0 0 20px rgba(56, 189, 248, 0.95),
                 inset 0 1px 4px rgba(255, 255, 255, 0.6) !important;
             border-color: #7dd3fc !important;
         }
 
-        /* 左手黑鍵按下樣式 */
         .key-black.active-left {
             transform: perspective(500px) rotateX(-4.5deg) translateY(3px);
             background: linear-gradient(180deg, #fb7185 0%, #e11d48 30%, #be123c 85%, #4c0519 100%) !important;
-            box-shadow: 
+            box-shadow:
                 0 2px 0 #4c0519,
                 0 0 22px rgba(251, 113, 133, 0.95),
                 inset 0 1px 4px rgba(255, 255, 255, 0.6) !important;
             border-color: #fda4af !important;
         }
 
-        /* 左右手徽章指示 */
         .hand-badge {
             display: none;
             font-size: 9px;
@@ -253,7 +250,6 @@
             box-shadow: 0 1px 4px rgba(2, 132, 199, 0.6);
         }
 
-        /* 目標琴鍵上方彈跳指示點 */
         .guide-dot {
             display: none;
             width: 10px;
@@ -274,7 +270,6 @@
             to { transform: translateY(-6px) scale(1.15); }
         }
 
-        /* 按鈕發光特效 */
         .btn-glow-active {
             background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
             color: #ffffff;
@@ -289,7 +284,6 @@
             box-shadow: 0 0 15px rgba(245, 158, 11, 0.45);
         }
 
-        /* 自訂捲軸 */
         .no-scrollbar::-webkit-scrollbar {
             height: 6px;
         }
@@ -301,53 +295,139 @@
             border-radius: 9999px;
         }
 
-        /* =====================================================================
-           手機橫屏自適應最佳化 (不裁切琴鍵、不留大塊白邊)
-           ===================================================================== */
+        /* ---------- 音量滑桿：iOS / Android / 桌機一致 ---------- */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+            height: 22px;
+            padding: 0;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #38bdf8;
+            margin-top: -5px;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+            border: 2px solid #0f172a;
+        }
+        input[type="range"]::-moz-range-track {
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #38bdf8;
+            border: 2px solid #0f172a;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+        }
+
+        #portraitPromptModal.hidden-modal {
+            display: none;
+        }
+
+        /* ---------- 手機直向：隱藏桌機鍵盤說明列 ---------- */
+        @media (orientation: portrait) and (max-width: 640px) {
+            footer {
+                display: none !important;
+            }
+            header p {
+                display: none;
+            }
+        }
+
+        /* ---------- 手機橫屏：滿版琴鍵、精簡控制列 ---------- */
         @media (orientation: landscape) and (max-height: 600px) {
+            html, body {
+                touch-action: none;
+                overflow: hidden;
+            }
             body {
-                padding: 4px 6px;
-                justify-content: flex-start;
+                height: 100dvh;
                 min-height: 100dvh;
+                justify-content: flex-start;
+                padding-top: max(4px, var(--safe-top));
+                padding-bottom: max(4px, var(--safe-bottom));
+                padding-left: max(4px, var(--safe-left));
+                padding-right: max(4px, var(--safe-right));
             }
             main {
                 flex: 1 1 auto;
                 min-height: 0;
+                width: 100%;
+                max-width: 80rem;
                 display: flex;
                 flex-direction: column;
+                justify-content: flex-start;
             }
             .synth-chassis {
                 flex: 1 1 auto;
                 min-height: 0;
-                border-radius: 14px;
+                border-radius: 12px;
             }
             header {
                 margin-bottom: 4px !important;
+                flex-shrink: 0;
             }
             header h1 {
-                font-size: 0.9rem !important;
+                font-size: 0.85rem !important;
                 line-height: 1.1;
             }
             header p {
                 display: none;
             }
+            /* 橫屏只保留「八度 + 延音 / 鍵位提示」區塊 */
             .control-panel-grid {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 0 !important;
+                padding: 4px 8px !important;
+                flex-shrink: 0;
+            }
+            .control-panel-grid > :nth-child(1),
+            .control-panel-grid > :nth-child(2) {
                 display: none !important;
+            }
+            .control-panel-grid > :nth-child(3) {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center;
+                justify-content: space-between;
+                padding: 6px 8px !important;
+                gap: 12px !important;
+            }
+            .control-panel-grid > :nth-child(3) > div {
+                flex: 1;
+                min-width: 0;
             }
             .tutor-bar {
                 padding: 4px 8px !important;
                 gap: 4px !important;
+                flex-shrink: 0;
             }
             .tutor-bar .sheet-scroll-box {
                 padding: 2px !important;
             }
             .keys-section {
                 flex: 1 1 auto;
-                min-height: 130px;
+                min-height: 120px;
             }
             .piano-bed {
-                height: 100% !important;
-                min-height: 130px;
+                height: auto !important;
+                flex: 1 1 auto;
+                min-height: 0;
                 max-height: none !important;
                 padding: 0 2px 4px 2px !important;
                 border-radius: 0 0 10px 10px;
@@ -360,21 +440,15 @@
                 display: none !important;
             }
         }
-
-        #portraitPromptModal.hidden-modal {
-            display: none;
-        }
     </style>
 </head>
-<body class="min-h-[100dvh] flex flex-col items-center justify-between p-2 sm:p-4 md:p-5">
+<body class="flex flex-col items-center justify-between">
 
-    <!-- LINE 內建瀏覽器提示橫幅 -->
     <div id="lineBrowserBanner" class="hidden w-full max-w-7xl mb-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs flex items-center justify-between gap-2">
         <span>⚠️ 偵測到目前在 LINE 內建瀏覽器開啟，點右下角「⋮」選「在預設瀏覽器中開啟」可減少框架與提升全螢幕支援。</span>
         <button id="closeLineBannerBtn" class="text-amber-300 hover:text-white font-bold shrink-0">✕</button>
     </div>
 
-    <!-- 手機直向建議轉橫屏遮罩 -->
     <div id="portraitPromptModal" class="hidden-modal fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
         <div class="w-16 h-16 rounded-2xl bg-sky-500/15 border border-sky-400/40 flex items-center justify-center mb-4 animate-bounce">
             <svg class="w-9 h-9 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -395,7 +469,6 @@
         </div>
     </div>
 
-    <!-- 頂部品牌標題與狀態列 -->
     <header class="w-full max-w-7xl flex flex-wrap items-center justify-between gap-2 mb-2 px-1 sm:px-2 shrink-0">
         <div class="flex items-center gap-2.5">
             <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/30 shrink-0">
@@ -411,7 +484,6 @@
             </div>
         </div>
 
-        <!-- 左右手圖例 + 橫屏滿版按鈕 + 音量 -->
         <div class="flex items-center flex-wrap gap-2 bg-slate-900/80 border border-slate-700/70 px-2.5 py-1.5 rounded-xl">
             <div class="flex items-center gap-2 text-[11px] font-bold pr-1 border-r border-slate-700/80" title="同時彈奏多個音時自動區分左右手">
                 <span class="inline-flex items-center gap-1 text-rose-300">
@@ -430,8 +502,7 @@
 
             <div class="flex items-center gap-1.5">
                 <span class="text-xs text-slate-400 font-medium hidden sm:inline">主音量</span>
-                <input type="range" id="masterVolume" min="0" max="1" step="0.01" value="0.75" 
-                    class="w-16 sm:w-24 accent-sky-400 cursor-pointer h-1.5 bg-slate-700 rounded-lg">
+                <input type="range" id="masterVolume" min="0" max="1" step="0.01" value="0.75" class="w-16 sm:w-24">
             </div>
 
             <span id="audioStatusBadge" class="hidden md:inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30">
@@ -441,14 +512,11 @@
         </div>
     </header>
 
-    <!-- 主琴體外殼 -->
     <main class="w-full max-w-7xl flex-1 flex flex-col justify-center">
         <div class="synth-chassis rounded-2xl overflow-hidden flex flex-col">
-            
-            <!-- 上半部：控制面板與即時頻譜螢幕 -->
+
             <div class="control-panel-grid grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 border-b border-slate-800/90 bg-slate-900/60">
-                
-                <!-- 左側：音色選擇器 (4欄) -->
+
                 <div class="lg:col-span-4 flex flex-col justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800">
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
@@ -473,10 +541,9 @@
                     </div>
                 </div>
 
-                <!-- 中央：OLED 即時波形與飄浮音符粒子視覺化螢幕 (5欄) -->
                 <div class="lg:col-span-5 relative rounded-xl overflow-hidden bg-[#04070d] border border-slate-700/80 shadow-inner min-h-[110px] sm:min-h-[120px] flex flex-col justify-between">
                     <canvas id="visualizerCanvas" class="absolute inset-0 w-full h-full block"></canvas>
-                    
+
                     <div class="relative z-10 flex items-center justify-between px-3 py-2 pointer-events-none">
                         <div class="flex items-center gap-2">
                             <span class="text-[10px] font-mono-tech px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">LIVE SPECTRUM</span>
@@ -493,7 +560,6 @@
                     </div>
                 </div>
 
-                <!-- 右側：八度移調、延音踏板與顯示設定 (3欄) -->
                 <div class="lg:col-span-3 flex flex-col justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800 gap-2">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-slate-300">八度移調</span>
@@ -520,9 +586,6 @@
                 </div>
             </div>
 
-            <!-- ======================================================================
-                 互動樂譜教學導覽區 (SAMPLE SHEET MUSIC & FOLLOW-ME TUTOR)
-                 ====================================================================== -->
             <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-3 sm:px-5 py-2.5 sm:py-3 flex flex-col gap-2 shrink-0">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
@@ -564,17 +627,14 @@
                 </div>
             </div>
 
-            <!-- 紅色古典鋼琴毛氈緩衝條 -->
             <div class="felt-strip w-full"></div>
 
-            <!-- 下半部：琴鍵區域 -->
             <div class="keys-section flex w-full items-stretch bg-[#070a10]">
                 <div class="hidden md:block w-5 wood-trim border-r border-black/80 shrink-0"></div>
 
                 <div class="flex-1 w-full flex flex-col">
-                    <div id="pianoWrapper" class="piano-bed w-full sm:h-[265px] md:h-[300px] select-none">
+                    <div id="pianoWrapper" class="piano-bed w-full select-none">
                         <div id="pianoKeysContainer" class="relative w-full h-full flex">
-                            <!-- 由 JavaScript 動態生成白鍵與黑鍵 -->
                         </div>
                     </div>
                 </div>
@@ -584,7 +644,6 @@
         </div>
     </main>
 
-    <!-- 底部操作說明列 -->
     <footer class="w-full max-w-7xl mt-2 px-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 shrink-0">
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
             <span>⌨️ <strong class="text-slate-200">電腦鍵盤</strong>：下排 <code class="text-sky-300">A S D F G H J K L ; '</code> 白鍵，上排 <code class="text-sky-300">W E T Y U O P</code> 黑鍵</span>
@@ -596,6 +655,25 @@
     </footer>
 
     <script>
+        /* ---------- Canvas roundRect polyfill（舊版 Safari / Firefox 相容） ---------- */
+        if (window.CanvasRenderingContext2D && !CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, radii) {
+                if (typeof radii === 'number') radii = [radii, radii, radii, radii];
+                if (!Array.isArray(radii) || radii.length !== 4) radii = [0, 0, 0, 0];
+                const [tl, tr, br, bl] = radii;
+                this.moveTo(x + tl, y);
+                this.lineTo(x + w - tr, y);
+                this.arcTo(x + w, y, x + w, y + tr, tr);
+                this.lineTo(x + w, y + h - br);
+                this.arcTo(x + w, y + h, x + w - br, y + h, br);
+                this.lineTo(x + bl, y + h);
+                this.arcTo(x, y + h, x, y + h - bl, bl);
+                this.lineTo(x, y + tl);
+                this.arcTo(x, y, x + tl, y, tl);
+                this.closePath();
+            };
+        }
+
         const SONG_LIBRARY = [
             {
                 id: 'fur-elise',
@@ -898,7 +976,7 @@
                     osc2.connect(g2); g2.connect(filter);
                     osc3.connect(g3); g3.connect(filter);
                     oscillators.push(osc1, osc2, osc3);
-                } 
+                }
                 else if (state.currentPreset === 'epiano') {
                     const osc1 = ctx.createOscillator();
                     const osc2 = ctx.createOscillator();
@@ -923,7 +1001,7 @@
                     osc2.connect(filter);
                     oscBell.connect(bellGain); bellGain.connect(filter);
                     oscillators.push(osc1, osc2, oscBell);
-                } 
+                }
                 else if (state.currentPreset === 'organ') {
                     const ratios = [0.5, 1, 2, 3];
                     const volumes = [0.35, 0.5, 0.3, 0.15];
@@ -939,7 +1017,7 @@
                         subGain.connect(filter);
                         oscillators.push(osc);
                     });
-                } 
+                }
                 else if (state.currentPreset === 'retro8bit') {
                     const osc1 = ctx.createOscillator();
                     const osc2 = ctx.createOscillator();
@@ -1103,7 +1181,7 @@
                 const card = document.createElement('div');
                 card.id = `sheet-note-${idx}`;
                 card.className = 'shrink-0 w-12 sm:w-14 py-1 px-1 rounded-lg border flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
-                
+
                 card.addEventListener('click', () => {
                     stopDemoPlayback();
                     state.currentNoteIndex = idx;
@@ -1397,8 +1475,15 @@
             const keyCodeToMidi = new Map();
             KEY_DEFINITIONS.forEach(k => keyCodeToMidi.set(k.keyCode, k.midi));
 
+            function isTypingTarget(el) {
+                if (!el) return false;
+                const tag = (el.tagName || '').toUpperCase();
+                return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
+            }
+
             window.addEventListener('keydown', (e) => {
                 if (e.repeat) return;
+                if (isTypingTarget(e.target)) return;
 
                 if (e.code === 'Space') {
                     e.preventDefault();
@@ -1424,6 +1509,8 @@
             });
 
             window.addEventListener('keyup', (e) => {
+                if (isTypingTarget(e.target)) return;
+
                 if (e.code === 'Space') {
                     e.preventDefault();
                     toggleSustainPedal(false);
@@ -1702,8 +1789,15 @@
 
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
+            window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 120));
 
             function renderLoop() {
+                // 隱藏時跳過繪製，節省效能
+                if (canvas.offsetParent === null) {
+                    requestAnimationFrame(renderLoop);
+                    return;
+                }
+
                 const rect = canvas.parentElement.getBoundingClientRect();
                 const width = rect.width;
                 const height = rect.height;
