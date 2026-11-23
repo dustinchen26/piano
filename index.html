@@ -29,7 +29,7 @@
             height: -webkit-fill-available;
             height: 100%;
             height: 100dvh;
-            touch-action: pan-x pan-y;
+            touch-action: manipulation;
         }
 
         body {
@@ -40,16 +40,16 @@
             margin: 0;
             background-color: #090d16;
             font-family: 'Noto Sans TC', sans-serif;
-            line-height: 1.15;
+            line-height: 1.1;
             background: radial-gradient(circle at top, #1e293b 0%, #090d16 100%);
             color: #f8fafc;
-            touch-action: pan-x pan-y;
+            touch-action: manipulation;
             overflow-x: hidden;
             overflow-y: auto;
-            padding-top: max(3px, var(--safe-top));
-            padding-bottom: max(3px, var(--safe-bottom));
-            padding-left: max(3px, var(--safe-left));
-            padding-right: max(3px, var(--safe-right));
+            padding-top: max(2px, var(--safe-top));
+            padding-bottom: max(2px, var(--safe-bottom));
+            padding-left: max(2px, var(--safe-left));
+            padding-right: max(2px, var(--safe-right));
             justify-content: flex-start;
         }
 
@@ -67,20 +67,20 @@
         }
 
         .felt-strip {
-            height: 4px;
+            height: 3px;
             background: linear-gradient(180deg, #7f1d1d 0%, #dc2626 50%, #450a0a 100%);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
             flex-shrink: 0;
         }
 
         .piano-bed {
             position: relative;
             background: #05070a;
-            padding: 0 2px 6px 2px;
+            padding: 0 2px 4px 2px;
             border-radius: 0 0 12px 12px;
             box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.9);
             flex: 1 1 auto;
-            min-height: 350px;
+            min-height: 360px;
             touch-action: none;
         }
 
@@ -198,11 +198,45 @@
             }
         }
 
+        /* 琴鍵上方選項與簡譜方框：緊湊行高與清晰字級 */
+        .compact-btn {
+            font-size: 12px;
+            line-height: 1.1;
+            padding: 3px 7px;
+            min-height: 26px;
+            white-space: nowrap;
+        }
+        @media (min-width: 1024px) {
+            .compact-btn {
+                font-size: 14px;
+                line-height: 1.15;
+                padding: 5px 10px;
+                min-height: 30px;
+            }
+        }
+
+        .compact-select {
+            font-size: 12px;
+            line-height: 1.1;
+            padding: 3px 6px;
+            min-height: 26px;
+            white-space: nowrap;
+        }
+        @media (min-width: 1024px) {
+            .compact-select {
+                font-size: 14px;
+                line-height: 1.15;
+                padding: 4px 9px;
+                min-height: 30px;
+            }
+        }
+
         .sheet-note-box {
             flex: 0 0 auto;
-            width: 50px;
-            height: 44px;
-            border-radius: 8px;
+            width: 48px;
+            height: 40px;
+            line-height: 1.1;
+            border-radius: 7px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -212,8 +246,8 @@
 
         @media (min-width: 1024px) {
             .sheet-note-box {
-                width: 66px;
-                height: 58px;
+                width: 64px;
+                height: 54px;
             }
         }
 
@@ -249,12 +283,12 @@
             box-shadow: 0 0 12px rgba(245, 158, 11, 0.45);
         }
 
-        .no-scrollbar::-webkit-scrollbar { height: 4px; }
+        .no-scrollbar::-webkit-scrollbar { height: 3px; }
         .no-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
         .no-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
 
         input[type="range"] {
-            -webkit-appearance: none; appearance: none; background: transparent; cursor: pointer; height: 20px; padding: 0;
+            -webkit-appearance: none; appearance: none; background: transparent; cursor: pointer; height: 18px; padding: 0;
         }
         input[type="range"]::-webkit-slider-runnable-track { height: 5px; background: #334155; border-radius: 3px; }
         input[type="range"]::-webkit-slider-thumb {
@@ -267,86 +301,76 @@
             box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
         }
 
-        .compact-btn {
-            font-size: 12px;
-            line-height: 1.1;
-            padding: 4px 7px;
-            white-space: nowrap;
-        }
-        @media (min-width: 1024px) {
-            .compact-btn {
-                font-size: 14px;
-                line-height: 1.2;
-                padding: 6px 10px;
-            }
-        }
-
-        .compact-select {
-            font-size: 12px;
-            line-height: 1.1;
-            padding: 4px 6px;
-            white-space: nowrap;
-        }
-        @media (min-width: 1024px) {
-            .compact-select {
-                font-size: 14px;
-                line-height: 1.2;
-                padding: 5px 10px;
-            }
-        }
-
         #portraitPromptModal.hidden-modal { display: none; }
 
         .ktv-char {
             font-family: 'Noto Sans TC', sans-serif;
             font-weight: 900;
-            font-size: 22px;
-            line-height: 1.2;
+            font-size: 20px;
+            line-height: 1.1;
             display: inline-block;
             transition: color 0.14s ease, transform 0.14s ease, text-shadow 0.14s ease;
             white-space: nowrap;
         }
 
         @media (min-width: 1024px) {
-            .ktv-char { font-size: 30px; line-height: 1.25; }
+            .ktv-char { font-size: 28px; line-height: 1.15; }
         }
 
         .ktv-past { color: rgba(148, 163, 184, 0.45); }
         .ktv-upcoming { color: #f8fafc; }
         .ktv-active-char {
             color: #facc15;
-            transform: translateY(-2px) scale(1.18);
+            transform: translateY(-2px) scale(1.15);
             text-shadow: 0 0 14px rgba(250, 204, 21, 0.95), 0 0 24px rgba(251, 146, 60, 0.6);
         }
 
-        @media (orientation: landscape) and (max-height: 680px) {
-            html, body { touch-action: none; overflow: hidden; }
+        /* 橫向模式：最大化琴鍵高度，收合上方多餘行距 */
+        @media (orientation: landscape) and (max-height: 760px) {
+            html, body { overflow: hidden; }
             body {
                 height: 100dvh; min-height: 100dvh;
-                padding-top: max(2px, var(--safe-top));
-                padding-bottom: max(2px, var(--safe-bottom));
+                padding-top: max(1px, var(--safe-top));
+                padding-bottom: max(1px, var(--safe-bottom));
                 padding-left: max(2px, var(--safe-left));
                 padding-right: max(2px, var(--safe-right));
             }
+            #lineBrowserBanner { display: none !important; }
             main { flex: 1 1 auto; min-height: 0; width: 100%; max-width: none; display: flex; flex-direction: column; }
             .synth-chassis { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; border-radius: 10px; }
             header { display: none !important; }
+
             .control-panel-grid {
                 display: grid !important;
                 grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
                 gap: 4px !important;
-                padding: 3px 6px !important;
+                padding: 2px 5px !important;
+                line-height: 1.1 !important;
                 border-bottom: 1px solid rgba(255,255,255,0.1);
                 flex-shrink: 0;
             }
-            .control-panel-grid > :nth-child(1) { grid-column: span 5; padding: 2px 4px; }
-            .control-panel-grid > :nth-child(2) { grid-column: span 7; min-height: 46px; }
-            .control-panel-grid .ktv-char { font-size: 20px !important; line-height: 1.15 !important; }
-            .tutor-bar { padding: 2px 6px !important; gap: 2px !important; flex-shrink: 0; }
-            .tutor-bar .sheet-scroll-box { padding: 1px !important; }
-            .tutor-bar .sheet-note-box { width: 42px; height: 36px; }
-            .keys-section { flex: 1 1 auto; min-height: 215px; }
-            .piano-bed { height: 100% !important; min-height: 215px; padding: 0 2px 3px 2px !important; border-radius: 0 0 8px 8px; }
+            .control-panel-grid > :nth-child(1) { grid-column: span 5; padding: 1px 3px; }
+            .control-panel-grid > :nth-child(2) { grid-column: span 7; min-height: 36px; }
+            .control-panel-grid .ktv-char { font-size: 18px !important; line-height: 1.1 !important; }
+
+            .tutor-bar {
+                padding: 2px 5px !important;
+                gap: 2px !important;
+                line-height: 1.1 !important;
+                flex-shrink: 0;
+            }
+            .tutor-bar .compact-btn,
+            .tutor-bar .compact-select {
+                font-size: 12px !important;
+                line-height: 1.1 !important;
+                padding: 2px 6px !important;
+                min-height: 24px !important;
+            }
+            .tutor-bar .sheet-scroll-box { padding: 1px 2px !important; }
+            .tutor-bar .sheet-note-box { width: 40px; height: 32px; }
+
+            .keys-section { flex: 1 1 auto; min-height: 250px; }
+            .piano-bed { height: 100% !important; min-height: 250px; padding: 0 2px 2px 2px !important; border-radius: 0 0 8px 8px; }
             footer { display: none !important; }
         }
 
@@ -357,6 +381,10 @@
     </style>
 </head>
 <body class="flex flex-col items-center">
+
+    <button id="resetZoomBtn" class="hidden fixed top-2 right-2 z-50 px-2.5 py-1 rounded-lg bg-rose-600 text-white text-xs font-bold shadow-lg border border-rose-300">
+        🔍 還原縮放
+    </button>
 
     <div id="lineBrowserBanner" class="hidden w-full mb-0.5 px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs flex items-center justify-between gap-2 shrink-0">
         <span class="truncate">⚠️ 建議用外部瀏覽器開啟，橫向與音效更順暢。</span>
@@ -409,7 +437,7 @@
     <main class="w-full flex-1 flex flex-col justify-start">
         <div class="synth-chassis rounded-2xl overflow-hidden flex flex-col flex-1">
 
-            <div class="control-panel-grid grid grid-cols-1 lg:grid-cols-12 gap-1.5 p-1.5 sm:px-3 sm:py-2 border-b border-slate-800/90 bg-slate-900/60 shrink-0">
+            <div class="control-panel-grid grid grid-cols-1 lg:grid-cols-12 gap-1 p-1 sm:px-3 sm:py-1.5 border-b border-slate-800/90 bg-slate-900/60 shrink-0">
 
                 <div class="lg:col-span-5 flex flex-col justify-center bg-slate-950/70 p-1 rounded-lg border border-slate-800">
                     <div class="grid grid-cols-4 lg:grid-cols-2 gap-1" id="presetButtons">
@@ -428,23 +456,23 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-7 relative rounded-lg overflow-hidden bg-[#04070d] border border-slate-700/80 shadow-inner min-h-[54px] sm:min-h-[72px] flex flex-col justify-between">
+                <div class="lg:col-span-7 relative rounded-lg overflow-hidden bg-[#04070d] border border-slate-700/80 shadow-inner min-h-[44px] sm:min-h-[60px] flex flex-col justify-between">
                     <canvas id="visualizerCanvas" class="absolute inset-0 w-full h-full block"></canvas>
 
-                    <div class="relative z-10 flex items-center justify-between px-2.5 pt-0.5 pointer-events-none">
-                        <span id="activeNotesDisplay" class="text-[11px] lg:text-xs font-mono-tech font-bold text-emerald-400">待機中</span>
+                    <div class="relative z-10 flex items-center justify-between px-2 pt-0.5 pointer-events-none">
+                        <span id="activeNotesDisplay" class="text-[11px] lg:text-xs font-mono-tech font-bold text-emerald-400 leading-none">待機中</span>
                     </div>
 
-                    <div id="ktvLyrics" class="relative z-10 flex-1 flex items-center justify-center overflow-x-auto no-scrollbar px-2 pb-0.5 min-h-[32px]">
+                    <div id="ktvLyrics" class="relative z-10 flex-1 flex items-center justify-center overflow-x-auto no-scrollbar px-2 pb-0.5 min-h-[24px]">
                         <div id="ktvLine" class="flex items-center justify-center gap-0.5 whitespace-nowrap"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-2 sm:px-3 py-1 flex flex-col gap-1 shrink-0">
+            <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-1.5 sm:px-3 py-1 flex flex-col gap-1 shrink-0">
                 <div class="flex flex-wrap items-center justify-between gap-1">
                     <div class="flex flex-nowrap items-center gap-1 overflow-x-auto no-scrollbar">
-                        <label for="songSelector" class="text-xs lg:text-sm font-bold text-sky-300 whitespace-nowrap shrink-0">琴譜：</label>
+                        <label for="songSelector" class="text-xs lg:text-sm font-bold text-sky-300 whitespace-nowrap shrink-0 leading-none">琴譜：</label>
                         <select id="songSelector" class="bg-slate-900 border border-slate-700 text-slate-100 compact-select font-bold rounded-lg focus:outline-none focus:border-amber-400 cursor-pointer shrink-0">
                         </select>
 
@@ -462,14 +490,14 @@
                     </div>
 
                     <div class="flex items-center gap-1.5 text-xs lg:text-sm shrink-0">
-                        <span id="tutorFeedbackText" class="text-emerald-400 font-bold whitespace-nowrap">自由彈奏</span>
-                        <span id="songProgressBadge" class="font-mono-tech bg-slate-900 border border-slate-700 px-1.5 py-0.5 rounded text-slate-300 whitespace-nowrap">
+                        <span id="tutorFeedbackText" class="text-emerald-400 font-bold whitespace-nowrap leading-none">自由彈奏</span>
+                        <span id="songProgressBadge" class="font-mono-tech bg-slate-900 border border-slate-700 px-1.5 py-0.5 rounded text-slate-300 whitespace-nowrap leading-none">
                             自由
                         </span>
                     </div>
                 </div>
 
-                <div class="sheet-scroll-box relative bg-slate-900/90 border border-slate-800 rounded-lg p-1 overflow-hidden">
+                <div class="sheet-scroll-box relative bg-slate-900/90 border border-slate-800 rounded-lg p-0.5 overflow-hidden">
                     <div class="absolute top-0 left-0 h-0.5 bg-slate-800 w-full">
                         <div id="songProgressBar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-200" style="width: 0%;"></div>
                     </div>
@@ -502,6 +530,17 @@
 
     <script>
         document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+        document.addEventListener('gesturechange', function (e) { e.preventDefault(); });
+        document.addEventListener('gestureend', function (e) { e.preventDefault(); });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (e) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
 
         if (window.CanvasRenderingContext2D && !CanvasRenderingContext2D.prototype.roundRect) {
             CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, radii) {
@@ -1032,11 +1071,7 @@
                 state.currentSongIndex = parseInt(e.target.value, 10);
                 state.currentNoteIndex = 0;
                 const selectedSong = SONG_LIBRARY[state.currentSongIndex];
-                if (isFreePlaySong(selectedSong)) {
-                    state.tutorEnabled = false;
-                } else {
-                    state.tutorEnabled = true;
-                }
+                state.tutorEnabled = !isFreePlaySong(selectedSong);
                 syncGuideButtonUI();
                 renderSheetTrack();
                 highlightCurrentGuideKey();
@@ -1067,7 +1102,7 @@
             track.innerHTML = '';
             if (isFreePlaySong(song)) {
                 const hint = document.createElement('div');
-                hint.className = 'w-full h-11 flex items-center justify-center text-xs sm:text-sm text-emerald-300/90 font-medium whitespace-nowrap px-2';
+                hint.className = 'w-full h-9 sm:h-11 flex items-center justify-center text-xs sm:text-sm text-emerald-300/90 font-medium whitespace-nowrap px-2 leading-none';
                 hint.textContent = '自由彈奏模式：不限曲目，可直接按琴鍵或切換上方琴譜跟彈';
                 track.appendChild(hint);
                 updateSheetTrackUI();
@@ -1119,12 +1154,12 @@
             const song = SONG_LIBRARY[state.currentSongIndex];
             if (isFreePlaySong(song) || !state.tutorEnabled) {
                 feedbackEl.textContent = '自由彈奏';
-                feedbackEl.className = 'text-emerald-400 font-bold whitespace-nowrap';
+                feedbackEl.className = 'text-emerald-400 font-bold whitespace-nowrap leading-none';
                 return;
             }
             if (state.currentNoteIndex >= song.notes.length) {
                 feedbackEl.textContent = '🎉 恭喜完成！';
-                feedbackEl.className = 'text-emerald-400 font-bold whitespace-nowrap';
+                feedbackEl.className = 'text-emerald-400 font-bold whitespace-nowrap leading-none';
                 return;
             }
             const targetNoteObj = song.notes[state.currentNoteIndex];
@@ -1133,7 +1168,7 @@
                 const keyEl = keyElementsMap.get(keyDef.midi);
                 if (keyEl) keyEl.classList.add('guide-target');
                 feedbackEl.textContent = `按黃光鍵 ${targetNoteObj.s}`;
-                feedbackEl.className = 'text-amber-300 font-bold whitespace-nowrap';
+                feedbackEl.className = 'text-amber-300 font-bold whitespace-nowrap leading-none';
             }
         }
 
@@ -1147,7 +1182,7 @@
             } else {
                 const feedbackEl = document.getElementById('tutorFeedbackText');
                 feedbackEl.textContent = `找黃光鍵 ${targetNoteObj.s}`;
-                feedbackEl.className = 'text-rose-400 font-bold whitespace-nowrap';
+                feedbackEl.className = 'text-rose-400 font-bold whitespace-nowrap leading-none';
             }
         }
 
@@ -1364,7 +1399,7 @@
             if (!el) return;
             if (state.activeVoices.size === 0) {
                 el.textContent = '待機中';
-                el.className = 'text-[11px] lg:text-xs font-mono-tech font-bold text-slate-500';
+                el.className = 'text-[11px] lg:text-xs font-mono-tech font-bold text-slate-500 leading-none';
                 return;
             }
             const sols = Array.from(state.activeVoices.keys()).map(midi => {
@@ -1372,7 +1407,7 @@
                 return found ? found.solfege : '';
             }).filter(Boolean);
             el.textContent = sols.join(' ') || '待機中';
-            el.className = 'text-[11px] lg:text-xs font-mono-tech font-bold text-emerald-400';
+            el.className = 'text-[11px] lg:text-xs font-mono-tech font-bold text-emerald-400 leading-none';
         }
 
         function spawnNoteParticles() {
@@ -1439,6 +1474,36 @@
             draw();
         }
 
+        function setupZoomGuard() {
+            const resetBtn = document.getElementById('resetZoomBtn');
+            const metaViewport = document.querySelector('meta[name="viewport"]');
+            if (!resetBtn || !window.visualViewport) return;
+
+            function checkZoom() {
+                const scale = window.visualViewport.scale || 1;
+                if (scale > 1.05) {
+                    resetBtn.classList.remove('hidden');
+                } else {
+                    resetBtn.classList.add('hidden');
+                }
+            }
+
+            resetBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                if (metaViewport) {
+                    metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+                }
+                document.body.style.zoom = '1';
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    checkZoom();
+                }, 120);
+            });
+
+            window.visualViewport.addEventListener('resize', checkZoom);
+            window.visualViewport.addEventListener('scroll', checkZoom);
+        }
+
         function isMobilePhone() {
             return /Android|iPhone|iPod|SM-|Galaxy/i.test(navigator.userAgent);
         }
@@ -1457,6 +1522,7 @@
             setupKeyboardAndControls();
             initTutorSystem();
             initVisualizer();
+            setupZoomGuard();
             tryAutoLandscape();
 
             document.getElementById('dismissPortraitModalBtn')?.addEventListener('click', () => {
@@ -1483,7 +1549,7 @@
             window.addEventListener('orientationchange', checkOrientation);
             setTimeout(checkOrientation, 250);
 
-            if (/Line/i.test(navigator.userAgent)) {
+            if (/Line/i.test(navigator.userAgent) && window.innerHeight > window.innerWidth) {
                 document.getElementById('lineBrowserBanner')?.classList.remove('hidden');
             }
             document.getElementById('closeLineBannerBtn')?.addEventListener('click', () => {
