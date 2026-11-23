@@ -11,15 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --accent-glow: #38bdf8;
-            --accent-secondary: #818cf8;
-            --left-hand-color: #fb7185;
-            --left-hand-glow: rgba(251, 113, 133, 0.85);
-            --right-hand-color: #38bdf8;
-            --right-hand-glow: rgba(56, 189, 248, 0.85);
             --panel-bg: #111827;
-            --wood-dark: #2c1608;
-            --wood-light: #4a2511;
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-left: env(safe-area-inset-left, 0px);
@@ -54,10 +46,10 @@
             touch-action: pan-x pan-y;
             overflow-x: hidden;
             overflow-y: auto;
-            padding-top: max(8px, var(--safe-top));
-            padding-bottom: max(8px, var(--safe-bottom));
-            padding-left: max(8px, var(--safe-left));
-            padding-right: max(8px, var(--safe-right));
+            padding-top: max(6px, var(--safe-top));
+            padding-bottom: max(6px, var(--safe-bottom));
+            padding-left: max(4px, var(--safe-left));
+            padding-right: max(4px, var(--safe-right));
             justify-content: flex-start;
         }
 
@@ -84,11 +76,11 @@
         .piano-bed {
             position: relative;
             background: #05070a;
-            padding: 0 4px 8px 4px;
+            padding: 0 3px 8px 3px;
             border-radius: 0 0 12px 12px;
             box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.9);
             flex: 1 1 auto;
-            min-height: 240px;
+            min-height: 310px;
             touch-action: none;
         }
 
@@ -112,7 +104,7 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
             z-index: 1;
         }
 
@@ -126,18 +118,11 @@
             box-shadow: 0 6px 0 #d97706, 0 0 24px rgba(251, 191, 36, 0.85), inset 0 -4px 8px rgba(255, 255, 255, 0.9) !important;
         }
 
-        .key-white.active, .key-white.active-right {
+        .key-white.active {
             transform: perspective(600px) rotateX(-3.5deg) translateY(4px);
             background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 25%, #7dd3fc 90%, #38bdf8 100%) !important;
             box-shadow: 0 2px 0 #0284c7, 0 0 22px rgba(56, 189, 248, 0.85), inset 0 2px 8px rgba(2, 132, 199, 0.35) !important;
             border-color: #38bdf8 !important;
-        }
-
-        .key-white.active-left {
-            transform: perspective(600px) rotateX(-3.5deg) translateY(4px);
-            background: linear-gradient(180deg, #fecdd3 0%, #ffe4e6 25%, #fda4af 90%, #fb7185 100%) !important;
-            box-shadow: 0 2px 0 #e11d48, 0 0 24px rgba(251, 113, 133, 0.9), inset 0 2px 8px rgba(225, 29, 72, 0.35) !important;
-            border-color: #fb7185 !important;
         }
 
         .key-black {
@@ -170,43 +155,11 @@
             box-shadow: 0 5px 0 #78350f, 0 0 22px rgba(251, 191, 36, 0.95), inset 0 1px 4px rgba(255, 255, 255, 0.7) !important;
         }
 
-        .key-black.active, .key-black.active-right {
+        .key-black.active {
             transform: perspective(500px) rotateX(-4.5deg) translateY(3px);
             background: linear-gradient(180deg, #38bdf8 0%, #0284c7 30%, #0369a1 85%, #0c4a6e 100%) !important;
             box-shadow: 0 2px 0 #082f49, 0 0 20px rgba(56, 189, 248, 0.95), inset 0 1px 4px rgba(255, 255, 255, 0.6) !important;
             border-color: #7dd3fc !important;
-        }
-
-        .key-black.active-left {
-            transform: perspective(500px) rotateX(-4.5deg) translateY(3px);
-            background: linear-gradient(180deg, #fb7185 0%, #e11d48 30%, #be123c 85%, #4c0519 100%) !important;
-            box-shadow: 0 2px 0 #4c0519, 0 0 22px rgba(251, 113, 133, 0.95), inset 0 1px 4px rgba(255, 255, 255, 0.6) !important;
-            border-color: #fda4af !important;
-        }
-
-        .hand-badge {
-            display: none;
-            font-size: 9px;
-            font-weight: 900;
-            padding: 1px 4px;
-            border-radius: 4px;
-            margin-bottom: 3px;
-            line-height: 1.1;
-            letter-spacing: 0.02em;
-        }
-
-        .active-left .hand-badge {
-            display: inline-block;
-            background: #e11d48;
-            color: #fff;
-            box-shadow: 0 1px 4px rgba(225, 29, 72, 0.6);
-        }
-
-        .active-right .hand-badge, .active:not(.active-left) .hand-badge {
-            display: inline-block;
-            background: #0284c7;
-            color: #fff;
-            box-shadow: 0 1px 4px rgba(2, 132, 199, 0.6);
         }
 
         .guide-dot {
@@ -241,7 +194,7 @@
             box-shadow: 0 0 15px rgba(245, 158, 11, 0.45);
         }
 
-        .no-scrollbar::-webkit-scrollbar { height: 6px; }
+        .no-scrollbar::-webkit-scrollbar { height: 5px; }
         .no-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
         .no-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
 
@@ -263,104 +216,78 @@
 
         #portraitPromptModal.hidden-modal { display: none; }
 
-        /* ============ KTV 動態字幕樣式 ============ */
-        .ktv-note {
+        /* ============ 整句 KTV 字幕樣式 ============ */
+        .ktv-char {
             font-family: 'Noto Sans TC', sans-serif;
-            font-weight: 900;
-            font-size: 15px;
-            line-height: 1;
+            font-weight: 800;
+            font-size: 17px;
+            line-height: 1.25;
             display: inline-block;
-            transition: color 0.18s ease, transform 0.18s ease, font-size 0.18s ease;
+            transition: color 0.14s ease, transform 0.14s ease, text-shadow 0.14s ease;
             white-space: nowrap;
         }
 
-        .ktv-done {
-            color: rgba(148, 163, 184, 0.32);
-            transform: scale(0.9);
+        .ktv-past {
+            color: rgba(148, 163, 184, 0.55);
         }
 
-        .ktv-next {
-            color: rgba(226, 232, 240, 0.72);
+        .ktv-upcoming {
+            color: #f1f5f9;
         }
 
-        .ktv-current {
-            font-size: 22px;
-            background-image: linear-gradient(
-                90deg,
-                rgba(148, 163, 184, 0.42) 0%,
-                rgba(148, 163, 184, 0.42) 50%,
-                #fbbf24 50%,
-                #fde68a 100%
-            );
-            background-size: 200% 100%;
-            background-position: 0% 0;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-            animation: ktvSweep var(--ktv-dur, 1.2s) linear infinite;
-            filter: drop-shadow(0 0 9px rgba(251, 191, 36, 0.6));
-            transform: scale(1.06);
-        }
-
-        @keyframes ktvSweep {
-            from { background-position: 0% 0; }
-            to   { background-position: 100% 0; }
+        .ktv-active-char {
+            color: #fde047;
+            transform: translateY(-2px) scale(1.18);
+            text-shadow: 0 0 12px rgba(250, 204, 21, 0.85), 0 0 24px rgba(56, 189, 248, 0.45);
         }
 
         @media (min-width: 640px) {
-            .ktv-note { font-size: 17px; }
-            .ktv-current { font-size: 26px; }
+            .ktv-char { font-size: 20px; }
         }
 
-        @media (orientation: landscape) and (max-height: 600px) {
+        @media (orientation: landscape) and (max-height: 620px) {
             html, body { touch-action: none; overflow: hidden; }
             body {
                 height: 100dvh; min-height: 100dvh;
-                padding-top: max(4px, var(--safe-top));
-                padding-bottom: max(4px, var(--safe-bottom));
-                padding-left: max(4px, var(--safe-left));
-                padding-right: max(4px, var(--safe-right));
+                padding-top: max(3px, var(--safe-top));
+                padding-bottom: max(3px, var(--safe-bottom));
+                padding-left: max(3px, var(--safe-left));
+                padding-right: max(3px, var(--safe-right));
             }
-            main { flex: 1 1 auto; min-height: 0; width: 100%; max-width: 80rem; display: flex; flex-direction: column; }
+            main { flex: 1 1 auto; min-height: 0; width: 100%; max-width: none; display: flex; flex-direction: column; }
             .synth-chassis { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; border-radius: 12px; }
             header { display: none !important; }
             .control-panel-grid {
                 display: grid !important;
                 grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-                gap: 4px !important; padding: 4px 6px !important;
+                gap: 6px !important; padding: 4px 8px !important;
                 border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
             }
-            .control-panel-grid > :nth-child(1) { grid-column: span 4; padding: 4px; }
-            .control-panel-grid > :nth-child(2) { grid-column: span 5; min-height: 60px; }
-            .control-panel-grid > :nth-child(3) { grid-column: span 3; padding: 4px; display: flex; flex-direction: column; justify-content: space-around; gap: 2px; }
+            .control-panel-grid > :nth-child(1) { grid-column: span 5; padding: 4px 6px; }
+            .control-panel-grid > :nth-child(2) { grid-column: span 7; min-height: 54px; }
             .control-panel-grid .text-xs { font-size: 10px !important; }
-            .control-panel-grid button { padding: 2px 4px !important; font-size: 11px !important; }
+            .control-panel-grid button { padding: 3px 6px !important; font-size: 11px !important; }
             .control-panel-grid #currentToneDesc { display: none; }
-            .control-panel-grid .grid-cols-2 { gap: 2px; }
-            .control-panel-grid .grid-cols-2 > button { padding: 4px !important; font-size: 10px !important; }
-            .control-panel-grid .ktv-note { font-size: 11px !important; }
-            .control-panel-grid .ktv-current { font-size: 15px !important; }
-            .tutor-bar { padding: 4px 6px !important; gap: 4px !important; flex-shrink: 0; }
+            .control-panel-grid .ktv-char { font-size: 15px !important; }
+            .tutor-bar { padding: 3px 8px !important; gap: 3px !important; flex-shrink: 0; }
             .tutor-bar .sheet-scroll-box { padding: 2px !important; }
             .tutor-bar button, .tutor-bar select { padding: 2px 6px !important; font-size: 11px !important; }
             .tutor-bar span { font-size: 11px !important; }
-            .keys-section { flex: 1 1 auto; min-height: 100px; }
-            .piano-bed { height: 100% !important; min-height: 100px; padding: 0 2px 4px 2px !important; border-radius: 0 0 10px 10px; }
-            .key-white .kbd-hint, .key-black .kbd-hint { display: none; }
+            .keys-section { flex: 1 1 auto; min-height: 160px; }
+            .piano-bed { height: 100% !important; min-height: 160px; padding: 0 2px 4px 2px !important; border-radius: 0 0 10px 10px; }
             footer { display: none !important; }
         }
 
         @media (orientation: portrait) {
-            .piano-bed { min-height: 280px; }
+            .piano-bed { min-height: 330px; }
             footer { display: none !important; }
         }
     </style>
 </head>
 <body class="flex flex-col items-center">
 
-    <div id="lineBrowserBanner" class="hidden w-full max-w-7xl mb-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs flex items-center justify-between gap-2">
-        <span>⚠️ 偵測到目前在 LINE 內建瀏覽器開啟，點右下角「⋮」選「在預設瀏覽器中開啟」可減少框架與提升全螢幕支援。</span>
+    <div id="lineBrowserBanner" class="hidden w-full mb-1 px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs flex items-center justify-between gap-2">
+        <span>⚠️ 偵測到目前在 LINE 內建瀏覽器開啟，點右下角「⋮」選「在預設瀏覽器中開啟」可獲得更佳操作與轉向體驗。</span>
         <button id="closeLineBannerBtn" class="text-amber-300 hover:text-white font-bold shrink-0">✕</button>
     </div>
 
@@ -372,52 +299,32 @@
         </div>
         <h2 class="text-xl font-black text-white mb-2">請將手機轉為「橫向」彈奏</h2>
         <p class="text-sm text-slate-300 max-w-xs leading-relaxed mb-5">
-            橫屏滿版可讓所有琴鍵完整展開，方便雙手和弦與左右手分色辨識！
+            橫向畫面可讓琴鍵更寬敞好彈，系統將自動為您切換橫向顯示。
         </p>
-        <div class="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
-            <button id="modalFullscreenLandscapeBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-sky-500/30">
-                🔄 橫屏全螢幕
-            </button>
-            <button id="dismissPortraitModalBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm border border-slate-700">
-                繼續直向彈奏
-            </button>
-        </div>
+        <button id="dismissPortraitModalBtn" class="py-2.5 px-6 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-sm border border-slate-700">
+            先以目前方向彈奏
+        </button>
     </div>
 
-    <header class="w-full max-w-7xl flex flex-wrap items-center justify-between gap-2 mb-2 px-1 sm:px-2 shrink-0">
+    <header class="w-full flex flex-wrap items-center justify-between gap-2 mb-1.5 px-1 sm:px-2 shrink-0">
         <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/30 shrink-0">
-                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/30 shrink-0">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
                 </svg>
             </div>
-            <div>
-                <h1 class="text-base sm:text-2xl font-black tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white via-sky-200 to-indigo-300">
+            <div class="flex items-baseline gap-2">
+                <h1 class="text-base sm:text-xl font-black tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white via-sky-200 to-indigo-300">
                     For Winny電子琴
                 </h1>
-                <p class="text-xs text-slate-400">~by Dustin</p>
+                <span class="text-xs text-slate-400">~by Dustin</span>
             </div>
         </div>
 
-        <div class="flex items-center flex-wrap gap-2 bg-slate-900/80 border border-slate-700/70 px-2.5 py-1.5 rounded-xl">
-            <div class="flex items-center gap-2 text-[11px] font-bold pr-1 border-r border-slate-700/80" title="同時彈奏多個音時自動區分左右手">
-                <span class="inline-flex items-center gap-1 text-rose-300">
-                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_6px_#fb7185]"></span>
-                    左手
-                </span>
-                <span class="inline-flex items-center gap-1 text-sky-300">
-                    <span class="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_6px_#38bdf8]"></span>
-                    右手
-                </span>
-            </div>
-
-            <button id="fullscreenLandscapeBtn" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 border border-indigo-400/40 transition flex items-center gap-1">
-                ⛶ 橫屏滿版
-            </button>
-
+        <div class="flex items-center gap-3 bg-slate-900/80 border border-slate-700/70 px-3 py-1 rounded-xl">
             <div class="flex items-center gap-1.5">
                 <span class="text-xs text-slate-400 font-medium hidden sm:inline">主音量</span>
-                <input type="range" id="masterVolume" min="0" max="1" step="0.01" value="0.75" class="w-16 sm:w-24">
+                <input type="range" id="masterVolume" min="0" max="1" step="0.01" value="0.75" class="w-20 sm:w-28">
             </div>
 
             <span id="audioStatusBadge" class="hidden md:inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30">
@@ -427,123 +334,90 @@
         </div>
     </header>
 
-    <main class="w-full max-w-7xl flex-1 flex flex-col justify-start">
+    <main class="w-full flex-1 flex flex-col justify-start">
         <div class="synth-chassis rounded-2xl overflow-hidden flex flex-col flex-1">
 
-            <div class="control-panel-grid grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 border-b border-slate-800/90 bg-slate-900/60">
+            <div class="control-panel-grid grid grid-cols-1 lg:grid-cols-12 gap-2.5 p-2.5 sm:px-4 sm:py-2.5 border-b border-slate-800/90 bg-slate-900/60">
 
-                <div class="lg:col-span-4 flex flex-col justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800">
-                    <div class="flex items-center justify-between mb-2">
+                <div class="lg:col-span-5 flex flex-col justify-between bg-slate-950/70 p-2.5 rounded-xl border border-slate-800">
+                    <div class="flex items-center justify-between mb-1.5">
                         <span class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-sky-400"></span>
-                            音色引擎 (TONE PRESETS)
+                            音色引擎
                         </span>
                         <span id="currentToneDesc" class="text-[11px] text-slate-400">溫暖泛音疊加</span>
                     </div>
-                    <div class="grid grid-cols-2 gap-2" id="presetButtons">
-                        <button data-preset="grand" class="preset-btn btn-glow-active py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-1.5" id="presetButtons">
+                        <button data-preset="grand" class="preset-btn btn-glow-active py-1.5 px-2.5 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1">
                             🎹 演奏級鋼琴
                         </button>
-                        <button data-preset="epiano" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
+                        <button data-preset="epiano" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-1.5 px-2.5 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1">
                             ✨ 夢幻電鋼琴
                         </button>
-                        <button data-preset="organ" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
+                        <button data-preset="organ" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-1.5 px-2.5 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1">
                             ⛪ 教堂管風琴
                         </button>
-                        <button data-preset="retro8bit" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5">
+                        <button data-preset="retro8bit" class="preset-btn bg-slate-800/80 hover:bg-slate-700 text-slate-200 py-1.5 px-2.5 rounded-lg border border-slate-700 text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1">
                             👾 8-Bit 合成器
                         </button>
                     </div>
                 </div>
 
-                <div class="lg:col-span-5 relative rounded-xl overflow-hidden bg-[#04070d] border border-slate-700/80 shadow-inner min-h-[110px] sm:min-h-[120px] flex flex-col justify-between">
+                <div class="lg:col-span-7 relative rounded-xl overflow-hidden bg-[#04070d] border border-slate-700/80 shadow-inner min-h-[72px] sm:min-h-[82px] flex flex-col justify-between">
                     <canvas id="visualizerCanvas" class="absolute inset-0 w-full h-full block"></canvas>
 
-                    <div class="relative z-10 flex items-center justify-between px-3 py-2 pointer-events-none">
+                    <div class="relative z-10 flex items-center justify-between px-3 py-1 pointer-events-none">
                         <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-mono-tech px-1.5 py-0.5 rounded bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30 animate-pulse">
-                                🎤 KTV 動態歌詞
+                            <span class="text-[10px] font-mono-tech px-1.5 py-0.5 rounded bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30">
+                                🎤 KTV 字幕
                             </span>
                             <span id="activeNotesDisplay" class="text-xs font-mono-tech font-bold text-emerald-400">待機中...</span>
                         </div>
-                        <button id="toggleVisModeBtn" class="pointer-events-auto text-[11px] px-2 py-0.5 rounded bg-slate-800/90 hover:bg-slate-700 text-slate-300 border border-slate-600 transition">
-                            歌詞
-                        </button>
                     </div>
 
-                    <div id="ktvLyrics" class="relative z-10 flex-1 flex items-center justify-center overflow-hidden px-2 py-0.5 min-h-[40px]">
-                        <div id="ktvLine" class="flex items-end justify-center gap-1.5 sm:gap-2 whitespace-nowrap"></div>
-                    </div>
-
-                    <div class="relative z-10 px-3 py-1.5 flex items-center justify-between text-[11px] text-slate-400 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
-                        <span>支援滑鼠滑奏與多點觸控（雙手自動分色）</span>
-                        <span id="octaveRangeLabel" class="font-mono-tech text-sky-300 font-bold">音域: C3 - C6</span>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-3 flex flex-col justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800 gap-2">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-300">八度移調</span>
-                        <div class="flex items-center gap-1.5">
-                            <button id="octDownBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="降低一個八度 (,鍵)">
-                                -
-                            </button>
-                            <span id="octaveOffsetDisplay" class="w-10 text-center font-mono-tech text-sm font-bold text-sky-400">0</span>
-                            <button id="octUpBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 font-bold text-sm flex items-center justify-center transition" title="升高一個八度 (.鍵)">
-                                +
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 pt-1">
-                        <button id="sustainBtn" class="py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5" title="空白鍵也可切換延音踏板">
-                            <span id="sustainIndicator" class="w-2 h-2 rounded-full bg-slate-500"></span>
-                            延音踏板
-                        </button>
-                        <button id="labelsToggleBtn" class="py-2 px-2.5 rounded-lg border border-sky-500/50 bg-sky-500/15 text-sky-200 hover:bg-sky-500/25 text-xs font-bold transition-all flex items-center justify-center gap-1.5">
-                            🏷️ 鍵位提示：開
-                        </button>
+                    <div id="ktvLyrics" class="relative z-10 flex-1 flex items-center justify-center overflow-hidden px-3 py-1 min-h-[36px]">
+                        <div id="ktvLine" class="flex items-center justify-center gap-1 flex-wrap"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-3 sm:px-5 py-2.5 sm:py-3 flex flex-col gap-2 shrink-0">
+            <div class="tutor-bar bg-slate-950/90 border-b border-slate-800 px-3 sm:px-4 py-2 flex flex-col gap-1.5 shrink-0">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
                         <span class="text-xs font-bold text-amber-400 flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 px-2 py-1 rounded-lg">
                             🎼 琴譜教學
                         </span>
 
-                        <select id="songSelector" class="bg-slate-900 border border-slate-700 text-slate-100 text-xs sm:text-sm font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
+                        <select id="songSelector" class="bg-slate-900 border border-slate-700 text-slate-100 text-xs sm:text-sm font-bold rounded-lg px-2.5 py-1 focus:outline-none focus:border-amber-400 cursor-pointer">
                         </select>
 
-                        <button id="toggleGuideBtn" class="btn-amber-active text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg border transition-all flex items-center gap-1">
+                        <button id="toggleGuideBtn" class="btn-amber-active text-xs sm:text-sm font-bold px-2.5 py-1 rounded-lg border transition-all flex items-center gap-1">
                             💡 亮燈跟彈：開啟
                         </button>
 
-                        <button id="demoPlayBtn" class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-600 text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1">
+                        <button id="demoPlayBtn" class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-600 text-xs sm:text-sm font-bold px-2.5 py-1 rounded-lg transition-all flex items-center gap-1">
                             ▶ 示範自動演奏
                         </button>
 
-                        <button id="resetSongBtn" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-bold px-2 py-1.5 rounded-lg transition-all" title="從第一個音重新開始">
+                        <button id="resetSongBtn" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-bold px-2 py-1 rounded-lg transition-all" title="從第一個音重新開始">
                             ↺ 重頭開始
                         </button>
                     </div>
 
                     <div class="flex items-center gap-2 sm:gap-3 text-xs">
                         <span id="tutorFeedbackText" class="text-amber-300 font-medium">請按下發黃光的琴鍵！</span>
-                        <span id="songProgressBadge" class="font-mono-tech bg-slate-900 border border-slate-700 px-2 py-1 rounded-lg text-slate-300">
+                        <span id="songProgressBadge" class="font-mono-tech bg-slate-900 border border-slate-700 px-2 py-0.5 rounded-lg text-slate-300">
                             0 / 0
                         </span>
                     </div>
                 </div>
 
-                <div class="sheet-scroll-box relative bg-slate-900/90 border border-slate-800 rounded-xl p-1.5 sm:p-2 overflow-hidden">
+                <div class="sheet-scroll-box relative bg-slate-900/90 border border-slate-800 rounded-xl p-1.5 overflow-hidden">
                     <div class="absolute top-0 left-0 h-0.5 bg-slate-800 w-full">
                         <div id="songProgressBar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-200" style="width: 0%;"></div>
                     </div>
 
-                    <div id="sheetNotesTrack" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 px-1 scroll-smooth">
+                    <div id="sheetNotesTrack" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 px-1 scroll-smooth">
                     </div>
                 </div>
             </div>
@@ -551,7 +425,7 @@
             <div class="felt-strip w-full"></div>
 
             <div class="keys-section flex flex-1 w-full items-stretch bg-[#070a10]">
-                <div class="hidden md:block w-5 wood-trim border-r border-black/80 shrink-0"></div>
+                <div class="hidden md:block w-4 wood-trim border-r border-black/80 shrink-0"></div>
 
                 <div class="flex-1 w-full flex flex-col">
                     <div id="pianoWrapper" class="piano-bed w-full select-none">
@@ -560,18 +434,14 @@
                     </div>
                 </div>
 
-                <div class="hidden md:block w-5 wood-trim border-l border-black/80 shrink-0"></div>
+                <div class="hidden md:block w-4 wood-trim border-l border-black/80 shrink-0"></div>
             </div>
         </div>
     </main>
 
-    <footer class="w-full max-w-7xl mt-2 px-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 shrink-0">
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <span>⌨️ <strong class="text-slate-200">鍵盤</strong>：低音 <code class="text-sky-300">Z X C V B N M</code>（黑鍵 5 6 7 8 9）、中音 <code class="text-sky-300">A S D F G H J</code>（黑鍵 W E T Y U）、高音 <code class="text-sky-300">K L ; ' Enter 1 2</code>（黑鍵 O P ] ⌫ 2）</span>
-            <span>🔄 <strong class="text-slate-200">快捷鍵</strong>：<code class="text-sky-300">, / .</code> 切換八度、<code class="text-sky-300">空白鍵</code> 延音踏板</span>
-        </div>
-        <div class="text-slate-500">
-            <span class="text-rose-400 font-bold">● 左手</span> / <span class="text-sky-400 font-bold">● 右手</span> 雙手合奏自動變色
+    <footer class="w-full mt-1.5 px-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 shrink-0">
+        <div>
+            ⌨️ <strong class="text-slate-200">電腦鍵盤</strong>：低音 <code class="text-sky-300">Z X C V B N M</code>（黑鍵 <code class="text-sky-300">5 6 7 8 9</code>）、中音 <code class="text-sky-300">A S D F G H J</code>（黑鍵 <code class="text-sky-300">W E T Y U</code>）、高音 <code class="text-sky-300">K L ; ' Enter 1 2</code>（黑鍵 <code class="text-sky-300">O P ] Backspace 2</code>）
         </div>
     </footer>
 
@@ -604,7 +474,7 @@
         }
 
         // =====================================================================
-        // 琴譜資料（已校正音符與歌詞）
+        // 琴譜資料
         // =====================================================================
         const SONG_LIBRARY = [
             {
@@ -634,7 +504,7 @@
             },
             {
                 id: 'twinkle-star',
-                title: '⭐ 小星星 (入門練習曲)',
+                title: '⭐ 小星星',
                 tempo: 110,
                 notes: [
                     { n: 'C4', s: 'Do', d: 1 }, { n: 'C4', s: 'Do', d: 1 },
@@ -665,10 +535,9 @@
             },
             {
                 id: 'little-happiness',
-                title: '🍀 小幸運 - 田馥甄 (簡譜校正完整版)',
+                title: '🍀 小幸運 - 田馥甄',
                 tempo: 80,
                 notes: [
-                    // === 主歌 A ===
                     // 我聽見雨滴落在青青草地
                     { n: 'E4', s: '3', d: 0.5, l: '我' }, { n: 'E4', s: '3', d: 0.5, l: '聽' },
                     { n: 'G4', s: '5', d: 0.5, l: '見' }, { n: 'G4', s: '5', d: 0.5, l: '雨' },
@@ -693,13 +562,12 @@
                     { n: 'A4', s: '6', d: 0.5, l: '的' }, { n: 'E4', s: '3', d: 0.5, l: '聲' },
                     { n: 'A4', s: '6', d: 1.5, l: '音' },
 
-                    // 認真 呼喚我姓名
+                    // 認真呼喚我姓名
                     { n: 'A4', s: '6', d: 0.5, l: '認' }, { n: 'B4', s: '7', d: 0.5, l: '真' },
                     { n: 'A4', s: '6', d: 0.5, l: '呼' }, { n: 'B4', s: '7', d: 0.5, l: '喚' },
                     { n: 'E5', s: '3.', d: 0.5, l: '我' }, { n: 'D5', s: '2.', d: 0.5, l: '姓' },
                     { n: 'C5', s: '1.', d: 1.5, l: '名' },
 
-                    // === 主歌 B ===
                     // 愛上你的時候還不懂感情
                     { n: 'E4', s: '3', d: 0.5, l: '愛' }, { n: 'E4', s: '3', d: 0.5, l: '上' },
                     { n: 'G4', s: '5', d: 0.5, l: '你' }, { n: 'G4', s: '5', d: 0.5, l: '的' },
@@ -730,7 +598,6 @@
                     { n: 'B4', s: '7', d: 0.5, l: '好' }, { n: 'E5', s: '3.', d: 0.5, l: '的' },
                     { n: 'D5', s: '2.', d: 0.5, l: '事' }, { n: 'C5', s: '1.', d: 1.5, l: '情' },
 
-                    // === 導歌（第一次） ===
                     // 也許當時忙著微笑和哭泣
                     { n: 'E5', s: '3.', d: 0.5, l: '也' }, { n: 'D5', s: '2.', d: 0.5, l: '許' },
                     { n: 'C5', s: '1.', d: 0.5, l: '當' }, { n: 'B4', s: '7', d: 0.5, l: '時' },
@@ -763,7 +630,6 @@
                     { n: 'E5', s: '3.', d: 0.5, l: '在' }, { n: 'C5', s: '1.', d: 0.5, l: '原' },
                     { n: 'D5', s: '2.', d: 0.5, l: '地' }, { n: 'D5', s: '2.', d: 1.5, l: '—' },
 
-                    // === 副歌（第一次） ===
                     // 原來你是我最想留住的幸運
                     { n: 'G4', s: '5', d: 0.5, l: '原' }, { n: 'E5', s: '3.', d: 0.5, l: '來' },
                     { n: 'D5', s: '2.', d: 0.5, l: '你' }, { n: 'C5', s: '1.', d: 0.5, l: '是' },
@@ -846,8 +712,26 @@
             }
         ];
 
+        // 將含歌詞的音符切分為完整樂句段落
+        function buildPhrases(notes) {
+            const phrases = [];
+            let current = [];
+            notes.forEach((item, idx) => {
+                if (!item.l) return;
+                current.push({ index: idx, char: item.l });
+                const isEndDash = item.l === '—' && current.length >= 4;
+                const isLongPhrase = current.length >= 16;
+                if (isEndDash || isLongPhrase) {
+                    phrases.push(current);
+                    current = [];
+                }
+            });
+            if (current.length > 0) phrases.push(current);
+            return phrases;
+        }
+
         // =====================================================================
-        // 琴鍵定義：C3 - C6（共 22 白鍵）
+        // 琴鍵定義：C3 - C6
         // =====================================================================
         const KEY_DEFINITIONS = [
             { note: 'C',  octave: 3, midi: 48, type: 'white', keyChar: 'Z', keyCode: 'KeyZ' },
@@ -898,44 +782,26 @@
         });
 
         const TONE_PRESETS = {
-            grand: { name: '演奏級鋼琴', desc: '溫暖泛音疊加', attack: 0.012, decay: 0.45, sustain: 0.25, release: 0.65, sustainRelease: 2.2 },
-            epiano: { name: '夢幻電鋼琴', desc: 'FM 鐘琴泛音', attack: 0.015, decay: 0.6, sustain: 0.35, release: 0.8, sustainRelease: 2.5 },
-            organ: { name: '教堂管風琴', desc: '八度與五度共鳴', attack: 0.04, decay: 0.1, sustain: 0.85, release: 0.25, sustainRelease: 1.4 },
-            retro8bit: { name: '8-Bit 合成器', desc: '復古電玩音色', attack: 0.005, decay: 0.2, sustain: 0.5, release: 0.18, sustainRelease: 0.9 }
+            grand: { name: '演奏級鋼琴', desc: '溫暖泛音疊加', attack: 0.012, decay: 0.45, sustain: 0.25, release: 0.65 },
+            epiano: { name: '夢幻電鋼琴', desc: 'FM 鐘琴泛音', attack: 0.015, decay: 0.6, sustain: 0.35, release: 0.8 },
+            organ: { name: '教堂管風琴', desc: '八度與五度共鳴', attack: 0.04, decay: 0.1, sustain: 0.85, release: 0.25 },
+            retro8bit: { name: '8-Bit 合成器', desc: '復古電玩音色', attack: 0.005, decay: 0.2, sustain: 0.5, release: 0.18 }
         };
 
         const state = {
             audioCtx: null, masterGain: null, analyser: null, compressor: null,
-            currentPreset: 'grand', octaveShift: 0, sustainPedal: false, showLabels: true,
-            lyricMode: 'lyric',
-            activeVoices: new Map(), sustainedVoices: new Set(), pressedKeyboardCodes: new Set(),
+            currentPreset: 'grand', octaveShift: 0,
+            activeVoices: new Map(), pressedKeyboardCodes: new Set(),
             activePointers: new Map(), particles: [], dismissedPortraitModal: false,
             tutorEnabled: true, currentSongIndex: 0, currentNoteIndex: 0, isDemoPlaying: false, demoTimers: []
         };
 
         const keyElementsMap = new Map();
 
-        // =====================================================================
-        // 音訊引擎
-        // =====================================================================
-        function recalculateHandsAndColors() {
-            const entries = Array.from(state.activeVoices.entries());
-            if (entries.length === 0) {
-                keyElementsMap.forEach((el, midi) => {
-                    if (!state.activeVoices.has(midi)) el.classList.remove('active', 'active-left', 'active-right');
-                });
-                updateActiveNotesDisplay();
-                return;
-            }
-            entries.forEach(([midi, voice]) => {
-                voice.hand = voice.forcedHand || (midi < 60 ? 'left' : 'right');
-            });
+        function syncActiveKeys() {
             keyElementsMap.forEach((el, midi) => {
-                el.classList.remove('active', 'active-left', 'active-right');
-                if (state.activeVoices.has(midi)) {
-                    el.classList.add('active');
-                    el.classList.add(state.activeVoices.get(midi).hand === 'left' ? 'active-left' : 'active-right');
-                }
+                if (state.activeVoices.has(midi)) el.classList.add('active');
+                else el.classList.remove('active');
             });
             updateActiveNotesDisplay();
         }
@@ -969,7 +835,7 @@
 
         function midiToFreq(midi) { return 440 * Math.pow(2, (midi - 69) / 12); }
 
-        function noteOn(baseMidi, isDemoTrigger = false, forcedHand = null) {
+        function noteOn(baseMidi, isDemoTrigger = false) {
             try {
                 initAudioEngine();
                 const ctx = state.audioCtx;
@@ -1029,33 +895,17 @@
                 envGain.gain.exponentialRampToValueAtTime(Math.max(peakGain * preset.sustain, 0.001), now + preset.attack + preset.decay);
                 oscillators.forEach(osc => osc.start(now));
 
-                let resolvedHand = forcedHand;
-                if (!resolvedHand && state.tutorEnabled && !state.isDemoPlaying) {
-                    const song = SONG_LIBRARY[state.currentSongIndex];
-                    if (state.currentNoteIndex < song.notes.length) {
-                        const target = song.notes[state.currentNoteIndex];
-                        const def = NOTE_NAME_TO_DEF.get(target.n);
-                        if (def && def.midi === baseMidi) {
-                            resolvedHand = target.hand || 'right';
-                        }
-                    }
-                }
-                if (!resolvedHand) resolvedHand = baseMidi < 60 ? 'left' : 'right';
-
-                state.activeVoices.set(baseMidi, { oscillators, envGain, actualMidi, hand: resolvedHand, forcedHand: resolvedHand });
-                state.sustainedVoices.delete(baseMidi);
-                recalculateHandsAndColors();
-                const voice = state.activeVoices.get(baseMidi);
-                spawnNoteParticles(baseMidi, actualMidi, voice ? voice.hand : 'right');
+                state.activeVoices.set(baseMidi, { oscillators, envGain, actualMidi });
+                syncActiveKeys();
+                spawnNoteParticles(baseMidi, actualMidi);
                 if (!isDemoTrigger && state.tutorEnabled && !state.isDemoPlaying) checkTutorStep(baseMidi);
             } catch (err) { console.error('音訊播放發生錯誤:', err); }
         }
 
         function noteOff(baseMidi) {
-            if (!state.activeVoices.has(baseMidi)) { recalculateHandsAndColors(); return; }
-            if (state.sustainPedal) { state.sustainedVoices.add(baseMidi); recalculateHandsAndColors(); return; }
+            if (!state.activeVoices.has(baseMidi)) { syncActiveKeys(); return; }
             forceStopVoice(baseMidi, TONE_PRESETS[state.currentPreset].release);
-            recalculateHandsAndColors();
+            syncActiveKeys();
         }
 
         function forceStopVoice(baseMidi, releaseTime) {
@@ -1069,14 +919,6 @@
                 voice.oscillators.forEach(osc => osc.stop(now + releaseTime + 0.02));
             } catch (e) {}
             state.activeVoices.delete(baseMidi);
-            state.sustainedVoices.delete(baseMidi);
-        }
-
-        function releaseAllSustained() {
-            const preset = TONE_PRESETS[state.currentPreset];
-            state.sustainedVoices.forEach(baseMidi => { forceStopVoice(baseMidi, preset.release * 1.2); });
-            state.sustainedVoices.clear();
-            recalculateHandsAndColors();
         }
 
         // =====================================================================
@@ -1099,10 +941,10 @@
                 state.tutorEnabled = !state.tutorEnabled;
                 const btn = document.getElementById('toggleGuideBtn');
                 if (state.tutorEnabled) {
-                    btn.className = 'btn-amber-active text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg border transition-all flex items-center gap-1';
+                    btn.className = 'btn-amber-active text-xs sm:text-sm font-bold px-2.5 py-1 rounded-lg border transition-all flex items-center gap-1';
                     btn.textContent = '💡 亮燈跟彈：開啟';
                 } else {
-                    btn.className = 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700 text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg border transition-all flex items-center gap-1';
+                    btn.className = 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700 text-xs sm:text-sm font-bold px-2.5 py-1 rounded-lg border transition-all flex items-center gap-1';
                     btn.textContent = '💡 亮燈跟彈：關閉';
                 }
                 highlightCurrentGuideKey();
@@ -1114,26 +956,21 @@
             renderSheetTrack(); highlightCurrentGuideKey();
         }
 
+        // 下方音符條：不重複顯示歌詞，也不顯示鍵盤鍵位提示
         function renderSheetTrack() {
             const track = document.getElementById('sheetNotesTrack');
             const song = SONG_LIBRARY[state.currentSongIndex];
             track.innerHTML = '';
             song.notes.forEach((item, idx) => {
-                const keyDef = NOTE_NAME_TO_DEF.get(item.n);
-                const kbdHint = keyDef ? keyDef.keyChar : '?';
-                const isLeft = item.hand === 'left';
                 const card = document.createElement('div');
                 card.id = `sheet-note-${idx}`;
-                card.className = 'shrink-0 w-12 sm:w-14 py-1 px-1 rounded-lg border flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
+                card.className = 'shrink-0 w-11 sm:w-12 py-1 px-1 rounded-lg border flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
                 card.addEventListener('click', () => {
                     stopDemoPlayback(); state.currentNoteIndex = idx; updateSheetTrackUI(); highlightCurrentGuideKey();
                 });
-                const handDot = isLeft ? '<span class="text-[8px] text-rose-400 font-bold leading-none mb-0.5">●左</span>' : '';
                 card.innerHTML = `
-                    ${handDot}
-                    <span class="text-[10px] font-mono-tech text-slate-400 leading-none mb-0.5">${item.s}</span>
-                    <span class="text-xs sm:text-sm font-black tracking-tight leading-tight">${item.l || item.n}</span>
-                    <span class="text-[10px] font-mono-tech mt-0.5 px-1.5 rounded bg-slate-800/90 ${isLeft ? 'text-rose-300' : 'text-sky-300'} border border-slate-700">${kbdHint}</span>
+                    <span class="text-xs sm:text-sm font-mono-tech font-bold leading-tight">${item.s}</span>
+                    <span class="text-[10px] text-slate-400 leading-tight mt-0.5">${item.n}</span>
                 `;
                 track.appendChild(card);
             });
@@ -1150,12 +987,12 @@
                 const card = document.getElementById(`sheet-note-${i}`);
                 if (!card) continue;
                 if (i < current) {
-                    card.className = 'shrink-0 w-12 sm:w-14 py-1 px-1 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400/70 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
+                    card.className = 'shrink-0 w-11 sm:w-12 py-1 px-1 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400/70 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
                 } else if (i === current) {
-                    card.className = 'shrink-0 w-14 sm:w-16 py-1 px-1 rounded-lg border-2 border-amber-400 bg-amber-500/20 text-amber-200 shadow-[0_0_15px_rgba(251,191,36,0.35)] scale-105 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
+                    card.className = 'shrink-0 w-12 sm:w-14 py-1 px-1 rounded-lg border-2 border-amber-400 bg-amber-500/20 text-amber-200 shadow-[0_0_15px_rgba(251,191,36,0.35)] scale-105 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer';
                     card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 } else {
-                    card.className = 'shrink-0 w-12 sm:w-14 py-1 px-1 rounded-lg border border-slate-800 bg-slate-950/80 text-slate-300 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer hover:border-slate-600';
+                    card.className = 'shrink-0 w-11 sm:w-12 py-1 px-1 rounded-lg border border-slate-800 bg-slate-950/80 text-slate-300 flex flex-col items-center justify-center transition-all duration-150 cursor-pointer hover:border-slate-600';
                 }
             }
             renderKtvLyrics();
@@ -1180,8 +1017,8 @@
             if (keyDef) {
                 const keyEl = keyElementsMap.get(keyDef.midi);
                 if (keyEl) keyEl.classList.add('guide-target');
-                const handLabel = targetNoteObj.hand === 'left' ? '【左手】' : '【右手】';
-                feedbackEl.textContent = `下一步：請按 ${targetNoteObj.l || targetNoteObj.n} (${targetNoteObj.s}) ${handLabel} [鍵盤: ${keyDef.keyChar}]`;
+                const displayName = targetNoteObj.l ? `${targetNoteObj.l} (${targetNoteObj.s})` : `${targetNoteObj.n} (${targetNoteObj.s})`;
+                feedbackEl.textContent = `下一步：請按發黃光琴鍵 ${displayName}`;
                 feedbackEl.className = 'text-amber-300 font-bold';
             }
         }
@@ -1207,7 +1044,7 @@
             if (state.currentNoteIndex >= song.notes.length) state.currentNoteIndex = 0;
             state.isDemoPlaying = true;
             const demoBtn = document.getElementById('demoPlayBtn');
-            demoBtn.className = 'bg-rose-600 hover:bg-rose-500 text-white border border-rose-400 text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 shadow-[0_0_15px_rgba(225,29,72,0.45)]';
+            demoBtn.className = 'bg-rose-600 hover:bg-rose-500 text-white border border-rose-400 text-xs sm:text-sm font-bold px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 shadow-[0_0_15px_rgba(225,29,72,0.45)]';
             demoBtn.textContent = '⏹ 停止示範';
             const beatMs = (60 / song.tempo) * 1000;
             let accumulatedDelay = 0;
@@ -1217,7 +1054,7 @@
                     if (!state.isDemoPlaying) return;
                     state.currentNoteIndex = i; updateSheetTrackUI(); highlightCurrentGuideKey();
                     if (keyDef) {
-                        noteOn(keyDef.midi, true, noteItem.hand || null);
+                        noteOn(keyDef.midi, true);
                         const stopTimer = setTimeout(() => { noteOff(keyDef.midi); }, durationMs * 0.85);
                         state.demoTimers.push(stopTimer);
                     }
@@ -1236,56 +1073,52 @@
             state.demoTimers.forEach(t => clearTimeout(t)); state.demoTimers = [];
             keyElementsMap.forEach((_, midi) => noteOff(midi));
             const demoBtn = document.getElementById('demoPlayBtn');
-            demoBtn.className = 'bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-600 text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1';
+            demoBtn.className = 'bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-600 text-xs sm:text-sm font-bold px-2.5 py-1 rounded-lg transition-all flex items-center gap-1';
             demoBtn.textContent = '▶ 示範自動演奏';
             if (resetFeedback) highlightCurrentGuideKey();
         }
 
         // =====================================================================
-        // 🎤 動態 KTV 歌詞
+        // 🎤 整段 KTV 字幕（整句出現，彈到的字用別的顏色標示）
         // =====================================================================
         function renderKtvLyrics() {
             const lineEl = document.getElementById('ktvLine');
             if (!lineEl) return;
 
             const song = SONG_LIBRARY[state.currentSongIndex];
-            if (!song || !song.notes || song.notes.length === 0) {
-                lineEl.innerHTML = '<span class="ktv-done">尚未選擇曲目</span>';
+            const phrases = buildPhrases(song.notes);
+            if (phrases.length === 0) {
+                lineEl.innerHTML = '<span class="ktv-char ktv-upcoming">♪ 自由跟彈練習 ♪</span>';
                 return;
             }
 
-            const total = song.notes.length;
-            const cur = state.currentNoteIndex;
-
-            if (cur >= total) {
-                lineEl.innerHTML = '<span class="ktv-done" style="transform:none;font-size:15px;">🎉 全曲完成</span>';
+            const curNoteIdx = state.currentNoteIndex;
+            if (curNoteIdx >= song.notes.length) {
+                lineEl.innerHTML = '<span class="ktv-char ktv-active-char">🎉 整首彈奏完成！</span>';
                 return;
             }
 
-            const beatMs = (60 / song.tempo) * 1000;
-            const start = Math.max(0, cur - 2);
-            const end = Math.min(total, cur + 4);
+            // 找到目前所在的樂句；若目前音符沒有字，則往後找最近的字所屬的樂句
+            let activePhrase = phrases.find(p => curNoteIdx >= p[0].index && curNoteIdx <= p[p.length - 1].index);
+            if (!activePhrase) {
+                activePhrase = phrases.find(p => p[0].index > curNoteIdx) || phrases[phrases.length - 1];
+            }
 
             const frag = document.createDocumentFragment();
-            for (let i = start; i < end; i++) {
-                const item = song.notes[i];
+            activePhrase.forEach(item => {
                 const span = document.createElement('span');
-                span.className = 'ktv-note';
-                // 優先顯示歌詞，沒有歌詞則顯示簡譜或音名
-                const text = item.l || (state.lyricMode === 'number' ? (item.s || item.n) : item.n);
-                span.textContent = text;
-
-                if (i < cur) {
-                    span.classList.add('ktv-done');
-                } else if (i === cur) {
-                    span.classList.add('ktv-current');
-                    const dur = Math.max(0.45, (item.d * beatMs) / 1000);
-                    span.style.setProperty('--ktv-dur', `${dur.toFixed(2)}s`);
+                span.className = 'ktv-char';
+                span.textContent = item.char;
+                if (item.index < curNoteIdx) {
+                    span.classList.add('ktv-past');
+                } else if (item.index === curNoteIdx) {
+                    span.classList.add('ktv-active-char');
                 } else {
-                    span.classList.add('ktv-next');
+                    span.classList.add('ktv-upcoming');
                 }
                 frag.appendChild(span);
-            }
+            });
+
             lineEl.innerHTML = '';
             lineEl.appendChild(frag);
         }
@@ -1304,11 +1137,7 @@
                 keyEl.dataset.midi = keyDef.midi; keyEl.dataset.note = keyDef.note; keyEl.dataset.octave = keyDef.octave;
                 keyEl.innerHTML = `
                     <span class="guide-dot"></span>
-                    <div class="key-label flex flex-col items-center pointer-events-none transition-opacity duration-200">
-                        <span class="hand-badge">手</span>
-                        <span class="kbd-hint text-[9px] sm:text-[10px] font-mono-tech font-bold px-0.5 py-0.5 rounded bg-slate-200/90 text-slate-600 mb-0.5 border border-slate-300 shadow-sm">${keyDef.keyChar}</span>
-                        <span class="note-name text-[9px] sm:text-[10px] font-bold text-slate-800">${keyDef.note}${keyDef.octave + state.octaveShift}</span>
-                    </div>
+                    <span class="note-name text-[10px] sm:text-xs font-bold text-slate-700 pointer-events-none">${keyDef.note}${keyDef.octave}</span>
                 `;
                 container.appendChild(keyEl); keyElementsMap.set(keyDef.midi, keyEl);
             });
@@ -1324,16 +1153,12 @@
                     keyEl.style.width = `${blackWidthPercent}%`; keyEl.style.left = `${leftPercent}%`;
                     keyEl.innerHTML = `
                         <span class="guide-dot"></span>
-                        <div class="key-label flex flex-col items-center pointer-events-none transition-opacity duration-200">
-                            <span class="hand-badge">手</span>
-                            <span class="kbd-hint text-[8px] font-mono-tech font-bold px-1 rounded bg-slate-800 text-sky-300 mb-0.5 border border-slate-600">${keyDef.keyChar}</span>
-                            <span class="note-name text-[8px] sm:text-[9px] font-bold text-slate-200">${keyDef.note}</span>
-                        </div>
+                        <span class="note-name text-[8px] sm:text-[10px] font-bold text-slate-200 pointer-events-none">${keyDef.note}</span>
                     `;
                     container.appendChild(keyEl); keyElementsMap.set(keyDef.midi, keyEl);
                 }
             });
-            updateLabelsVisibility(); updateOctaveLabels(); highlightCurrentGuideKey();
+            highlightCurrentGuideKey();
         }
 
         function setupPointerInteractions() {
@@ -1348,6 +1173,7 @@
             container.addEventListener('pointerdown', (e) => {
                 if (e.pointerType === 'mouse' && e.button !== 0) return;
                 e.preventDefault();
+                tryAutoLandscape();
                 if (state.isDemoPlaying) stopDemoPlayback();
                 const midi = getMidiAtPoint(e.clientX, e.clientY);
                 state.activePointers.set(e.pointerId, { midi, x: e.clientX });
@@ -1390,9 +1216,6 @@
             function isTypingTarget(el) { return el && (['INPUT', 'TEXTAREA', 'SELECT'].includes((el.tagName || '').toUpperCase()) || el.isContentEditable); }
             window.addEventListener('keydown', (e) => {
                 if (e.repeat || isTypingTarget(e.target)) return;
-                if (e.code === 'Space') { e.preventDefault(); toggleSustainPedal(true); return; }
-                if (e.code === 'Comma') { e.preventDefault(); changeOctave(-1); return; }
-                if (e.code === 'Period') { e.preventDefault(); changeOctave(1); return; }
                 if (keyCodeToMidi.has(e.code)) {
                     e.preventDefault();
                     if (state.isDemoPlaying) stopDemoPlayback();
@@ -1401,7 +1224,6 @@
             });
             window.addEventListener('keyup', (e) => {
                 if (isTypingTarget(e.target)) return;
-                if (e.code === 'Space') { e.preventDefault(); toggleSustainPedal(false); return; }
                 if (keyCodeToMidi.has(e.code)) {
                     state.pressedKeyboardCodes.delete(e.code); noteOff(keyCodeToMidi.get(e.code));
                 }
@@ -1414,65 +1236,9 @@
                     document.getElementById('currentToneDesc').textContent = TONE_PRESETS[presetKey].desc;
                 });
             });
-            document.getElementById('octaveDownBtn')?.addEventListener('click', () => changeOctave(-1));
-            document.getElementById('octDownBtn').addEventListener('click', () => changeOctave(-1));
-            document.getElementById('octUpBtn').addEventListener('click', () => changeOctave(1));
-            document.getElementById('sustainBtn').addEventListener('click', () => toggleSustainPedal());
-            document.getElementById('labelsToggleBtn').addEventListener('click', () => {
-                state.showLabels = !state.showLabels;
-                updateLabelsVisibility();
-                document.getElementById('labelsToggleBtn').textContent = state.showLabels ? '🏷️ 鍵位提示：開' : '🏷️ 鍵位提示：關';
-            });
-            document.getElementById('toggleVisModeBtn').addEventListener('click', () => {
-                state.lyricMode = state.lyricMode === 'lyric' ? 'number' : 'lyric';
-                document.getElementById('toggleVisModeBtn').textContent = state.lyricMode === 'lyric' ? '歌詞' : '簡譜';
-                renderKtvLyrics();
-            });
             document.getElementById('masterVolume').addEventListener('input', (e) => {
                 if (state.masterGain) state.masterGain.gain.setValueAtTime(parseFloat(e.target.value), state.audioCtx.currentTime);
             });
-        }
-
-        function changeOctave(delta) {
-            state.octaveShift = Math.max(-2, Math.min(2, state.octaveShift + delta));
-            document.getElementById('octaveOffsetDisplay').textContent = (state.octaveShift > 0 ? '+' : '') + state.octaveShift;
-            updateOctaveLabels();
-        }
-
-        function updateOctaveLabels() {
-            const label = document.getElementById('octaveRangeLabel');
-            if (label) {
-                const low = 3 + state.octaveShift, high = 6 + state.octaveShift;
-                label.textContent = `音域: C${low} - C${high}`;
-            }
-            document.querySelectorAll('[data-note]').forEach(el => {
-                const noteName = el.querySelector('.note-name');
-                if (noteName) {
-                    const baseOct = parseInt(el.dataset.octave, 10);
-                    noteName.textContent = el.dataset.note + (baseOct + state.octaveShift);
-                }
-            });
-        }
-
-        function updateLabelsVisibility() {
-            document.querySelectorAll('.kbd-hint, .note-name').forEach(el => {
-                el.style.display = state.showLabels ? '' : 'none';
-            });
-        }
-
-        function toggleSustainPedal(forceState) {
-            if (typeof forceState === 'boolean') state.sustainPedal = forceState;
-            else state.sustainPedal = !state.sustainPedal;
-            const btn = document.getElementById('sustainBtn');
-            const indicator = document.getElementById('sustainIndicator');
-            if (state.sustainPedal) {
-                btn.classList.add('btn-glow-active');
-                indicator.className = 'w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]';
-            } else {
-                btn.classList.remove('btn-glow-active');
-                indicator.className = 'w-2 h-2 rounded-full bg-slate-500';
-                releaseAllSustained();
-            }
         }
 
         function updateActiveNotesDisplay() {
@@ -1495,13 +1261,13 @@
         // =====================================================================
         // 視覺化粒子
         // =====================================================================
-        function spawnNoteParticles(baseMidi, actualMidi, hand) {
+        function spawnNoteParticles(baseMidi, actualMidi) {
             const canvas = document.getElementById('visualizerCanvas');
             if (!canvas) return;
             const rect = canvas.getBoundingClientRect();
             if (rect.width === 0) return;
             const x = rect.width * 0.15 + Math.random() * rect.width * 0.7;
-            const color = hand === 'left' ? 'rgba(251,113,133,' : 'rgba(56,189,248,';
+            const color = 'rgba(56,189,248,';
             for (let i = 0; i < 6; i++) {
                 state.particles.push({
                     x, y: rect.height * 0.7 + Math.random() * 20,
@@ -1560,39 +1326,31 @@
         }
 
         // =====================================================================
-        // 初始化
+        // 自動轉橫與方向提示
         // =====================================================================
+        function tryAutoLandscape() {
+            try {
+                if (screen && screen.orientation && typeof screen.orientation.lock === 'function') {
+                    screen.orientation.lock('landscape').catch(() => {});
+                }
+            } catch (e) {}
+        }
+
         function init() {
             buildPianoKeyboard();
             setupPointerInteractions();
             setupKeyboardAndControls();
             initTutorSystem();
             initVisualizer();
+            tryAutoLandscape();
 
-            // 橫屏全螢幕按鈕
-            function enterFullscreenLandscape() {
-                const el = document.documentElement;
-                if (el.requestFullscreen) {
-                    el.requestFullscreen().then(() => {
-                        if (screen.orientation && screen.orientation.lock) {
-                            screen.orientation.lock('landscape').catch(() => {});
-                        }
-                    }).catch(() => {});
-                } else if (el.webkitRequestFullscreen) {
-                    el.webkitRequestFullscreen();
-                }
-                const modal = document.getElementById('portraitPromptModal');
-                if (modal) modal.classList.add('hidden-modal');
-            }
-            document.getElementById('fullscreenLandscapeBtn')?.addEventListener('click', enterFullscreenLandscape);
-            document.getElementById('modalFullscreenLandscapeBtn')?.addEventListener('click', enterFullscreenLandscape);
             document.getElementById('dismissPortraitModalBtn')?.addEventListener('click', () => {
                 document.getElementById('portraitPromptModal').classList.add('hidden-modal');
                 state.dismissedPortraitModal = true;
             });
 
-            // 直向提示
             function checkOrientation() {
+                tryAutoLandscape();
                 if (window.innerHeight > window.innerWidth && !state.dismissedPortraitModal) {
                     document.getElementById('portraitPromptModal').classList.remove('hidden-modal');
                 } else {
@@ -1600,9 +1358,9 @@
                 }
             }
             window.addEventListener('resize', checkOrientation);
-            setTimeout(checkOrientation, 500);
+            window.addEventListener('orientationchange', checkOrientation);
+            setTimeout(checkOrientation, 300);
 
-            // LINE 瀏覽器提示
             if (/Line/i.test(navigator.userAgent)) {
                 document.getElementById('lineBrowserBanner')?.classList.remove('hidden');
             }
