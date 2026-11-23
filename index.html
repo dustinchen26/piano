@@ -162,7 +162,6 @@
             border-color: #7dd3fc !important;
         }
 
-        /* 簡譜高低音點標示（緊湊行高） */
         .solfege-wrap {
             display: inline-flex;
             flex-direction: column;
@@ -199,7 +198,6 @@
             }
         }
 
-        /* 固定尺寸簡譜方框，轉換時不忽大忽小 */
         .sheet-note-box {
             flex: 0 0 auto;
             width: 50px;
@@ -269,7 +267,6 @@
             box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
         }
 
-        /* 緊湊控制列字體與按鈕設定 */
         .compact-btn {
             font-size: 12px;
             line-height: 1.1;
@@ -300,7 +297,6 @@
 
         #portraitPromptModal.hidden-modal { display: none; }
 
-        /* 放大整句歌詞點亮樣式 */
         .ktv-char {
             font-family: 'Noto Sans TC', sans-serif;
             font-weight: 900;
@@ -323,7 +319,6 @@
             text-shadow: 0 0 14px rgba(250, 204, 21, 0.95), 0 0 24px rgba(251, 146, 60, 0.6);
         }
 
-        /* 橫向與 LINE 內嵌瀏覽器緊湊高度保留充足琴鍵空間 */
         @media (orientation: landscape) and (max-height: 680px) {
             html, body { touch-action: none; overflow: hidden; }
             body {
@@ -453,8 +448,8 @@
                         <select id="songSelector" class="bg-slate-900 border border-slate-700 text-slate-100 compact-select font-bold rounded-lg focus:outline-none focus:border-amber-400 cursor-pointer shrink-0">
                         </select>
 
-                        <button id="toggleGuideBtn" class="btn-amber-active compact-btn font-bold rounded-lg border transition-all flex items-center gap-0.5 shrink-0">
-                            💡 亮燈：開
+                        <button id="toggleGuideBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700 compact-btn font-bold rounded-lg border transition-all flex items-center gap-0.5 shrink-0">
+                            💡 亮燈：關
                         </button>
 
                         <button id="demoPlayBtn" class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-600 compact-btn font-bold rounded-lg transition-all flex items-center gap-0.5 shrink-0">
@@ -467,9 +462,9 @@
                     </div>
 
                     <div class="flex items-center gap-1.5 text-xs lg:text-sm shrink-0">
-                        <span id="tutorFeedbackText" class="text-amber-300 font-bold whitespace-nowrap">請按發黃光琴鍵</span>
+                        <span id="tutorFeedbackText" class="text-emerald-400 font-bold whitespace-nowrap">自由彈奏</span>
                         <span id="songProgressBadge" class="font-mono-tech bg-slate-900 border border-slate-700 px-1.5 py-0.5 rounded text-slate-300 whitespace-nowrap">
-                            0 / 0
+                            自由
                         </span>
                     </div>
                 </div>
@@ -548,6 +543,13 @@
         }
 
         const SONG_LIBRARY = [
+            {
+                id: 'free-play',
+                title: '🎹 自由彈奏',
+                isFreePlay: true,
+                tempo: 110,
+                notes: []
+            },
             {
                 id: 'fur-elise',
                 title: '給愛麗絲',
@@ -783,8 +785,12 @@
             }
         ];
 
+        function isFreePlaySong(song) {
+            return Boolean(song && (song.isFreePlay || !Array.isArray(song.notes) || song.notes.length === 0));
+        }
+
         function buildSemanticPhrases(song) {
-            if (!song || !Array.isArray(song.notes)) return [];
+            if (!song || isFreePlaySong(song)) return [];
             const noteCharEntries = [];
             song.notes.forEach((item, idx) => {
                 if (item.l && item.l !== '—') {
@@ -872,7 +878,7 @@
             currentPreset: 'grand',
             activeVoices: new Map(), pressedKeyboardCodes: new Set(),
             activePointers: new Map(), particles: [], dismissedPortraitModal: false,
-            tutorEnabled: true, currentSongIndex: 0, currentNoteIndex: 0, isDemoPlaying: false, demoTimers: []
+            tutorEnabled: false, currentSongIndex: 0, currentNoteIndex: 0, isDemoPlaying: false, demoTimers: []
         };
 
         const keyElementsMap = new Map();
@@ -976,7 +982,10 @@
                 state.activeVoices.set(baseMidi, { oscillators, envGain, actualMidi: baseMidi });
                 syncActiveKeys();
                 spawnNoteParticles(baseMidi);
-                if (!isDemoTrigger && state.tutorEnabled && !state.isDemoPlaying) checkTutorStep(baseMidi);
+                const currentSong = SONG_LIBRARY[state.currentSongIndex];
+                if (!isDemoTrigger && !isFreePlaySong(currentSong) && state.tutorEnabled && !state.isDemoPlaying) {
+                    checkTutorStep(baseMidi);
+                }
             } catch (err) { console.error('音訊播放發生錯誤:', err); }
         }
 
@@ -999,6 +1008,17 @@
             state.activeVoices.delete(baseMidi);
         }
 
+        function syncGuideButtonUI() {
+            const btn = document.getElementById('toggleGuideBtn');
+            if (state.tutorEnabled) {
+                btn.className = 'btn-amber-active compact-btn font-bold rounded-lg border transition-all flex items-center gap-0.5 shrink-0';
+                btn.textContent = '💡 亮燈：開';
+            } else {
+                btn.className = 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700 compact-btn font-bold rounded-lg border transition-all flex items-center gap-0.5 shrink-0';
+                btn.textContent = '💡 亮燈：關';
+            }
+        }
+
         function initTutorSystem() {
             const selector = document.getElementById('songSelector');
             selector.innerHTML = '';
@@ -1006,35 +1026,53 @@
                 const opt = document.createElement('option');
                 opt.value = idx; opt.textContent = song.title; selector.appendChild(opt);
             });
+            selector.value = String(state.currentSongIndex);
             selector.addEventListener('change', (e) => {
                 stopDemoPlayback();
                 state.currentSongIndex = parseInt(e.target.value, 10);
                 state.currentNoteIndex = 0;
-                renderSheetTrack(); highlightCurrentGuideKey();
-            });
-            document.getElementById('toggleGuideBtn').addEventListener('click', () => {
-                state.tutorEnabled = !state.tutorEnabled;
-                const btn = document.getElementById('toggleGuideBtn');
-                if (state.tutorEnabled) {
-                    btn.className = 'btn-amber-active compact-btn font-bold rounded-lg border transition-all flex items-center gap-0.5 shrink-0';
-                    btn.textContent = '💡 亮燈：開';
+                const selectedSong = SONG_LIBRARY[state.currentSongIndex];
+                if (isFreePlaySong(selectedSong)) {
+                    state.tutorEnabled = false;
                 } else {
-                    btn.className = 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700 compact-btn font-bold rounded-lg border transition-all flex items-center gap-0.5 shrink-0';
-                    btn.textContent = '💡 亮燈：關';
+                    state.tutorEnabled = true;
                 }
+                syncGuideButtonUI();
+                renderSheetTrack();
                 highlightCurrentGuideKey();
             });
-            document.getElementById('demoPlayBtn').addEventListener('click', () => { state.isDemoPlaying ? stopDemoPlayback() : startDemoPlayback(); });
+            document.getElementById('toggleGuideBtn').addEventListener('click', () => {
+                const song = SONG_LIBRARY[state.currentSongIndex];
+                if (isFreePlaySong(song)) return;
+                state.tutorEnabled = !state.tutorEnabled;
+                syncGuideButtonUI();
+                highlightCurrentGuideKey();
+            });
+            document.getElementById('demoPlayBtn').addEventListener('click', () => {
+                const song = SONG_LIBRARY[state.currentSongIndex];
+                if (isFreePlaySong(song)) return;
+                state.isDemoPlaying ? stopDemoPlayback() : startDemoPlayback();
+            });
             document.getElementById('resetSongBtn').addEventListener('click', () => {
                 stopDemoPlayback(); state.currentNoteIndex = 0; renderSheetTrack(); highlightCurrentGuideKey();
             });
-            renderSheetTrack(); highlightCurrentGuideKey();
+            syncGuideButtonUI();
+            renderSheetTrack();
+            highlightCurrentGuideKey();
         }
 
         function renderSheetTrack() {
             const track = document.getElementById('sheetNotesTrack');
             const song = SONG_LIBRARY[state.currentSongIndex];
             track.innerHTML = '';
+            if (isFreePlaySong(song)) {
+                const hint = document.createElement('div');
+                hint.className = 'w-full h-11 flex items-center justify-center text-xs sm:text-sm text-emerald-300/90 font-medium whitespace-nowrap px-2';
+                hint.textContent = '自由彈奏模式：不限曲目，可直接按琴鍵或切換上方琴譜跟彈';
+                track.appendChild(hint);
+                updateSheetTrackUI();
+                return;
+            }
             song.notes.forEach((item, idx) => {
                 const card = document.createElement('div');
                 card.id = `sheet-note-${idx}`;
@@ -1050,6 +1088,12 @@
 
         function updateSheetTrackUI() {
             const song = SONG_LIBRARY[state.currentSongIndex];
+            if (isFreePlaySong(song)) {
+                document.getElementById('songProgressBadge').textContent = '自由';
+                document.getElementById('songProgressBar').style.width = '0%';
+                renderKtvLyrics();
+                return;
+            }
             const total = song.notes.length;
             const current = state.currentNoteIndex;
             document.getElementById('songProgressBadge').textContent = `${Math.min(current, total)} / ${total}`;
@@ -1072,12 +1116,12 @@
         function highlightCurrentGuideKey() {
             keyElementsMap.forEach(el => el.classList.remove('guide-target'));
             const feedbackEl = document.getElementById('tutorFeedbackText');
-            if (!state.tutorEnabled) {
+            const song = SONG_LIBRARY[state.currentSongIndex];
+            if (isFreePlaySong(song) || !state.tutorEnabled) {
                 feedbackEl.textContent = '自由彈奏';
-                feedbackEl.className = 'text-slate-400 font-medium whitespace-nowrap';
+                feedbackEl.className = 'text-emerald-400 font-bold whitespace-nowrap';
                 return;
             }
-            const song = SONG_LIBRARY[state.currentSongIndex];
             if (state.currentNoteIndex >= song.notes.length) {
                 feedbackEl.textContent = '🎉 恭喜完成！';
                 feedbackEl.className = 'text-emerald-400 font-bold whitespace-nowrap';
@@ -1095,7 +1139,7 @@
 
         function checkTutorStep(pressedMidi) {
             const song = SONG_LIBRARY[state.currentSongIndex];
-            if (state.currentNoteIndex >= song.notes.length) return;
+            if (isFreePlaySong(song) || state.currentNoteIndex >= song.notes.length) return;
             const targetNoteObj = song.notes[state.currentNoteIndex];
             const targetDef = NOTE_NAME_TO_DEF.get(targetNoteObj.n);
             if (targetDef && pressedMidi === targetDef.midi) {
@@ -1109,8 +1153,9 @@
 
         function startDemoPlayback() {
             stopDemoPlayback();
-            initAudioEngine();
             const song = SONG_LIBRARY[state.currentSongIndex];
+            if (isFreePlaySong(song)) return;
+            initAudioEngine();
             if (state.currentNoteIndex >= song.notes.length) state.currentNoteIndex = 0;
             state.isDemoPlaying = true;
             const demoBtn = document.getElementById('demoPlayBtn');
@@ -1153,6 +1198,11 @@
             if (!lineEl) return;
 
             const song = SONG_LIBRARY[state.currentSongIndex];
+            if (isFreePlaySong(song)) {
+                lineEl.innerHTML = '<span class="ktv-char ktv-upcoming">♪ 自由彈奏 ♪</span>';
+                return;
+            }
+
             const phrases = buildSemanticPhrases(song);
             if (phrases.length === 0) {
                 lineEl.innerHTML = '<span class="ktv-char ktv-upcoming">♪ 跟彈簡譜練習 ♪</span>';
