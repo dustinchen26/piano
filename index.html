@@ -755,10 +755,10 @@
             sustainPedal: false,
             showLabels: true,
             visMode: 'both',
-            activeVoices: new Map(), // baseMidi -> { oscillators, envGain, actualMidi, hand: 'left'|'right'|'single' }
+            activeVoices: new Map(),
             sustainedVoices: new Set(),
             pressedKeyboardCodes: new Set(),
-            activePointers: new Map(), // pointerId -> { midi, x }
+            activePointers: new Map(),
             particles: [],
             dismissedPortraitModal: false,
 
@@ -774,12 +774,6 @@
          * ============================================================================
          * 2.5 左右手同時彈奏顏色辨識 (Dual-Hand Color System)
          * ============================================================================
-         * 規則：
-         * - 當同時按住 2 個以上琴鍵（或同時有 2 根手指／2 個按鍵發聲）時，
-         *   較低音 / 較左側的音視為「左手」（珊瑚粉/玫瑰紅），
-         *   較高音 / 較右側的音視為「右手」（霓虹青藍/天藍）。
-         * - 若單獨按 1 個音，則預設以音域中線 (MIDI 70) 判斷或顯示「右手/單手」青藍色，
-         *   一旦第二隻手加入一起彈奏，立刻切換為左右手不同顏色！
          */
         function recalculateHandsAndColors() {
             const entries = Array.from(state.activeVoices.entries());
@@ -793,22 +787,18 @@
                 return;
             }
 
-            // 依 MIDI 音高由低到高排序
             entries.sort((a, b) => a[0] - b[0]);
 
             if (entries.length === 1) {
                 const [midi, voice] = entries[0];
-                // 單手彈奏時，若明顯在低音區 (<= 67, G4) 也可偏左手色，否則預設右手/主色
                 voice.hand = midi <= 67 ? 'left' : 'right';
             } else {
-                // 多音同時彈奏（左右手一起彈）：最低音歸左手，其餘較高音歸右手（若超過3音，前半偏左手、後半偏右手）
                 const splitIndex = entries.length === 2 ? 1 : Math.floor(entries.length / 2);
                 entries.forEach(([midi, voice], idx) => {
                     voice.hand = idx < splitIndex ? 'left' : 'right';
                 });
             }
 
-            // 更新所有琴鍵的視覺顏色類別
             keyElementsMap.forEach((el, midi) => {
                 el.classList.remove('active', 'active-left', 'active-right');
                 if (state.activeVoices.has(midi)) {
@@ -856,7 +846,7 @@
             }
 
             if (state.audioCtx.state === 'suspended') {
-                state.audioCtx.resume();
+                state.audioCtx.resume().catch(() => {});
             }
 
             const badge = document.getElementById('audioStatusBadge');
@@ -874,6 +864,9 @@
             try {
                 initAudioEngine();
                 const ctx = state.audioCtx;
+                if (ctx.state === 'suspended') {
+                    ctx.resume().catch(() => {});
+                }
                 const now = ctx.currentTime;
 
                 if (state.activeVoices.has(baseMidi)) {
@@ -1621,10 +1614,18 @@
 
             async function enterFullscreenAndLandscape() {
                 initAudioEngine();
+                if (state.audioCtx && state.audioCtx.state === 'suspended') {
+                    try {
+                        await state.audioCtx.resume();
+                    } catch (e) {}
+                }
+
                 const docEl = document.documentElement;
+                const fsTarget = document.getElementById('pianoWrapper')?.parentElement || docEl;
+
                 try {
-                    if (!document.fullscreenElement && docEl.requestFullscreen) {
-                        await docEl.requestFullscreen();
+                    if (!document.fullscreenElement && fsTarget.requestFullscreen) {
+                        await fsTarget.requestFullscreen({ navigationUI: 'hide' });
                     } else if (!document.webkitFullscreenElement && docEl.webkitRequestFullscreen) {
                         await docEl.webkitRequestFullscreen();
                     }
